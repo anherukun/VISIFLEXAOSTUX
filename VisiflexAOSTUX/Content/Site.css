@@ -22,3 +22,14 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+span.icon {
+    vertical-align: bottom;
+    margin-right: 16px;
+}
+
+
+.shadow {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
+}
