@@ -23,6 +23,9 @@ textarea {
     max-width: 280px;
 }
 
+.navbar-nav {
+    justify-content: flex-end !important;
+}
 
 span.icon {
     vertical-align: bottom;
