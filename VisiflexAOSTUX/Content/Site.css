@@ -36,3 +36,12 @@ span.icon {
 .shadow {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
 }
+
+.card-button-full {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+.card-button-full div {
+    flex: 1;
+}
