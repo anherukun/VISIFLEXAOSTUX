@@ -37,6 +37,10 @@ span.icon {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
 }
 
+.card-content-full {
+    display: flex;
+    justify-content: space-around;
+}
 .card-button-full {
     display: flex;
     justify-content: space-around;
