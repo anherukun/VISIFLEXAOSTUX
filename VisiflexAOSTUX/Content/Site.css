@@ -16,13 +16,6 @@
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
-}
-
 .navbar-nav {
     justify-content: flex-end !important;
 }
@@ -37,10 +30,15 @@ span.icon {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
 }
 
+.card-body {
+    padding: 12px;
+}
+
 .card-content-full {
     display: flex;
     justify-content: space-around;
 }
+
 .card-button-full {
     display: flex;
     justify-content: space-around;
@@ -48,4 +46,12 @@ span.icon {
 }
 .card-button-full div {
     flex: 1;
+}
+
+.form .row {
+    margin-bottom: 20px;
+}
+
+.input-label {
+    margin-bottom: 6px;
 }
