@@ -24,7 +24,8 @@
                 <h5 class="card-title">Informacion del asunto</h5>
                 <p class="card-text">¿Necesitas visualizar los estados de la agenda laboral y/o capturar los progresos de los asuntos?</p>
 
-                <div class="form">
+                @using (Html.BeginForm("", "", FormMethod.Post, new { @class="form needs-validation", enctype="multipart/form-data" }))
+                {
                     <div class="row">
                         <div class="col-md">
                             <label class="input-label">Fecha de Recepcion</label>
@@ -38,13 +39,13 @@
                         </div>
                         <div class="col-md">
                             <label class="input-label">Fecha del Documento</label>
-                            <input type="text" class="form-control" id="" name="" placeholder="Fecha del documento" required>
+                            <input type="date" class="form-control" id="" name="" placeholder="Fecha del documento" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md">
                             <label class="input-label">Archivo Digital</label>
-                            <input type="file" class="form-control" id="inputGroupFile01" required>
+                            <input type="file" class="form-control" id="" name="" required>
                         </div>
                     </div>
                     <div class="row">
@@ -87,11 +88,11 @@
                             <textarea class="form-control" rows="4" id="" name="" placeholder="Anota las observaciones aqui" required></textarea>
                         </div>
                     </div>
-                </div>
 
-                <div>
-                    <a class="btn btn-outline-success" style="width:100%;" href="#">Cargar y Guardar</a>
-                </div>
+                    <button type="submit" class="btn btn-outline-success full-witdth">Cargar y Guardar</button>
+                }
+
+
             </div>
         </div>
     </div>
