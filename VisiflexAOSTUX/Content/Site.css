@@ -55,3 +55,7 @@ span.icon {
 .input-label {
     margin-bottom: 6px;
 }
+
+.full-width {
+    width: 100%;
+}
