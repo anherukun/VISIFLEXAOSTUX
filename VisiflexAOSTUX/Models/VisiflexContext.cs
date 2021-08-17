@@ -19,5 +19,8 @@ namespace VisiflexAOSTUX.Models
         }
 
         public DbSet<LaboralTask> LaboralTasks { get; set; }
+        public DbSet<DocumentFile> DocumentFiles { get; set; }
+        public DbSet<AttentionArea> AttentionAreas { get; set; }
+        public DbSet<RequesterArea> RequesterAreas { get; set; }
     }
 }
