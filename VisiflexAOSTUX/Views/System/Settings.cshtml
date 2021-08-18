@@ -67,16 +67,6 @@
                                 <td>ANGEL GERARDO JIMENEZ REYES</td>
                                 <td><a class="btn btn-sm btn-outline-danger full-width" href="#"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
                             </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td><a class="btn btn-sm btn-outline-danger full-width" href="#"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry the Bird</td>
-                                <td><a class="btn btn-sm btn-outline-danger full-width" href="#"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -86,17 +76,16 @@
                     <div class="row">
                         <div class="col-md-3">
                             <label class="input-label">Ficha</label>
-                            <input type="number" class="form-control" id="" name="" required>
+                            <input type="number" class="form-control" id="" name="" autocomplete="off" required>
                         </div>
                         <div class="col-md">
                             <label class="input-label">Nombre del agente</label>
-                            <input type="text" class="form-control" id="" name="" required>
+                            <input type="text" class="form-control" id="" name="" autocomplete="off" required>
                         </div>
                         <div class="col-md-3" style="display:flex; align-items:flex-end;">
                             <button type="submit" class="btn btn-outline-success full-width"><i class="bi bi-check"></i> Agregar</button>
                         </div>
                     </div>
-
                 }
 
             </div>
@@ -133,18 +122,21 @@
                     </table>
                 </div>
 
-                @using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form needs-validation", enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("AddAttentionArea", "AttentionArea", FormMethod.Post, new { @class = "form needs-validation" }))
                 {
                     <div class="row">
+                        <div class="col-md-3">
+                            <label class="input-label">Clave</label>
+                            <input type="number" class="form-control" id="AreaCode" name="AreaCode" autocomplete="off" required>
+                        </div>
                         <div class="col-md">
                             <label class="input-label">Nombre del area de atencion</label>
-                            <input type="text" class="form-control" id="" name="" required>
+                            <input type="text" class="form-control" id="Name" name="Name" autocomplete="off" required>
                         </div>
                         <div class="col-md-3" style="display:flex; align-items:flex-end;">
                             <button type="submit" class="btn btn-outline-success full-width"><i class="bi bi-check"></i> Agregar</button>
                         </div>
                     </div>
-
                 }
 
             </div>
@@ -189,11 +181,11 @@
                     <div class="row">
                         <div class="col-md-4">
                             <label class="input-label">Clave del centro de trabajo</label>
-                            <input type="number" class="form-control" id="" name="" required>
+                            <input type="number" class="form-control" id="" name="" autocomplete="off" required>
                         </div>
                         <div class="col-md">
                             <label class="input-label">Nombre del centro de trabajo</label>
-                            <input type="text" class="form-control" id="" name="" required>
+                            <input type="text" class="form-control" id="" name="" autocomplete="off" required>
                         </div>
                         <div class="col-md-3" style="display:flex; align-items:flex-end;">
                             <button type="submit" class="btn btn-outline-success full-width"><i class="bi bi-check"></i> Agregar</button>
