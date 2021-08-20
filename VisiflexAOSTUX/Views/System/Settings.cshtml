@@ -2,6 +2,8 @@
 @{
     ViewBag.Title = "Opciones del sistema y configuracion";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<VisiflexAOSTUX.Models.AttentionArea> attentionAreas = ViewData["AttentionAreas"] as List<VisiflexAOSTUX.Models.AttentionArea>;
 }
 
 <div class="row">
@@ -101,23 +103,29 @@
                     <table class="table">
                         <thead>
                             <tr>
+                                <th scope="col" style="width:135.8px;">Clave</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col" style="width:192.75px;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Area de atencion 1</td>
-                                <td><a class="btn btn-sm btn-outline-danger full-width" href="#"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
-                            </tr>
-                            <tr>
-                                <td>Area de atencion 2</td>
-                                <td><a class="btn btn-sm btn-outline-danger full-width" href="#"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
-                            </tr>
-                            <tr>
-                                <td>Area de atencion 3</td>
-                                <td><a class="btn btn-sm btn-outline-danger full-width" href="#"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
-                            </tr>
+                            @if (attentionAreas.Count > 0)
+                            {
+                                foreach (var item in attentionAreas)
+                                {
+                                    <tr>
+                                        <td>@item.AreaCode</td>
+                                        <td>@item.Name</td>
+                                        <td><a class="btn btn-sm btn-outline-danger full-width" href="#"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3">No Items detected...</td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -133,6 +141,11 @@
                             <label class="input-label">Nombre del area de atencion</label>
                             <input type="text" class="form-control" id="Name" name="Name" autocomplete="off" required>
                         </div>
+                        <div class="visually-hidden">
+                            <input type="text" class="form-control" id="controller" name="controller" autocomplete="off" readonly required value="System">
+                            <input type="text" class="form-control" id="action" name="action" autocomplete="off" readonly required value="Settings">
+                        </div>
+
                         <div class="col-md-3" style="display:flex; align-items:flex-end;">
                             <button type="submit" class="btn btn-outline-success full-width"><i class="bi bi-check"></i> Agregar</button>
                         </div>

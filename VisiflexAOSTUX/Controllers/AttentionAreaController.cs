@@ -19,16 +19,27 @@ namespace VisiflexAOSTUX.Controllers
 
         [HttpPost] public ActionResult AddAttentionArea(AttentionArea attentionArea, string controller, string action)
         {
-            AttentionArea a = new AttentionArea()
+            if (attentionArea != null && controller != null && action != null)
             {
-                AttentionAreaID = ApplicationManager.GenerateGUID,
-                AreaCode = attentionArea.AreaCode,
-                Name = attentionArea.Name
-            };
+                if (!RepositoryAttentionArea.Exist(attentionArea))
+                {
+                    AttentionArea a = new AttentionArea()
+                    {
+                        AttentionAreaID = ApplicationManager.GenerateGUID,
+                        AreaCode = attentionArea.AreaCode,
+                        Name = attentionArea.Name.ToUpper()
+                    };
 
-            RepositoryAttentionArea.Add(a);
+                    if (RepositoryAttentionArea.Add(a) > 0)
+                        return Redirect(Url.Action(action, controller, new ResponseMessage() { Message = "Area de atencion agregada correctamente.", Type = ResponseType.SUCCESS }));
+                    else
+                        return Redirect(Url.Action(action, controller, new ResponseMessage() { Message = "No se pudo completar la operacion, verifica los datos.", Type = ResponseType.ERROR }));
+                }
+                else
+                    return Redirect(Url.Action(action, controller, new ResponseMessage() { Message = "Ya fue registrada esta area de atencion.", Type = ResponseType.ERROR }));
+            }
 
-            return Redirect(Url.Action(action, controller));
+            return Redirect(Url.Action("", ""));
         }
     }
 }

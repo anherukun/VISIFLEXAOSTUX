@@ -8,6 +8,32 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/poppers")
+    <script type="text/javascript">
+        function showSnackbar(message) {
+            var snack = document.getElementById("snackbar");
+            snack.className = snack.className + " show";
+            setTimeout(function () {
+                snack.className = snack.className.replace(" show", "");
+            }, 3000);
+
+            document.getElementById("snackbar-text").innerHTML = message;
+        }
+
+        function retriveResponse() {
+            var response = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewData["response"]));
+
+            switch (response.Type) {
+                case "@VisiflexAOSTUX.Models.ResponseType.ERROR":
+                    showSnackbar("Error: " + response.Message);
+                    break;
+
+                case "@VisiflexAOSTUX.Models.ResponseType.SUCCESS":
+                    showSnackbar(response.Message);
+                    break;
+                default:
+            }
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -32,6 +58,10 @@
         </nav>
     </header>
 
+    <div class="rounded" id="snackbar" style="margin-top:57px;">
+        <p id="snackbar-text" style="font-weight:bold; margin-bottom: 0; filter: invert(100%); -webkit-filter: invert(100%);">Aqui va un mensaje</p>
+    </div>
+
 
     <div class="container" style="margin-top:70px;">
         <main role="main" class="pb-3">
@@ -51,4 +81,9 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
+
+<script type="text/javascript">
+    retriveResponse();
+</script>
+
 </html>

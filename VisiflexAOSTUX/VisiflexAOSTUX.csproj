@@ -153,6 +153,7 @@
     <Compile Include="Models\DocumentFile.cs" />
     <Compile Include="Models\LaboralTask.cs" />
     <Compile Include="Models\RequesterArea.cs" />
+    <Compile Include="Models\ResponseMessage.cs" />
     <Compile Include="Models\VisiflexContext.cs" />
     <Compile Include="Models\Workplace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

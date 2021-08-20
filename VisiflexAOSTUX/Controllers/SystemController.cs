@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using VisiflexAOSTUX.Models;
+using VisiflexAOSTUX.Services;
 
 namespace VisiflexAOSTUX.Controllers
 {
@@ -14,8 +16,11 @@ namespace VisiflexAOSTUX.Controllers
             return Redirect(Url.Action("Settings", "System"));
         }
 
-        public ActionResult Settings()
+        public ActionResult Settings(ResponseMessage response)
         {
+            ViewData["AttentionAreas"] = RepositoryAttentionArea.Get();
+            ViewData["Response"] = response;
+
             return View();
         }
     }
