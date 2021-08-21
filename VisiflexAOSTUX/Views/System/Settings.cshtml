@@ -116,7 +116,7 @@
                                     <tr>
                                         <td>@item.AreaCode</td>
                                         <td>@item.Name</td>
-                                        <td><a class="btn btn-sm btn-outline-danger full-width" href="#"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
+                                        <td><a class="btn btn-sm btn-outline-danger full-width" href="@Url.Action("DeleteAttentionArea", "AttentionArea", new { id = item.AttentionAreaID, c = "System", a = "Settings" })"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
                                     </tr>
                                 }
                             }

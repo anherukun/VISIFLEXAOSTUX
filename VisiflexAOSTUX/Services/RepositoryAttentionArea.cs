@@ -33,12 +33,12 @@ namespace VisiflexAOSTUX.Services
             } 
         }
 
-        public static void Delete(string id)
+        public static int Delete(string id)
         {
             using (var db = new VisiflexContext())
             {
                 db.Entry(Get(id)).State = System.Data.Entity.EntityState.Deleted;
-                db.SaveChanges();
+                return db.SaveChanges();
             }
         }
 
@@ -47,6 +47,13 @@ namespace VisiflexAOSTUX.Services
             using (var db = new VisiflexContext())
             {
                 return db.AttentionAreas.Any(x => x.AreaCode == a.AreaCode );
+            }
+        }
+        public static bool Exist(string attentionAreaID)
+        {
+            using (var db = new VisiflexContext())
+            {
+                return db.AttentionAreas.Any(x => x.AttentionAreaID == attentionAreaID);
             }
         }
     }

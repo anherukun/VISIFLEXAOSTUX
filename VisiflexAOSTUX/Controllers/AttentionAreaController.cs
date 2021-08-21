@@ -41,5 +41,22 @@ namespace VisiflexAOSTUX.Controllers
 
             return Redirect(Url.Action("", ""));
         }
+
+        public ActionResult DeleteAttentionArea(string id, string c, string a)
+        {
+            if (id != null && c != null && a != null)
+            {
+                if (RepositoryAttentionArea.Exist(id))
+                    if (RepositoryAttentionArea.Delete(id) > 0)
+                        return Redirect(Url.Action(a, c, new ResponseMessage()
+                        {
+                            Message = "Objeto eliminado correctamente.",
+                            Type = ResponseType.SUCCESS
+                        }));
+            }
+
+
+            return Redirect(Url.Action("", "", new ResponseMessage() { Message = "No se pudo completar la operacion, objeto no existente", Type = ResponseType.ERROR }));
+        }
     }
 }
