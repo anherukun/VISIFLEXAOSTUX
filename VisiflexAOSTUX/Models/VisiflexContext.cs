@@ -22,5 +22,6 @@ namespace VisiflexAOSTUX.Models
         public DbSet<DocumentFile> DocumentFiles { get; set; }
         public DbSet<AttentionArea> AttentionAreas { get; set; }
         public DbSet<RequesterArea> RequesterAreas { get; set; }
+        public DbSet<Workplace> Workplaces { get; set; }
     }
 }
