@@ -19,6 +19,8 @@ namespace VisiflexAOSTUX.Controllers
         public ActionResult Settings(ResponseMessage response)
         {
             ViewData["AttentionAreas"] = RepositoryAttentionArea.Get();
+            ViewData["Workplaces"] = RepositoryWorkplace.Get();
+            ViewData["Agents"] = RepositoryAgent.Get();
             ViewData["Response"] = response;
 
             return View();

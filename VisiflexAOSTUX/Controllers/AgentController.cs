@@ -9,45 +9,46 @@ using VisiflexAOSTUX.Services;
 
 namespace VisiflexAOSTUX.Controllers
 {
-    public class AttentionAreaController : Controller
+    public class AgentController : Controller
     {
-        // GET: AttentionArea
+        // GET: Agent
         public ActionResult Index()
         {
             return Redirect(Url.Action("", ""));
         }
 
-        [HttpPost] public ActionResult AddAttentionArea(AttentionArea attentionArea, string controller, string action)
+        [HttpPost]
+        public ActionResult AddAgent(Agent agent, string controller, string action)
         {
-            if (attentionArea != null && controller != null && action != null)
+            if (agent != null && controller != null && action != null)
             {
-                if (!RepositoryAttentionArea.Exist(attentionArea))
+                if (!RepositoryAgent.Exist(agent))
                 {
-                    AttentionArea a = new AttentionArea()
+                    Agent a = new Agent()
                     {
-                        AttentionAreaID = ApplicationManager.GenerateGUID,
-                        AreaCode = attentionArea.AreaCode,
-                        Name = attentionArea.Name.Trim().ToUpper()
+                        AgentID = ApplicationManager.GenerateGUID,
+                        AgentCode = agent.AgentCode,
+                        Name = agent.Name.Trim().ToUpper()
                     };
 
-                    if (RepositoryAttentionArea.Add(a) > 0)
-                        return Redirect(Url.Action(action, controller, new ResponseMessage() { Message = "Area de atencion agregada correctamente.", Type = ResponseType.SUCCESS }));
+                    if (RepositoryAgent.Add(a) > 0)
+                        return Redirect(Url.Action(action, controller, new ResponseMessage() { Message = "Agente agregado correctamente.", Type = ResponseType.SUCCESS }));
                     else
                         return Redirect(Url.Action(action, controller, new ResponseMessage() { Message = "No se pudo completar la operacion, verifica los datos.", Type = ResponseType.ERROR }));
                 }
                 else
-                    return Redirect(Url.Action(action, controller, new ResponseMessage() { Message = "Ya fue registrada esta area de atencion.", Type = ResponseType.ERROR }));
+                    return Redirect(Url.Action(action, controller, new ResponseMessage() { Message = "Ya fue registrado este agente.", Type = ResponseType.ERROR }));
             }
 
             return Redirect(Url.Action("", ""));
         }
 
-        public ActionResult DeleteAttentionArea(string id, string c, string a)
+        public ActionResult DeleteAgent(string id, string c, string a)
         {
             if (id != null && c != null && a != null)
             {
-                if (RepositoryAttentionArea.Exist(id))
-                    if (RepositoryAttentionArea.Delete(id) > 0)
+                if (RepositoryAgent.Exist(id))
+                    if (RepositoryAgent.Delete(id) > 0)
                         return Redirect(Url.Action(a, c, new ResponseMessage()
                         {
                             Message = "Objeto eliminado correctamente.",

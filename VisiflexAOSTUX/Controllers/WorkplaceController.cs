@@ -27,7 +27,7 @@ namespace VisiflexAOSTUX.Controllers
                     {
                         WorkplaceID = ApplicationManager.GenerateGUID,
                         WorkplaceCode = workplace.WorkplaceCode,
-                        Name = workplace.Name.ToUpper()
+                        Name = workplace.Name.Trim().ToUpper()
                     };
 
                     if (RepositoryWorkplace.Add(w) > 0)
@@ -39,6 +39,22 @@ namespace VisiflexAOSTUX.Controllers
                     return Redirect(Url.Action(action, controller, new ResponseMessage() { Message = "Ya fue registrada centro de trabajo.", Type = ResponseType.ERROR }));
             }
             return Redirect(Url.Action("", ""));
+        }
+
+        public ActionResult DeleteWorkplace(string id, string c, string a)
+        {
+            if (id != null && c != null && a != null)
+            {
+                if (RepositoryWorkplace.Exist(id))
+                    if (RepositoryWorkplace.Delete(id) > 0)
+                        return Redirect(Url.Action(a, c, new ResponseMessage()
+                        {
+                            Message = "Objeto eliminado correctamente.",
+                            Type = ResponseType.SUCCESS
+                        }));
+            }
+
+            return Redirect(Url.Action("", "", new ResponseMessage() { Message = "No se pudo completar la operacion, objeto no existente", Type = ResponseType.ERROR }));
         }
     }
 }

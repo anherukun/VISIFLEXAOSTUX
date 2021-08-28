@@ -23,5 +23,6 @@ namespace VisiflexAOSTUX.Models
         public DbSet<AttentionArea> AttentionAreas { get; set; }
         public DbSet<RequesterArea> RequesterAreas { get; set; }
         public DbSet<Workplace> Workplaces { get; set; }
+        public DbSet<Agent> Agents { get; set; }
     }
 }
