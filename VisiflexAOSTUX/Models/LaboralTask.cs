@@ -11,6 +11,7 @@ namespace VisiflexAOSTUX.Models
     {
         [Key] public string IDLaboralTask { get; set; }
         [Required] public string DocumentID { get; set; }
+        public DateTime ReceptionDate { get; set; }
         public DateTime DocumentDate { get; set; }
         [ForeignKey("IDDocumentFile")] public DocumentFile DocumentFile { get; set; }
         [ForeignKey("IDAttentionArea")] public AttentionArea AttentionArea { get; set; }

@@ -2,8 +2,10 @@
 @{
     ViewBag.Title = "NewLaboralTask";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<VisiflexAOSTUX.Models.Agent> agents = ViewData["Agents"] as List<VisiflexAOSTUX.Models.Agent>;
+    List<VisiflexAOSTUX.Models.AttentionArea> attentionAreas = ViewData["AttentionAreas"] as List<VisiflexAOSTUX.Models.AttentionArea>;
+    List<VisiflexAOSTUX.Models.Workplace> workplaces = ViewData["Workplaces"] as List<VisiflexAOSTUX.Models.Workplace>;
 }
-
 
 <div class="row">
     <div class="col-md-3 card rounded shadow text-center" style="padding:8px; height:200px;">
@@ -24,22 +26,22 @@
                 <h5 class="card-title">Informacion del asunto</h5>
                 <p class="card-text">¿Necesitas visualizar los estados de la agenda laboral y/o capturar los progresos de los asuntos?</p>
 
-                @using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form needs-validation", enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("AddLaboralTask", "LaboralTask", FormMethod.Post, new { @class = "form needs-validation", enctype = "multipart/form-data" }))
                 {
                     <div class="row">
                         <div class="col-md">
                             <label class="input-label">Fecha de Recepcion</label>
-                            <input type="date" class="form-control" id="" name="" placeholder="01/01/2021" required>
+                            <input type="date" class="form-control" id="ReceptionDate" name="ReceptionDate" placeholder="01/01/2021" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md">
                             <label class="input-label">Documento No.</label>
-                            <input type="text" class="form-control" id="" name="" placeholder="Numero del documento" required>
+                            <input type="text" class="form-control" id="DocumentID" name="DocumentID" placeholder="Numero del documento" required>
                         </div>
                         <div class="col-md">
                             <label class="input-label">Fecha del Documento</label>
-                            <input type="date" class="form-control" id="" name="" placeholder="Fecha del documento" required>
+                            <input type="date" class="form-control" id="DocumentDate" name="DocumentDate" placeholder="Fecha del documento" required>
                         </div>
                     </div>
                     <div class="row">
@@ -51,41 +53,53 @@
                     <div class="row">
                         <div class="col-md">
                             <label class="input-label">Area de Atencion</label>
-                            <input type="text" class="form-control" id="" name="" placeholder="Area de atencion" required>
+                            <select class="form-select" id="IDAttentionArea" name="IDAttentionArea" required>
+                                @foreach (var item in attentionAreas)
+                                {
+                                    <option hidden selected>Selecciona una opcion</option>
+                                    <option value="@item.AttentionAreaID">[@item.AreaCode] - @item.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md">
+                            <label class="input-label">Centro de trabajo</label>
+                            <select class="form-select" id="IDWorkplace" name="IDWorkplace" required>
+                                @foreach (var item in workplaces)
+                                {
+                                    <option hidden selected>Selecciona una opcion</option>
+                                    <option value="@item.WorkplaceID">[@item.WorkplaceCode] - @item.Name</option>
+                                }
+                            </select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md">
                             <label class="input-label">Area de Solicitante</label>
-                            <input type="text" class="form-control" id="" name="" placeholder="Area de solicitante" required>
-                        </div>
-                        <div class="col-md">
-                            <label class="input-label">Centro de trabajo</label>
-                            <input type="text" class="form-control" id="" name="" placeholder="Centro de trabajo" required>
+                            <input type="text" class="form-control" id="IDRequesterArea" name="IDRequesterArea" placeholder="Area de solicitante" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md">
                             <label class="input-label">Asunto</label>
-                            <input type="text" class="form-control" id="" name="" placeholder="Asunto" required>
+                            <input type="text" class="form-control" id="Subjet" name="Subjet" placeholder="Asunto" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md">
                             <label class="input-label">Descripcion Larga</label>
-                            <textarea class="form-control" rows="4" id="" name="" placeholder="Anota la descripcion aqui" required></textarea>
+                            <textarea class="form-control" rows="4" id="LongDescription" name="LongDescription" placeholder="Anota la descripcion aqui" required></textarea>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md">
                             <label class="input-label">Instrucciones para la Atencion</label>
-                            <textarea class="form-control" rows="4" id="" name="" placeholder="Anota las instrucciones aqui" required></textarea>
+                            <textarea class="form-control" rows="4" id="AttentionInstructions" name="AttentionInstructions" placeholder="Anota las instrucciones aqui" required></textarea>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md">
                             <label class="input-label">Observaciones a Considerar para la Gestion del Asunto</label>
-                            <textarea class="form-control" rows="4" id="" name="" placeholder="Anota las observaciones aqui" required></textarea>
+                            <textarea class="form-control" rows="4" id="Observations" name="Observations" placeholder="Anota las observaciones aqui" required></textarea>
                         </div>
                     </div>
 
