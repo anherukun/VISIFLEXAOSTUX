@@ -6,6 +6,7 @@
     List<VisiflexAOSTUX.Models.AttentionArea> attentionAreas = ViewData["AttentionAreas"] as List<VisiflexAOSTUX.Models.AttentionArea>;
     List<VisiflexAOSTUX.Models.Workplace> workplaces = ViewData["Workplaces"] as List<VisiflexAOSTUX.Models.Workplace>;
     List<VisiflexAOSTUX.Models.Agent> agents = ViewData["Agents"] as List<VisiflexAOSTUX.Models.Agent>;
+    List<VisiflexAOSTUX.Models.RequesterArea> requesterAreas = ViewData["RequesterAreas"] as List<VisiflexAOSTUX.Models.RequesterArea>;
 }
 
 <div class="row">
@@ -71,7 +72,7 @@
                                 foreach (var item in agents)
                                 {
                                     <tr>
-                                        <th scope="row">@item.AgentCode</th>
+                                        <td>@item.AgentCode</td>
                                         <td>@item.Name</td>
                                         <td><a class="btn btn-sm btn-outline-danger full-width" href="@Url.Action("DeleteAgent", "Agent", new { id = item.AgentID, c = "System", a = "Settings" })"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
                                     </tr>
@@ -169,7 +170,60 @@
                         </div>
                     </div>
                 }
+            </div>
+        </div>
 
+        <div class="card rounded shadow" style="padding:8px; margin-bottom:32px;">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-safe2-fill"></i> Areas solicitantes</h5>
+                <p class="card-text">Agrega y elimina los areas solicitantes</p>
+
+                <div style="margin-bottom: 20px;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col" style="width:192.75px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (requesterAreas.Count > 0)
+                            {
+                                foreach (var item in requesterAreas)
+                                {
+                                    <tr>
+                                        <td>@item.Name</td>
+                                        <td><a class="btn btn-sm btn-outline-danger full-width" href="@Url.Action("DeleteRequesterArea", "RequesterArea", new { id = item.RequesterAreaID, c = "System", a = "Settings" })"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="2">No Items detected...</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                @using (Html.BeginForm("AddRequesterArea", "RequesterArea", FormMethod.Post, new { @class = "form needs-validation" }))
+                {
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Nombre del area solicitante</label>
+                            <input type="text" class="form-control" id="Name" name="Name" autocomplete="off" required>
+                        </div>
+                        <div class="visually-hidden">
+                            <input type="text" class="form-control" id="controller" name="controller" autocomplete="off" readonly required value="System">
+                            <input type="text" class="form-control" id="action" name="action" autocomplete="off" readonly required value="Settings">
+                        </div>
+
+                        <div class="col-md-3" style="display:flex; align-items:flex-end;">
+                            <button type="submit" class="btn btn-outline-success full-width"><i class="bi bi-check"></i> Agregar</button>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
 

@@ -145,6 +145,7 @@
     <Compile Include="Controllers\AttentionAreaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LaboralTaskController.cs" />
+    <Compile Include="Controllers\RequesterAreaController.cs" />
     <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="Controllers\WorkplaceController.cs" />
     <Compile Include="Global.asax.cs">
@@ -162,6 +163,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\RepositoryAgent.cs" />
     <Compile Include="Services\RepositoryAttentionArea.cs" />
+    <Compile Include="Services\RepositoryDocumentFile.cs" />
+    <Compile Include="Services\RepositoryLaboralTask.cs" />
+    <Compile Include="Services\RepositoryRequesterArea.cs" />
     <Compile Include="Services\RepositoryWorkplace.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1710,6 +1714,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\Agent\" />
     <Folder Include="Views\AttentionArea\" />
+    <Folder Include="Views\RequesterArea\" />
     <Folder Include="Views\Workplace\" />
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,7 @@ namespace VisiflexAOSTUX.Models
         [Required] public string DocumentID { get; set; }
         public DateTime ReceptionDate { get; set; }
         public DateTime DocumentDate { get; set; }
+        public long UploadTicks { get; set; }
         [ForeignKey("IDDocumentFile")] public DocumentFile DocumentFile { get; set; }
         [ForeignKey("IDAttentionArea")] public AttentionArea AttentionArea { get; set; }
         [ForeignKey("IDRequesterArea")] public RequesterArea RequesterArea { get; set; }

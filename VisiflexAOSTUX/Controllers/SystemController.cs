@@ -21,6 +21,8 @@ namespace VisiflexAOSTUX.Controllers
             ViewData["AttentionAreas"] = RepositoryAttentionArea.Get();
             ViewData["Workplaces"] = RepositoryWorkplace.Get();
             ViewData["Agents"] = RepositoryAgent.Get();
+            ViewData["RequesterAreas"] = RepositoryRequesterArea.Get();
+
             ViewData["Response"] = response;
 
             return View();

@@ -5,6 +5,7 @@
     List<VisiflexAOSTUX.Models.Agent> agents = ViewData["Agents"] as List<VisiflexAOSTUX.Models.Agent>;
     List<VisiflexAOSTUX.Models.AttentionArea> attentionAreas = ViewData["AttentionAreas"] as List<VisiflexAOSTUX.Models.AttentionArea>;
     List<VisiflexAOSTUX.Models.Workplace> workplaces = ViewData["Workplaces"] as List<VisiflexAOSTUX.Models.Workplace>;
+    List<VisiflexAOSTUX.Models.RequesterArea> requesterAreas = ViewData["RequesterAreas"] as List<VisiflexAOSTUX.Models.RequesterArea>;
 }
 
 <div class="row">
@@ -47,7 +48,7 @@
                     <div class="row">
                         <div class="col-md">
                             <label class="input-label">Archivo Digital</label>
-                            <input type="file" class="form-control" id="" name="" required>
+                            <input type="file" class="form-control" id="File" name="File" required>
                         </div>
                     </div>
                     <div class="row">
@@ -62,6 +63,18 @@
                             </select>
                         </div>
                         <div class="col-md">
+                            <label class="input-label">Area de Solicitante</label>
+                            <select class="form-select" id="IDRequesterArea" name="IDRequesterArea" required>
+                                @foreach (var item in requesterAreas)
+                                {
+                                    <option hidden selected>Selecciona una opcion</option>
+                                    <option value="@item.RequesterAreaID">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
                             <label class="input-label">Centro de trabajo</label>
                             <select class="form-select" id="IDWorkplace" name="IDWorkplace" required>
                                 @foreach (var item in workplaces)
@@ -70,12 +83,6 @@
                                     <option value="@item.WorkplaceID">[@item.WorkplaceCode] - @item.Name</option>
                                 }
                             </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md">
-                            <label class="input-label">Area de Solicitante</label>
-                            <input type="text" class="form-control" id="IDRequesterArea" name="IDRequesterArea" placeholder="Area de solicitante" required>
                         </div>
                     </div>
                     <div class="row">
