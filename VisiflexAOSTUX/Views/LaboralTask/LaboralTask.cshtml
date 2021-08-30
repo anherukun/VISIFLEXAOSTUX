@@ -1,12 +1,12 @@
 ﻿
 @{
-    ViewBag.Title = "NewLaboralTask";
+    VisiflexAOSTUX.Models.LaboralTask laboralTask = ViewData["laboralTask"] as VisiflexAOSTUX.Models.LaboralTask;
+
+    ViewBag.Title = $"Asunto Laboral: {laboralTask.Subjet}";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    List<VisiflexAOSTUX.Models.Agent> agents = ViewData["Agents"] as List<VisiflexAOSTUX.Models.Agent>;
-    List<VisiflexAOSTUX.Models.AttentionArea> attentionAreas = ViewData["AttentionAreas"] as List<VisiflexAOSTUX.Models.AttentionArea>;
-    List<VisiflexAOSTUX.Models.Workplace> workplaces = ViewData["Workplaces"] as List<VisiflexAOSTUX.Models.Workplace>;
-    List<VisiflexAOSTUX.Models.RequesterArea> requesterAreas = ViewData["RequesterAreas"] as List<VisiflexAOSTUX.Models.RequesterArea>;
 }
+
+<h2>@ViewBag.Title</h2>
 
 <div class="row">
     <div class="col-md-3 card rounded shadow text-center" style="padding:8px; height:200px;">
@@ -51,40 +51,7 @@
                             <input type="file" class="form-control" id="File" name="File" required>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md">
-                            <label class="input-label">Area de Atencion</label>
-                            <select class="form-select" id="IDAttentionArea" name="IDAttentionArea" required>
-                                @foreach (var item in attentionAreas)
-                                {
-                                    <option hidden selected>Selecciona una opcion</option>
-                                    <option value="@item.AttentionAreaID">[@item.AreaCode] - @item.Name</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="col-md">
-                            <label class="input-label">Area de Solicitante</label>
-                            <select class="form-select" id="IDRequesterArea" name="IDRequesterArea" required>
-                                @foreach (var item in requesterAreas)
-                                {
-                                    <option hidden selected>Selecciona una opcion</option>
-                                    <option value="@item.RequesterAreaID">@item.Name</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md">
-                            <label class="input-label">Centro de Trabajo</label>
-                            <select class="form-select" id="IDWorkplace" name="IDWorkplace" required>
-                                @foreach (var item in workplaces)
-                                {
-                                    <option hidden selected>Selecciona una opcion</option>
-                                    <option value="@item.WorkplaceID">[@item.WorkplaceCode] - @item.Name</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
+                    
                     <div class="row">
                         <div class="col-md">
                             <label class="input-label">Asunto</label>
@@ -110,33 +77,10 @@
                         </div>
                     </div>
 
-                    <h5 class="card-title">Responsable de atender el asunto</h5>
-
-                    <div class="row">
-                        <div class="col-md">
-                            <label class="input-label">Fecha de Compromiso</label>
-                            <input type="date" class="form-control" id="CommitmentDate" name="CommitmentDate" placeholder="01/01/2021" required>
-                        </div>
-                        <div class="col-md">
-                            <label class="input-label">Agente Responsable</label>
-                            <select class="form-select" id="IDAgent" name="IDAgent" required>
-                                @foreach (var item in agents)
-                                {
-                                    <option hidden selected>Selecciona una opcion</option>
-                                    <option value="@item.AgentID">[@item.AgentCode] - @item.Name</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-
                     <button type="submit" class="btn btn-outline-success full-width">Cargar y Guardar</button>
                 }
 
-
             </div>
-    
         </div>
-    
     </div>
-
 </div>

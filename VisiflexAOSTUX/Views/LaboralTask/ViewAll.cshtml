@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "Visualizacion de asuntos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<VisiflexAOSTUX.Models.LaboralTask> laboralTasks = ViewData["LaboralTasks"] as List<VisiflexAOSTUX.Models.LaboralTask>;
+}
+
+<div class="row">
+    <div class="col-md">
+        <h2 style="margin-bottom:32px;">Actualizaciones de asuntos</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Area de atencion</th>
+                    <th scope="col">Asunto</th>
+                    <th scope="col">Estatus</th>
+                    <th scope="col">Avance</th>
+                    <th scope="col" style="width: 180px;">Fecha de seguimiento</th>
+                    <th scope="col" style="width: 180px;">Fecha compromiso</th>
+                    <th scope="col">Actualizar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (laboralTasks.Count > 0)
+                {
+                    for (int i = 0; i < laboralTasks.Count; i++)
+                    {
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td>@VisiflexAOSTUX.Services.RepositoryAttentionArea.Get(laboralTasks[i].IDAttentionArea).Name</td>
+                            <td>@laboralTasks[i].Subjet</td>
+                            <td>@laboralTasks[i].Status</td>
+                            <td>@laboralTasks[i].Progress %</td>
+                            <td>@VisiflexAOSTUX.Services.RepositoryLaboralTaskHistoryLog.GetLast(laboralTasks[i].IDLaboralTask).Date.ToShortDateString()</td>
+                            <td>@laboralTasks[i].CommitmentDate.ToShortDateString()</td>
+                            <td>
+                                <div class="btn-group full-width" role="group" aria-label="Basic example">
+                                    <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("", "", new { id = "", c = "System", a = "Settings" })">Asunto</a>
+                                    <a class="btn btn-sm btn-outline-primary full-width" href="#">Seguimiento</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3">No Items detected...</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

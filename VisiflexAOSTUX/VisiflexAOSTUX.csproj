@@ -155,7 +155,9 @@
     <Compile Include="Models\Agent.cs" />
     <Compile Include="Models\AttentionArea.cs" />
     <Compile Include="Models\DocumentFile.cs" />
+    <Compile Include="Models\HistoryLogDocumentFile.cs" />
     <Compile Include="Models\LaboralTask.cs" />
+    <Compile Include="Models\LaboralTaskHistoryLog.cs" />
     <Compile Include="Models\RequesterArea.cs" />
     <Compile Include="Models\ResponseMessage.cs" />
     <Compile Include="Models\VisiflexContext.cs" />
@@ -164,7 +166,9 @@
     <Compile Include="Services\RepositoryAgent.cs" />
     <Compile Include="Services\RepositoryAttentionArea.cs" />
     <Compile Include="Services\RepositoryDocumentFile.cs" />
+    <Compile Include="Services\RepositoryHistoryLogDocumentFile.cs" />
     <Compile Include="Services\RepositoryLaboralTask.cs" />
+    <Compile Include="Services\RepositoryLaboralTaskHistoryLog.cs" />
     <Compile Include="Services\RepositoryRequesterArea.cs" />
     <Compile Include="Services\RepositoryWorkplace.cs" />
   </ItemGroup>
@@ -1709,6 +1713,8 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\LaboralTask\NewLaboralTask.cshtml" />
     <Content Include="Views\System\Settings.cshtml" />
+    <Content Include="Views\LaboralTask\LaboralTask.cshtml" />
+    <Content Include="Views\LaboralTask\ViewAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

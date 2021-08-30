@@ -18,6 +18,18 @@ namespace VisiflexAOSTUX.Controllers
             return View();
         }
 
+        public ActionResult LaboralTask(string laboralTaskID)
+        {
+            return View();
+        }
+
+        public ActionResult ViewAll(ResponseMessage response)
+        {
+            ViewData["LaboralTasks"] = RepositoryLaboralTask.Get();
+            ViewData["Response"] = response;
+            return View();
+        }
+
         public ActionResult NewLaboralTask(ResponseMessage response)
         {
             ViewData["Workplaces"] = RepositoryWorkplace.Get();
@@ -39,10 +51,12 @@ namespace VisiflexAOSTUX.Controllers
                     IDAttentionArea = laboralTask.IDAttentionArea,
                     IDRequesterArea = laboralTask.IDRequesterArea,
                     IDWorkplace = laboralTask.IDWorkplace,
+                    IDAgent = laboralTask.IDAgent,
                     DocumentID = laboralTask.DocumentID.Trim().ToUpper(),
                     AttentionInstructions = laboralTask.AttentionInstructions.Trim().ToUpper(),
                     DocumentDate = laboralTask.DocumentDate,
                     ReceptionDate = laboralTask.ReceptionDate,
+                    CommitmentDate = laboralTask.CommitmentDate,
                     LongDescription = laboralTask.LongDescription.Trim().ToUpper(),
                     Observations = laboralTask.Observations.Trim().ToUpper(),
                     Subjet = laboralTask.Subjet.Trim().ToUpper(),
@@ -65,9 +79,22 @@ namespace VisiflexAOSTUX.Controllers
                 if (RepositoryDocumentFile.Add(d) > 0)
                 {
                     l.IDDocumentFile = d.DocumentFileID;
-                    
+
                     if (RepositoryLaboralTask.Add(l) > 0)
-                        return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente", Type = ResponseType.SUCCESS }));
+                    {
+                        LaboralTaskHistoryLog log = new LaboralTaskHistoryLog()
+                        {
+                            IDLaboralTaskHistoryLog = ApplicationManager.GenerateGUID,
+                            IDLaboralTask = l.IDLaboralTask,
+                            Description = "DOCUMENTACION RECIBIDA, EN ESPERA DE SU ATENCION POR SU ESPECIALISTA",
+                            Date = DateTime.Now,
+                            UploadTicks = submittionticks
+                        };
+                        if (RepositoryLaboralTaskHistoryLog.Add(log) > 0)
+                            return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente: Actualizacion de asunto registrada", Type = ResponseType.SUCCESS }));
+                        else
+                            return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente", Type = ResponseType.SUCCESS }));
+                    }
                     else
                     {
                         if (RepositoryDocumentFile.Delete(d.DocumentFileID) > 1)

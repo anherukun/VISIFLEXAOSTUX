@@ -24,5 +24,7 @@ namespace VisiflexAOSTUX.Models
         public DbSet<RequesterArea> RequesterAreas { get; set; }
         public DbSet<Workplace> Workplaces { get; set; }
         public DbSet<Agent> Agents { get; set; }
+        public DbSet<LaboralTaskHistoryLog> LaboralTaskHistoryLogs { get; set; }
+        public DbSet<HistoryLogDocumentFile> HistoryLogDocumentFiles { get; set; }
     }
 }
