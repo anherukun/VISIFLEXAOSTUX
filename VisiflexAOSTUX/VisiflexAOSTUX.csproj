@@ -145,6 +145,7 @@
     <Compile Include="Controllers\AttentionAreaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LaboralTaskController.cs" />
+    <Compile Include="Controllers\LaboralTaskHistoryLogController.cs" />
     <Compile Include="Controllers\RequesterAreaController.cs" />
     <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="Controllers\WorkplaceController.cs" />
@@ -1715,6 +1716,7 @@
     <Content Include="Views\System\Settings.cshtml" />
     <Content Include="Views\LaboralTask\LaboralTask.cshtml" />
     <Content Include="Views\LaboralTask\ViewAll.cshtml" />
+    <Content Include="Views\LaboralTaskHistoryLog\HistoryLog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

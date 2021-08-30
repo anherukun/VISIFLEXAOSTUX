@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Actualizacion de seguimiento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    VisiflexAOSTUX.Models.LaboralTask laboralTask = ViewData["laboralTask"] as VisiflexAOSTUX.Models.LaboralTask;
+    List<VisiflexAOSTUX.Models.LaboralTaskHistoryLog> historyLogs = ViewData["laboralTaskHystoryLog"] as List<VisiflexAOSTUX.Models.LaboralTaskHistoryLog>;
+}
+
+<div class="row">
+    <div class="col-md">
+        <h2 style="margin-bottom:32px;">Actualizaciones de asuntos</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Fecha de seguimiento</th>
+                    <th scope="col">Detalle del seguimiento</th>
+                    <th scope="col">Archivo</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (historyLogs.Count > 0)
+                {
+                    foreach (var item in historyLogs)
+                    {
+                        <tr>
+                            <td>@item.Date.ToShortDateString()</td>
+                            <td>@item.Description</td>
+                            @if (item.IDHistoryLogDocumentFile != null)
+                            {
+                                <td>
+                                    <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("", "", new { id = "", c = "System", a = "Settings" })">Descargar</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <a class="btn btn-sm btn-outline-primary full-width disabled" href="#">Descargar</a>
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3">No Items detected...</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

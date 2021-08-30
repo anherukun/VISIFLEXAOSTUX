@@ -37,8 +37,8 @@
                             <td>@laboralTasks[i].CommitmentDate.ToShortDateString()</td>
                             <td>
                                 <div class="btn-group full-width" role="group" aria-label="Basic example">
-                                    <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("", "", new { id = "", c = "System", a = "Settings" })">Asunto</a>
-                                    <a class="btn btn-sm btn-outline-primary full-width" href="#">Seguimiento</a>
+                                    <a class="btn btn-sm btn-outline-primary full-width" href="#">Asunto</a>
+                                    <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("HistoryLog", "LaboralTaskHistoryLog", new { laboralTaskID = laboralTasks[i].IDLaboralTask })">Seguimiento</a>
                                 </div>
                             </td>
                         </tr>
