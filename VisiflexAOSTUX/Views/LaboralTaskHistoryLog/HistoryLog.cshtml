@@ -9,7 +9,80 @@
 
 <div class="row">
     <div class="col-md">
-        <h2 style="margin-bottom:32px;">Actualizaciones de asuntos</h2>
+        <h2 style="margin-bottom:32px;">@ViewBag.Title</h2>
+
+        <div class="card rounded shadow" style="padding:8px; margin-bottom:32px;">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-shield-fill-check"></i> Detalle del asunto</h5>
+                <p class="card-text">Actualiza con un nuevo evento el historial del @laboralTask.Subjet.ToLowerInvariant()</p>
+
+                <form class="form">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <label class="input-label">Numero de Seguimiento</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.IDLaboralTask">
+                        </div>
+                        <div class="col-md">
+                            <label class="input-label">Estado</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.Status">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Descripcion de Asunto</label>
+                            <textarea class="form-control" rows="3" readonly>@laboralTask.LongDescription</textarea>
+                        </div>
+                        <div class="col-md">
+                            <label class="input-label">Instrucciones para el Asunto</label>
+                            <textarea class="form-control" rows="3" readonly>@laboralTask.AttentionInstructions</textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card rounded shadow" style="padding:8px; margin-bottom:32px;">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-shield-fill-check"></i> Agregar nueva actualizacion</h5>
+
+                @using (Html.BeginForm("AddHistoryLog", "LaboralTaskHistoryLog", FormMethod.Post, new { @class = "form needs-validation", enctype = "multipart/form-data" }))
+                {
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="input-label">Fecha del Seguimiento</label>
+                            <input type="date" class="form-control" id="Date" name="Date" required value="@(DateTime.Today.ToString("yyyy-MM-dd"))" readonly>
+                        </div>
+                        <div class="col-md">
+                            <label class="input-label">Archivo Digital</label>
+                            <input type="file" class="form-control" id="File" name="File">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="input-label">Estado</label>
+                            <select class="form-control form-select" id="Status" name="Status" required>
+                                <option value="" hidden>Selecciona una opcion</option>
+                                <option value="ATENDIDO">ATENDIDO</option>
+                                <option value="EN PROCESO">EN PROCESO</option>
+                                <option value="NO PROCEDE">NO PROCEDE</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Descripcion del Progreso</label>
+                            <textarea class="form-control" id="Description" name="Description" required></textarea>
+                        </div>
+                    </div>
+                    <div class="row visually-hidden">
+                        <div class="col-md">
+                            <input class="form-control" id="IDLaboralTask" name="IDLaboralTask" required value="@laboralTask.IDLaboralTask">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-success full-width"><i class="bi bi-upload"></i> Cargar y Guardar</button>
+                }
+
+            </div>
+        </div>
 
         <table class="table">
             <thead>
