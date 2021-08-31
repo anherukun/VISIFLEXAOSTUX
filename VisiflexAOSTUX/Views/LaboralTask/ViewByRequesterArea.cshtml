@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "Visualizacion por areas solicitantes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Dictionary<string, List<VisiflexAOSTUX.Models.LaboralTask>> laboralTasks = ViewData["LaboralTasks"] as Dictionary<string, List<VisiflexAOSTUX.Models.LaboralTask>>;
+}
+
+<div class="row">
+    <div class="col-md">
+        <h2 style="margin-bottom:32px;">Actualizaciones de asuntos</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Area de solicitante</th>
+                    <th scope="col">Centro de trabajo</th>
+                    <th scope="col">Area de atencion</th>
+                    <th scope="col">Iniciado</th>
+                    <th scope="col">Pendiente</th>
+                    <th scope="col">En proceso</th>
+                    <th scope="col">Atendido</th>
+                    <th scope="col">No procede</th>
+                    <th scope="col">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (laboralTasks.Count > 0)
+                {
+                    foreach (var key in laboralTasks)
+                    {
+                        string AREA_SOLICITANTE = key.Key; 
+                        string CENTRO_TRABAJO = ""; 
+                        string AREA_ATENCION = "";
+                        int INICIADO = 0; int PENDIENTE = 0; int EN_PROCESO = 0; int ATENDIDO = 0; int NO_PROCEDE = 0; int TOTAL = 0;
+
+                        foreach (var value in key.Value)
+                        {
+                            if (value.Status == "INICIADO")
+                            {
+                                INICIADO++;
+                            }
+                            if (value.Status == "PENDIENTE")
+                            {
+                                PENDIENTE++;
+                            }
+                            if (value.Status == "EN PROCESO")
+                            {
+                                EN_PROCESO++;
+                            }
+                            if (value.Status == "ATENDIDO")
+                            {
+                                ATENDIDO++;
+                            }
+                            if (value.Status == "NO PROCEDE")
+                            {
+                                NO_PROCEDE++;
+                            }
+
+                            TOTAL++;
+                        }
+
+                        <tr>
+                            <td>@AREA_SOLICITANTE</td>
+                            <td>@CENTRO_TRABAJO</td>
+                            <td>@AREA_ATENCION</td>
+                            <td>@INICIADO</td>
+                            <td>@PENDIENTE</td>
+                            <td>@EN_PROCESO</td>
+                            <td>@ATENDIDO</td>
+                            <td>@NO_PROCEDE</td>
+                            <td>@TOTAL</td>
+                        </tr>
+
+                        INICIADO = 0; PENDIENTE = 0; EN_PROCESO = 0; ATENDIDO = 0; NO_PROCEDE = 0; TOTAL = 0;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3">No Items detected...</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

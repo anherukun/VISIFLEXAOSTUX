@@ -30,7 +30,7 @@ namespace VisiflexAOSTUX.Services
             using (var db = new VisiflexContext())
             {
                 return db.LaboralTaskHistoryLogs.Where(x => x.IDLaboralTask == laboralTaskID)
-                    .OrderBy(x => x.UploadTicks).ToList();
+                    .OrderByDescending(x => x.UploadTicks).ToList();
             }
         }
         public static LaboralTaskHistoryLog GetLast(string laboralTaskID)

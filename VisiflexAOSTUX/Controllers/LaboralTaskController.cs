@@ -29,6 +29,13 @@ namespace VisiflexAOSTUX.Controllers
             ViewData["Response"] = response;
             return View();
         }
+        public ActionResult ViewByRequesterArea(ResponseMessage response)
+        {
+            ViewData["LaboralTasks"] = RepositoryLaboralTask.GetByRequesterArea();
+
+            ViewData["Response"] = response;
+            return View();
+        }
 
         public ActionResult NewLaboralTask(ResponseMessage response)
         {

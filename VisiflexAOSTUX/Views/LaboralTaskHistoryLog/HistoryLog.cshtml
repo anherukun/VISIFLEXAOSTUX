@@ -63,6 +63,7 @@
                                 <option value="ATENDIDO">ATENDIDO</option>
                                 <option value="EN PROCESO">EN PROCESO</option>
                                 <option value="NO PROCEDE">NO PROCEDE</option>
+                                <option value="PENDIENTE">PENDIENTE</option>
                             </select>
                         </div>
                     </div>
@@ -99,7 +100,7 @@
                     foreach (var item in historyLogs)
                     {
                         <tr>
-                            <td>@item.Date.ToShortDateString()</td>
+                            <td>@item.Date.ToString("yyyy/MM/dd")</td>
                             <td>@item.Description</td>
                             @if (item.IDHistoryLogDocumentFile != null)
                             {

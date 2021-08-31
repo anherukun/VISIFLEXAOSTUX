@@ -1717,6 +1717,7 @@
     <Content Include="Views\LaboralTask\LaboralTask.cshtml" />
     <Content Include="Views\LaboralTask\ViewAll.cshtml" />
     <Content Include="Views\LaboralTaskHistoryLog\HistoryLog.cshtml" />
+    <Content Include="Views\LaboralTask\ViewByRequesterArea.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

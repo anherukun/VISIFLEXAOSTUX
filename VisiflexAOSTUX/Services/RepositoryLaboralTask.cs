@@ -33,6 +33,23 @@ namespace VisiflexAOSTUX.Services
             }
         }
 
+        public static Dictionary<string, List<LaboralTask>> GetByRequesterArea()
+        {
+            List<string> RequesterAreas = new List<string>();
+            foreach (var item in RepositoryRequesterArea.Get())
+                RequesterAreas.Add(item.RequesterAreaID);
+
+            Dictionary<string, List<LaboralTask>> result = new Dictionary<string, List<LaboralTask>>();
+
+            using (var db = new VisiflexContext())
+            {
+                foreach (var item in RequesterAreas)
+                    result.Add(item, db.LaboralTasks.Where(x => x.IDRequesterArea == item).ToList());
+
+                return result;
+            }
+        }
+
         public static int Delete(string id)
         {
             using (var db = new VisiflexContext())

@@ -20,11 +20,17 @@ namespace VisiflexAOSTUX.Controllers
 
         public ActionResult HistoryLog(string laboralTaskID, ResponseMessage response)
         {
-            ViewData["laboralTask"] = RepositoryLaboralTask.Get(laboralTaskID);
-            ViewData["laboralTaskHystoryLog"] = RepositoryLaboralTaskHistoryLog.Get(laboralTaskID);
-            ViewData["Response"] = response;
+            string laboraltaskstatus = RepositoryLaboralTask.Get(laboralTaskID).Status;
+            if (laboraltaskstatus != "ATENDIDO" && laboraltaskstatus != "NO PROCEDE")
+            {
+                ViewData["laboralTask"] = RepositoryLaboralTask.Get(laboralTaskID);
+                ViewData["laboralTaskHystoryLog"] = RepositoryLaboralTaskHistoryLog.Get(laboralTaskID);
+                ViewData["Response"] = response;
 
-            return View();
+                return View();
+            }
+
+            return Redirect(Url.Action("ViewAll", "LaboralTask", new ResponseMessage() { Message = "Este asunto ya fue concluido", Type = ResponseType.ERROR }));
         }
 
         [HttpPost] public ActionResult AddHistoryLog(LaboralTaskHistoryLog historyLog, HttpPostedFileBase File, string Status)
@@ -37,8 +43,17 @@ namespace VisiflexAOSTUX.Controllers
                     IDLaboralTaskHistoryLog = ApplicationManager.GenerateGUID,
                     IDLaboralTask = historyLog.IDLaboralTask,
                     Date = historyLog.Date,
-                    Description = historyLog.Description,
+                    Description = historyLog.Description.Trim().ToUpper(),
                     UploadTicks = ticks
+                };
+
+                LaboralTaskHistoryLog statuslog = new LaboralTaskHistoryLog()
+                {
+                    IDLaboralTaskHistoryLog = ApplicationManager.GenerateGUID,
+                    IDLaboralTask = historyLog.IDLaboralTask,
+                    Date = historyLog.Date,
+                    Description = $"[SYSTEM-LOG] EL ESTADO DEL ASUNTO CAMBIO A: {Status}",
+                    UploadTicks = DateTime.Now.Ticks
                 };
 
                 if (File != null)
@@ -61,6 +76,9 @@ namespace VisiflexAOSTUX.Controllers
                         if (RepositoryLaboralTaskHistoryLog.Add(log) > 0)
                         {
                             LaboralTask laboralTask = RepositoryLaboralTask.Get(log.IDLaboralTask);
+                            if (laboralTask.Status != Status)
+                                RepositoryLaboralTaskHistoryLog.Add(statuslog);
+
                             laboralTask.Status = Status;
 
                             RepositoryLaboralTask.Add(laboralTask);
@@ -90,6 +108,9 @@ namespace VisiflexAOSTUX.Controllers
                     if (RepositoryLaboralTaskHistoryLog.Add(log) > 0)
                     {
                         LaboralTask laboralTask = RepositoryLaboralTask.Get(log.IDLaboralTask);
+                        if (laboralTask.Status != Status)
+                            RepositoryLaboralTaskHistoryLog.Add(statuslog);
+
                         laboralTask.Status = Status;
 
                         RepositoryLaboralTask.Add(laboralTask);
