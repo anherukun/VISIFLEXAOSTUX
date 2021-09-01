@@ -15,7 +15,6 @@
                 <tr>
                     <th scope="col">Area de solicitante</th>
                     <th scope="col">Centro de trabajo</th>
-                    <th scope="col">Area de atencion</th>
                     <th scope="col">Iniciado</th>
                     <th scope="col">Pendiente</th>
                     <th scope="col">En proceso</th>
@@ -29,50 +28,56 @@
                 {
                     foreach (var key in laboralTasks)
                     {
-                        string AREA_SOLICITANTE = key.Key; 
-                        string CENTRO_TRABAJO = ""; 
+                        string AREA_SOLICITANTE = "";
+                        string CENTRO_TRABAJO = "";
                         string AREA_ATENCION = "";
                         int INICIADO = 0; int PENDIENTE = 0; int EN_PROCESO = 0; int ATENDIDO = 0; int NO_PROCEDE = 0; int TOTAL = 0;
 
-                        foreach (var value in key.Value)
+                        if (key.Value.Count > 0)
                         {
-                            if (value.Status == "INICIADO")
+                            AREA_SOLICITANTE = key.Value[0].IDRequesterArea;
+                            CENTRO_TRABAJO = key.Value[0].IDWorkplace;
+                            AREA_ATENCION = "";
+
+                            foreach (var value in key.Value)
                             {
-                                INICIADO++;
-                            }
-                            if (value.Status == "PENDIENTE")
-                            {
-                                PENDIENTE++;
-                            }
-                            if (value.Status == "EN PROCESO")
-                            {
-                                EN_PROCESO++;
-                            }
-                            if (value.Status == "ATENDIDO")
-                            {
-                                ATENDIDO++;
-                            }
-                            if (value.Status == "NO PROCEDE")
-                            {
-                                NO_PROCEDE++;
+                                if (value.Status == "INICIADO")
+                                {
+                                    INICIADO++;
+                                }
+                                if (value.Status == "PENDIENTE")
+                                {
+                                    PENDIENTE++;
+                                }
+                                if (value.Status == "EN PROCESO")
+                                {
+                                    EN_PROCESO++;
+                                }
+                                if (value.Status == "ATENDIDO")
+                                {
+                                    ATENDIDO++;
+                                }
+                                if (value.Status == "NO PROCEDE")
+                                {
+                                    NO_PROCEDE++;
+                                }
+
+                                TOTAL++;
                             }
 
-                            TOTAL++;
+                            <tr>
+                                <td>@VisiflexAOSTUX.Services.RepositoryRequesterArea.Get(AREA_SOLICITANTE).Name</td>
+                                <td>@VisiflexAOSTUX.Services.RepositoryWorkplace.Get(CENTRO_TRABAJO).Name</td>
+                                <td>@INICIADO</td>
+                                <td>@PENDIENTE</td>
+                                <td>@EN_PROCESO</td>
+                                <td>@ATENDIDO</td>
+                                <td>@NO_PROCEDE</td>
+                                <td>@TOTAL</td>
+                            </tr>
+
+                            INICIADO = 0; PENDIENTE = 0; EN_PROCESO = 0; ATENDIDO = 0; NO_PROCEDE = 0; TOTAL = 0;
                         }
-
-                        <tr>
-                            <td>@AREA_SOLICITANTE</td>
-                            <td>@CENTRO_TRABAJO</td>
-                            <td>@AREA_ATENCION</td>
-                            <td>@INICIADO</td>
-                            <td>@PENDIENTE</td>
-                            <td>@EN_PROCESO</td>
-                            <td>@ATENDIDO</td>
-                            <td>@NO_PROCEDE</td>
-                            <td>@TOTAL</td>
-                        </tr>
-
-                        INICIADO = 0; PENDIENTE = 0; EN_PROCESO = 0; ATENDIDO = 0; NO_PROCEDE = 0; TOTAL = 0;
                     }
                 }
                 else
