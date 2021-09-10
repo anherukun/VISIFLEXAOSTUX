@@ -33,6 +33,17 @@ namespace VisiflexAOSTUX.Services
             }
         }
 
+        public static int GetNextCount()
+        {
+            using (var db = new VisiflexContext())
+            {
+                if (db.LaboralTasks.Count() == 0)
+                    return 1;
+                else
+                    return db.LaboralTasks.Last().Count + 1;
+            }
+        }
+
         public static Dictionary<string, List<LaboralTask>> GetByRequesterArea()
         {
             List<string> RequesterAreas = new List<string>();

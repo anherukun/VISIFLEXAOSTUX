@@ -11,10 +11,10 @@ namespace VisiflexAOSTUX.Models
     {
         [Key] public string IDLaboralTask { get; set; }
         [Required] public string DocumentID { get; set; }
-        public DateTime ReceptionDate { get; set; }
-        public DateTime DocumentDate { get; set; }
-        public DateTime CommitmentDate { get; set; }
-        public long UploadTicks { get; set; }
+        [Required] public DateTime ReceptionDate { get; set; }
+        [Required] public DateTime DocumentDate { get; set; }
+        [Required] public DateTime CommitmentDate { get; set; }
+        [Required] public long UploadTicks { get; set; }
         [ForeignKey("IDDocumentFile")] public DocumentFile DocumentFile { get; set; }
         [ForeignKey("IDAttentionArea")] public AttentionArea AttentionArea { get; set; }
         [ForeignKey("IDRequesterArea")] public RequesterArea RequesterArea { get; set; }
@@ -22,15 +22,16 @@ namespace VisiflexAOSTUX.Models
         [ForeignKey("IDAgent")] public Agent Agent { get; set; }
         public List<LaboralTaskHistoryLog> LaboralTaskHistoryLogs { get; set; }
         public string IDDocumentFile { get; set; }
-        public string IDAttentionArea { get; set; }
-        public string IDRequesterArea { get; set; }
-        public string IDWorkplace { get; set; }
-        public string IDAgent { get; set; }
-        public string Subjet { get; set; }
-        public string LongDescription { get; set; }
-        public string AttentionInstructions { get; set; }
-        public string Observations { get; set; }
-        public string Status { get; set; }
+        [Required] public string IDAttentionArea { get; set; }
+        [Required] public string IDRequesterArea { get; set; }
+        [Required] public string IDWorkplace { get; set; }
+        [Required] public string IDAgent { get; set; }
+        [Required] public string Subjet { get; set; }
+        [Required] public string LongDescription { get; set; }
+        [Required] public string AttentionInstructions { get; set; }
+        [Required] public string Observations { get; set; }
+        [Required] public string Status { get; set; }
         public int Progress { get; set; }
+        [Required] public int Count { get; set; }
     }
 }

@@ -49,7 +49,7 @@ namespace VisiflexAOSTUX.Controllers
 
         public ActionResult AddLaboralTask(LaboralTask laboralTask, HttpPostedFileBase File)
         {
-            if (File != null && laboralTask != null)
+            if (laboralTask != null)
             {
                 long submittionticks = DateTime.Now.Ticks;
                 LaboralTask l = new LaboralTask()
@@ -69,46 +69,66 @@ namespace VisiflexAOSTUX.Controllers
                     Subjet = laboralTask.Subjet.Trim().ToUpper(),
                     Status = "INICIADO",
                     UploadTicks = submittionticks,
-                    Progress = 0
+                    Progress = 0,
+                    Count = RepositoryLaboralTask.GetNextCount()
                 };
 
-                DocumentFile d = new DocumentFile()
+                if (File != null)
                 {
-                    DocumentFileID = ApplicationManager.GenerateGUID,
-                    LaboralTaskID = l.IDLaboralTask,
-                    Size = File.ContentLength,
-                    Mime = File.ContentType,
-                    Name = File.FileName,
-                    UploadTicks = submittionticks,
-                    Data = ApplicationManager.Compress(new BinaryReader(File.InputStream).ReadBytes(File.ContentLength))
-                };
-
-                if (RepositoryDocumentFile.Add(d) > 0)
-                {
-                    l.IDDocumentFile = d.DocumentFileID;
-
-                    if (RepositoryLaboralTask.Add(l) > 0)
+                    DocumentFile d = new DocumentFile()
                     {
-                        LaboralTaskHistoryLog log = new LaboralTaskHistoryLog()
+                        DocumentFileID = ApplicationManager.GenerateGUID,
+                        LaboralTaskID = l.IDLaboralTask,
+                        Size = File.ContentLength,
+                        Mime = File.ContentType,
+                        Name = File.FileName,
+                        UploadTicks = submittionticks,
+                        Data = ApplicationManager.Compress(new BinaryReader(File.InputStream).ReadBytes(File.ContentLength))
+                    };
+
+                    if (RepositoryDocumentFile.Add(d) > 0)
+                    {
+                        l.IDDocumentFile = d.DocumentFileID;
+
+                        if (RepositoryLaboralTask.Add(l) > 0)
                         {
-                            IDLaboralTaskHistoryLog = ApplicationManager.GenerateGUID,
-                            IDLaboralTask = l.IDLaboralTask,
-                            Description = "DOCUMENTACION RECIBIDA, EN ESPERA DE SU ATENCION POR SU ESPECIALISTA",
-                            Date = DateTime.Now,
-                            UploadTicks = submittionticks
-                        };
-                        if (RepositoryLaboralTaskHistoryLog.Add(log) > 0)
-                            return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente: Actualizacion de asunto registrada", Type = ResponseType.SUCCESS }));
+                            LaboralTaskHistoryLog log = new LaboralTaskHistoryLog()
+                            {
+                                IDLaboralTaskHistoryLog = ApplicationManager.GenerateGUID,
+                                IDLaboralTask = l.IDLaboralTask,
+                                Description = "DOCUMENTACION RECIBIDA, EN ESPERA DE SU ATENCION POR SU ESPECIALISTA",
+                                Date = DateTime.Now,
+                                UploadTicks = submittionticks
+                            };
+                            if (RepositoryLaboralTaskHistoryLog.Add(log) > 0)
+                                return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente: Actualizacion de asunto registrada", Type = ResponseType.SUCCESS }));
+                            else
+                                return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente", Type = ResponseType.SUCCESS }));
+                        }
                         else
-                            return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente", Type = ResponseType.SUCCESS }));
+                        {
+                            if (RepositoryDocumentFile.Delete(d.DocumentFileID) > 1)
+                                return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "No se pudo procesar solicitud, Archivo eliminado", Type = ResponseType.ERROR }));
+                            else
+                                return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "No se pudo procesar solicitud, Archivo no eliminado", Type = ResponseType.ERROR }));
+                        }
                     }
-                    else
+                }
+                else if (RepositoryLaboralTask.Add(l) > 0)
+                {
+                    LaboralTaskHistoryLog log = new LaboralTaskHistoryLog()
                     {
-                        if (RepositoryDocumentFile.Delete(d.DocumentFileID) > 1)
-                            return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "No se pudo procesar solicitud, Archivo eliminado", Type = ResponseType.ERROR }));
-                        else
-                            return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "No se pudo procesar solicitud, Archivo no eliminado", Type = ResponseType.ERROR }));
-                    }
+                        IDLaboralTaskHistoryLog = ApplicationManager.GenerateGUID,
+                        IDLaboralTask = l.IDLaboralTask,
+                        Description = "DOCUMENTACION RECIBIDA, EN ESPERA DE SU ATENCION POR SU ESPECIALISTA",
+                        Date = DateTime.Now,
+                        UploadTicks = submittionticks
+                    };
+
+                    if (RepositoryLaboralTaskHistoryLog.Add(log) > 0)
+                        return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente: Actualizacion de asunto registrada", Type = ResponseType.SUCCESS }));
+                    else
+                        return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente", Type = ResponseType.SUCCESS }));
                 }
             }
             return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "No se pudo procesar solicitud, falta informacion o archivo digital", Type = ResponseType.ERROR }));
