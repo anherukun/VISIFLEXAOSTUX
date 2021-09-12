@@ -28,7 +28,7 @@
                     for (int i = 0; i < laboralTasks.Count; i++)
                     {
                         <tr>
-                            <td>@(i + 1)</td>
+                            <td>@laboralTasks[i].Count</td>
                             <td>@VisiflexAOSTUX.Services.RepositoryAttentionArea.Get(laboralTasks[i].IDAttentionArea).Name</td>
                             <td>@laboralTasks[i].Subjet</td>
                             <td>@laboralTasks[i].Status</td>

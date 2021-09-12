@@ -23,15 +23,37 @@ namespace VisiflexAOSTUX.Controllers
             return View();
         }
 
-        public ActionResult ViewAll(ResponseMessage response)
+        public ActionResult ViewAll(string status, string idrequesterarea, string idattentionarea, string idworkplace, ResponseMessage response)
         {
-            ViewData["LaboralTasks"] = RepositoryLaboralTask.Get();
+            if (status != null && idattentionarea != null && idworkplace != null)
+            {
+                ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status == status && x.IDAttentionArea == idattentionarea && x.IDWorkplace == idworkplace);
+            }
+            if (status != null && idrequesterarea != null && idworkplace != null)
+            {
+                ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status == status && x.IDRequesterArea == idrequesterarea && x.IDWorkplace == idworkplace);
+            }
+            else if (idattentionarea != null && idworkplace != null)
+            {
+                ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.IDAttentionArea == idattentionarea && x.IDWorkplace == idworkplace);
+            }
+            else
+            {
+                ViewData["LaboralTasks"] = RepositoryLaboralTask.Get();
+            }
             ViewData["Response"] = response;
             return View();
         }
         public ActionResult ViewByRequesterArea(ResponseMessage response)
         {
             ViewData["LaboralTasks"] = RepositoryLaboralTask.GetByRequesterArea();
+
+            ViewData["Response"] = response;
+            return View();
+        }
+        public ActionResult ViewByAttentionArea(ResponseMessage response)
+        {
+            ViewData["LaboralTasks"] = RepositoryLaboralTask.GetByAttentionArea();
 
             ViewData["Response"] = response;
             return View();

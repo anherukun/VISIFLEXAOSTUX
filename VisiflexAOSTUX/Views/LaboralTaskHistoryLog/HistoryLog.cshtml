@@ -13,7 +13,7 @@
 
         <div class="card rounded shadow" style="padding:8px; margin-bottom:32px;">
             <div class="card-body">
-                <h5 class="card-title"><i class="bi bi-shield-fill-check"></i> Detalle del asunto</h5>
+                <h5 class="card-title"><i class="bi bi-archive-fill"></i> Detalle del asunto</h5>
                 <p class="card-text">Actualiza con un nuevo evento el historial del @laboralTask.Subjet.ToLowerInvariant()</p>
 
                 <form class="form">
@@ -26,14 +26,14 @@
                             <label class="input-label">Estado</label>
                             <input type="text" class="form-control" readonly value="@laboralTask.Status">
                         </div>
-                        <div class="col-md">
+                        <div class="col-md" style="display:flex;">
                             @if (laboralTask.IDDocumentFile != null)
                             {
-                                <a class="btn btn-outline-primary full-width" href="#">Ver documento</a>
+                                <a class="btn btn-outline-primary full-width" style="align-self:flex-end;" target="_blank" href="@Url.Action("ViewLaboralTaskDocumentFile", "File", new { DocumentFileID = laboralTask.IDDocumentFile })">Ver documento</a>
                             }
                             else
                             {
-                                <a class="btn btn-outline-primary disabled full-width" href="#">Ver documento</a>
+                                <a class="btn btn-outline-primary disabled full-width" style="align-self:flex-end;" href="#">Ver documento</a>
                             }
                         </div>
                     </div>
@@ -53,7 +53,7 @@
 
         <div class="card rounded shadow" style="padding:8px; margin-bottom:32px;">
             <div class="card-body">
-                <h5 class="card-title"><i class="bi bi-shield-fill-check"></i> Agregar nueva actualizacion</h5>
+                <h5 class="card-title"><i class="bi bi-plus-circle-fill"></i> Agregar nueva actualizacion</h5>
 
                 @using (Html.BeginForm("AddHistoryLog", "LaboralTaskHistoryLog", FormMethod.Post, new { @class = "form needs-validation", enctype = "multipart/form-data" }))
                 {
@@ -64,7 +64,7 @@
                         </div>
                         <div class="col-md">
                             <label class="input-label">Archivo Digital</label>
-                            <input type="file" class="form-control" id="File" name="File">
+                            <input type="file" class="form-control" id="File" name="File" accept=".xls,.xlsx,.doc,.docx,.pdf,.jpeg,.png">
                         </div>
                         <div class="col-md-3">
                             <label class="input-label">Estado</label>
@@ -115,13 +115,13 @@
                             @if (item.IDHistoryLogDocumentFile != null)
                             {
                                 <td>
-                                    <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("", "", new { id = "", c = "System", a = "Settings" })">Descargar</a>
+                                    <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("", "", new { id = "", c = "System", a = "Settings" })">Ver documento</a>
                                 </td>
                             }
                             else
                             {
                                 <td>
-                                    <a class="btn btn-sm btn-outline-primary full-width disabled" href="#">Descargar</a>
+                                    <a class="btn btn-sm btn-outline-primary full-width disabled" href="#">Ver documento</a>
                                 </td>
                             }
                         </tr>

@@ -20,17 +20,22 @@ namespace VisiflexAOSTUX.Controllers
 
         public ActionResult HistoryLog(string laboralTaskID, ResponseMessage response)
         {
-            string laboraltaskstatus = RepositoryLaboralTask.Get(laboralTaskID).Status;
-            if (laboraltaskstatus != "ATENDIDO" && laboraltaskstatus != "NO PROCEDE")
+            if (laboralTaskID != null)
             {
-                ViewData["laboralTask"] = RepositoryLaboralTask.Get(laboralTaskID);
-                ViewData["laboralTaskHystoryLog"] = RepositoryLaboralTaskHistoryLog.Get(laboralTaskID);
-                ViewData["Response"] = response;
+                string laboraltaskstatus = RepositoryLaboralTask.Get(laboralTaskID).Status;
+                if (laboraltaskstatus != "ATENDIDO" && laboraltaskstatus != "NO PROCEDE")
+                {
+                    ViewData["laboralTask"] = RepositoryLaboralTask.Get(laboralTaskID);
+                    ViewData["laboralTaskHystoryLog"] = RepositoryLaboralTaskHistoryLog.Get(laboralTaskID);
+                    ViewData["Response"] = response;
 
-                return View();
+                    return View();
+                }
+
+                return Redirect(Url.Action("ViewAll", "LaboralTask", new ResponseMessage() { Message = "Este asunto ya fue concluido", Type = ResponseType.ERROR }));
             }
 
-            return Redirect(Url.Action("ViewAll", "LaboralTask", new ResponseMessage() { Message = "Este asunto ya fue concluido", Type = ResponseType.ERROR }));
+            return Redirect(Url.Action("ViewAll", "LaboralTask", new ResponseMessage() { Message = "El ID del asunto no existe o esta perdido", Type = ResponseType.ERROR }));
         }
 
         [HttpPost] public ActionResult AddHistoryLog(LaboralTaskHistoryLog historyLog, HttpPostedFileBase File, string Status)

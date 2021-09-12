@@ -34,12 +34,13 @@
     </div>
     <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
         <div class="card-body">
-            <h5 class="card-title">Consultas de asuntos</h5>
-            <p class="card-text">Buscar, explorar y filtrar los asuntos de la agenda laboral</p>
+            <h5 class="card-title">Contadores de asuntos</h5>
+            <p class="card-text">Revisa las contablizaciones de los asuntos por sus estados de atencion</p>
         </div>
         <div class="card-body card-button-full">
-            <div>
-                <a class="btn btn-outline-primary" style="width:100%;" href="#">Haz clic aqui</a>
+            <div class="btn-group">
+                <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewByRequesterArea","LaboralTask")">Por areas solicitantes</a>
+                <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewByAttentionArea","LaboralTask")">Por areas de atencion</a>
             </div>
         </div>
     </div>

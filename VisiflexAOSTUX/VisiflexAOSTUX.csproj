@@ -143,6 +143,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AgentController.cs" />
     <Compile Include="Controllers\AttentionAreaController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LaboralTaskController.cs" />
     <Compile Include="Controllers\LaboralTaskHistoryLogController.cs" />
@@ -1719,6 +1720,8 @@
     <Content Include="Views\LaboralTask\ViewAll.cshtml" />
     <Content Include="Views\LaboralTaskHistoryLog\HistoryLog.cshtml" />
     <Content Include="Views\LaboralTask\ViewByRequesterArea.cshtml" />
+    <Content Include="Views\File\ViewLaboralTaskDocumentFile.cshtml" />
+    <Content Include="Views\LaboralTask\ViewByAttentionArea.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

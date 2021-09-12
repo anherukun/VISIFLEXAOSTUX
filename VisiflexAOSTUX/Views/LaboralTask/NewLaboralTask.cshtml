@@ -48,7 +48,7 @@
                     <div class="row">
                         <div class="col-md">
                             <label class="input-label">Archivo Digital</label>
-                            <input type="file" class="form-control" id="File" name="File">
+                            <input type="file" class="form-control" id="File" name="File" accept=".doc,.docx,.pdf,.jpeg,.png">
                         </div>
                     </div>
                     <div class="row">
@@ -57,7 +57,7 @@
                             <select class="form-select" id="IDAttentionArea" name="IDAttentionArea" required>
                                 @foreach (var item in attentionAreas)
                                 {
-                                    <option hidden selected>Selecciona una opcion</option>
+                                    <option value="" hidden selected>Selecciona una opcion</option>
                                     <option value="@item.AttentionAreaID">[@item.AreaCode] - @item.Name</option>
                                 }
                             </select>
@@ -67,7 +67,7 @@
                             <select class="form-select" id="IDRequesterArea" name="IDRequesterArea" required>
                                 @foreach (var item in requesterAreas)
                                 {
-                                    <option hidden selected>Selecciona una opcion</option>
+                                    <option value="" hidden selected>Selecciona una opcion</option>
                                     <option value="@item.RequesterAreaID">@item.Name</option>
                                 }
                             </select>
@@ -79,7 +79,7 @@
                             <select class="form-select" id="IDWorkplace" name="IDWorkplace" required>
                                 @foreach (var item in workplaces)
                                 {
-                                    <option hidden selected>Selecciona una opcion</option>
+                                    <option value="" hidden selected>Selecciona una opcion</option>
                                     <option value="@item.WorkplaceID">[@item.WorkplaceCode] - @item.Name</option>
                                 }
                             </select>
@@ -122,7 +122,7 @@
                             <select class="form-select" id="IDAgent" name="IDAgent" required>
                                 @foreach (var item in agents)
                                 {
-                                    <option hidden selected>Selecciona una opcion</option>
+                                    <option value="" hidden selected>Selecciona una opcion</option>
                                     <option value="@item.AgentID">[@item.AgentCode] - @item.Name</option>
                                 }
                             </select>
