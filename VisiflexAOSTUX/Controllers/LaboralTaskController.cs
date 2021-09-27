@@ -29,13 +29,17 @@ namespace VisiflexAOSTUX.Controllers
             {
                 ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status == status && x.IDAttentionArea == idattentionarea && x.IDWorkplace == idworkplace);
             }
-            if (status != null && idrequesterarea != null && idworkplace != null)
+            else if (status != null && idrequesterarea != null && idworkplace != null)
             {
                 ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status == status && x.IDRequesterArea == idrequesterarea && x.IDWorkplace == idworkplace);
             }
             else if (idattentionarea != null && idworkplace != null)
             {
                 ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.IDAttentionArea == idattentionarea && x.IDWorkplace == idworkplace);
+            }
+            else if (idrequesterarea != null && idworkplace != null)
+            {
+                ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.IDRequesterArea == idrequesterarea && x.IDWorkplace == idworkplace);
             }
             else
             {

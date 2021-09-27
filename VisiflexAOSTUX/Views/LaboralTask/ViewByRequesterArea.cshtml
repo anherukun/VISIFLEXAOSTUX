@@ -14,7 +14,7 @@
             <thead>
                 <tr>
                     <th scope="col"></th>
-                    <th scope="col">Area de atencion</th>
+                    <th scope="col">Area solicitante</th>
                     <th scope="col">Iniciado</th>
                     <th scope="col">Pendiente</th>
                     <th scope="col">En proceso</th>
@@ -77,7 +77,7 @@
                                     <td><a class="btn btn-outline-dark btn-sm" target="_blank" href="@Url.Action("ViewAll", "LaboralTask", new { status = "EN PROCESO", idrequesterarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@EN_PROCESO</a></td>
                                     <td><a class="btn btn-outline-dark btn-sm" target="_blank" href="@Url.Action("ViewAll", "LaboralTask", new { status = "ATENDIDO", idrequesterarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@ATENDIDO</a></td>
                                     <td><a class="btn btn-outline-dark btn-sm" target="_blank" href="@Url.Action("ViewAll", "LaboralTask", new { status = "NO PROCEDE", idrequesterarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@NO_PROCEDE</a></td>
-                                    <td><a class="btn btn-outline-dark btn-sm" target="_blank" href="@Url.Action("ViewAll", "LaboralTask", new { idattentionarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@TOTAL</a></td>
+                                    <td><a class="btn btn-outline-dark btn-sm" target="_blank" href="@Url.Action("ViewAll", "LaboralTask", new { idrequesterarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@TOTAL</a></td>
                                 </tr>
 
                                 INICIADO = 0; PENDIENTE = 0; EN_PROCESO = 0; ATENDIDO = 0; NO_PROCEDE = 0; TOTAL = 0;
