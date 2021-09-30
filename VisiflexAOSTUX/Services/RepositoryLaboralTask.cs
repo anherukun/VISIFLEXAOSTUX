@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
@@ -36,7 +37,13 @@ namespace VisiflexAOSTUX.Services
         {
             using (var db = new VisiflexContext())
             {
-                return db.LaboralTasks.Where(x => x.IDLaboralTask == id).FirstOrDefault();
+                return db.LaboralTasks.Where(x => x.IDLaboralTask == id)
+                    .Include(x => x.LaboralTaskHistoryLogs)
+                    .Include(x => x.AttentionArea)
+                    .Include(x => x.RequesterArea)
+                    .Include(x => x.Workplace)
+                    .Include(x => x.Agent)
+                    .FirstOrDefault();
             }
         }
 

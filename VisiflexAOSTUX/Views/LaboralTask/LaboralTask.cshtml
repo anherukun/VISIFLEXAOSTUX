@@ -2,85 +2,180 @@
 @{
     VisiflexAOSTUX.Models.LaboralTask laboralTask = ViewData["laboralTask"] as VisiflexAOSTUX.Models.LaboralTask;
 
-    ViewBag.Title = $"Asunto Laboral: {laboralTask.Subjet}";
+    ViewBag.Title = $"Informe detallado del asunto laboral";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
-
 <div class="row">
-    <div class="col-md-3 card rounded shadow text-center" style="padding:8px; height:200px;">
-        <div class="card-body">
-            <h5 class="card-title">Accesos rapidos</h5>
-        </div>
-        <div class="card-body card-button-full">
-            <div>
-                <a class="btn btn-outline-primary" style="width:100%;" href="#">Haz clic aqui</a>
-            </div>
-        </div>
-    </div>
+    <div class="col-md">
+        <h2 style="margin-bottom:32px;">@ViewBag.Title</h2>
 
-    <div class="offset-md-1 col-md">
-        <h2 style="margin-bottom:32px;">Actualizaciones de asuntos</h2>
-        <div class="card rounded shadow" style="padding:8px;">
+        <div class="card rounded shadow" style="padding:8px; margin-bottom:32px;">
             <div class="card-body">
-                <h5 class="card-title">Informacion del asunto</h5>
-                <p class="card-text">¿Necesitas visualizar los estados de la agenda laboral y/o capturar los progresos de los asuntos?</p>
+                <h5 class="card-title"><i class="bi bi-archive-fill"></i> Detalle del asunto</h5>
 
-                @using (Html.BeginForm("AddLaboralTask", "LaboralTask", FormMethod.Post, new { @class = "form needs-validation", enctype = "multipart/form-data" }))
-                {
-                    <div class="row">
-                        <div class="col-md">
-                            <label class="input-label">Fecha de Recepcion</label>
-                            <input type="date" class="form-control" id="ReceptionDate" name="ReceptionDate" placeholder="01/01/2021" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md">
-                            <label class="input-label">Documento No.</label>
-                            <input type="text" class="form-control" id="DocumentID" name="DocumentID" placeholder="Numero del documento" required>
-                        </div>
-                        <div class="col-md">
-                            <label class="input-label">Fecha del Documento</label>
-                            <input type="date" class="form-control" id="DocumentDate" name="DocumentDate" placeholder="Fecha del documento" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md">
-                            <label class="input-label">Archivo Digital</label>
-                            <input type="file" class="form-control" id="File" name="File" required>
-                        </div>
-                    </div>
-                    
+                <form class="form">
                     <div class="row">
                         <div class="col-md">
                             <label class="input-label">Asunto</label>
-                            <input type="text" class="form-control" id="Subjet" name="Subjet" placeholder="Asunto" required>
+                            <input type="text" class="form-control" readonly value="@laboralTask.Subjet">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="input-label">Numero de Seguimiento</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.Count">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="input-label">Fecha Recepcion</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.ReceptionDate.ToString("dd/MM/yyyy").ToUpper()">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="input-label">Estado</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.Status">
+                        </div>
+                        <div class="col-md-3 offset-md-3">
+                            <label class="input-label">Fecha Compromiso</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.CommitmentDate.ToString("dd/MM/yyyy").ToUpper()">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="input-label">Numero de Documento</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.DocumentID">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="input-label">Fecha del Documento</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.DocumentDate.ToString("dd/MM/yyyy").ToUpper()">
+                        </div>
+                        <div class="col-md d-print-none">
+                            <label class="input-label">Archivo Digital</label>
+                            @if (laboralTask.IDDocumentFile != null)
+                            {
+                                <a class="btn btn-outline-primary full-width" style="align-self:flex-end;" target="_blank" href="@Url.Action("ViewLaboralTaskDocumentFile", "File", new { DocumentFileID = laboralTask.IDDocumentFile })">Ver documento</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-outline-primary disabled full-width" style="align-self:flex-end;" href="#">No disponible</a>
+                            }
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md">
-                            <label class="input-label">Descripcion Larga</label>
-                            <textarea class="form-control" rows="4" id="LongDescription" name="LongDescription" placeholder="Anota la descripcion aqui" required></textarea>
+                            <label class="input-label">Descripcion de Asunto</label>
+                            <textarea class="form-control" rows="3" readonly>@laboralTask.LongDescription</textarea>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md">
-                            <label class="input-label">Instrucciones para la Atencion</label>
-                            <textarea class="form-control" rows="4" id="AttentionInstructions" name="AttentionInstructions" placeholder="Anota las instrucciones aqui" required></textarea>
+                            <label class="input-label">Instrucciones para el Asunto</label>
+                            <textarea class="form-control" rows="3" readonly>@laboralTask.AttentionInstructions</textarea>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md">
-                            <label class="input-label">Observaciones a Considerar para la Gestion del Asunto</label>
-                            <textarea class="form-control" rows="4" id="Observations" name="Observations" placeholder="Anota las observaciones aqui" required></textarea>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-outline-success full-width">Cargar y Guardar</button>
-                }
-
+                </form>
             </div>
+        </div>
+
+        <div class="card rounded shadow" style="padding:8px; margin-bottom:32px;">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-pin-map-fill"></i> Informacion de localidad</h5>
+
+                <form class="form">
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Centro de Trabajo</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.Workplace.Name">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="input-label">Clave</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.Workplace.WorkplaceCode">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Area de Atencion</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.AttentionArea.Name">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="input-label">Clave</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.AttentionArea.AreaCode">
+                        </div>
+                        <div class="col-md">
+                            <label class="input-label">Agente</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.Agent.Name">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="input-label">Ficha</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.Agent.AgentCode">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Area Solicitante</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.RequesterArea.Name">
+                        </div>
+                    </div>
+
+                    <div class="row d-print-none">
+                        <div class="col-md-6">
+                            <label class="input-label">Acciones</label>
+                            @if (laboralTask.Status != "NO PROCEDE" && laboralTask.Status != "ATENDIDO")
+                            {
+                                <a class="btn btn-outline-primary full-width" style="align-self:flex-end;" href="@Url.Action("HistoryLog", "LaboralTaskHistoryLog", new { laboralTaskID = laboralTask.IDLaboralTask })">Actualizacion de seguimiento</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-outline-primary disabled full-width" style="align-self:flex-end;" href="#">Actualizacion de seguimiento</a>
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div style="padding:8px; margin-bottom:32px;">
+            <h5 class=""><i class="bi bi-info-circle-fill"></i> Actualizacion de seguimiento</h5>
+            <p class="">A continuacion podras observar las actualizaciones documentadas por el especialista</p>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Fecha de seguimiento</th>
+                        <th scope="col">Detalle del seguimiento</th>
+                        <th scope="col" class="d-print-none">Archivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @if (laboralTask.LaboralTaskHistoryLogs.Count > 0)
+                    {
+                        foreach (var item in laboralTask.LaboralTaskHistoryLogs.OrderByDescending(x => x.UploadTicks))
+                        {
+                            DateTime dt = new DateTime(item.UploadTicks);
+                            <tr>
+                                <td>@dt.ToString("[HH:mm:ss] dd-MM-yyyy") </td>
+                                <td>@item.Description</td>
+                                @if (item.IDHistoryLogDocumentFile != null)
+                                {
+                                    <td class="d-print-none">
+                                        <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("", "", new { id = "", c = "System", a = "Settings" })">Ver documento</a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="d-print-none">
+                                        <a class="btn btn-sm btn-outline-primary full-width disabled" href="#">No disponible</a>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3">No Items detected...</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

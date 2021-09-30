@@ -20,6 +20,7 @@ namespace VisiflexAOSTUX.Controllers
 
         public ActionResult LaboralTask(string laboralTaskID)
         {
+            ViewData["LaboralTask"] = RepositoryLaboralTask.Get(laboralTaskID);
             return View();
         }
 
@@ -43,7 +44,7 @@ namespace VisiflexAOSTUX.Controllers
             }
             else
             {
-                ViewData["LaboralTasks"] = RepositoryLaboralTask.Get();
+                ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status != "NO PROCEDE" && x.Status != "ATENDIDO");
             }
             ViewData["Response"] = response;
             return View();

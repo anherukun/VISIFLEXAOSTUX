@@ -38,11 +38,11 @@
                             <td>
                                 @if (laboralTasks[i].Status == "NO PROCEDE" || laboralTasks[i].Status == "ATENDIDO")
                                 {
-                                    <a class="btn btn-sm btn-outline-primary full-width" href="#">Asunto</a>
+                                    <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("LaboralTask", "LaboralTask", new { laboralTaskID = laboralTasks[i].IDLaboralTask })">Asunto</a>
                                 } else
                                 {
                                     <div class="btn-group full-width" role="group" aria-label="Basic example">
-                                        <a class="btn btn-sm btn-outline-primary full-width" href="#">Asunto</a>
+                                        <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("LaboralTask", "LaboralTask", new { laboralTaskID = laboralTasks[i].IDLaboralTask })">Asunto</a>
                                         <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("HistoryLog", "LaboralTaskHistoryLog", new { laboralTaskID = laboralTasks[i].IDLaboralTask })">Seguimiento</a>
                                     </div>
                                 }
