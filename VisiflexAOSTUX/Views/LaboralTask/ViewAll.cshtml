@@ -19,7 +19,7 @@
                     <th scope="col">Avance</th>
                     <th scope="col" style="width: 180px;">Fecha de seguimiento</th>
                     <th scope="col" style="width: 180px;">Fecha compromiso</th>
-                    <th scope="col">Actualizar</th>
+                    <th scope="col">Ir a</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,10 +36,16 @@
                             <td>@VisiflexAOSTUX.Services.RepositoryLaboralTaskHistoryLog.GetLast(laboralTasks[i].IDLaboralTask).Date.ToShortDateString()</td>
                             <td>@laboralTasks[i].CommitmentDate.ToShortDateString()</td>
                             <td>
-                                <div class="btn-group full-width" role="group" aria-label="Basic example">
+                                @if (laboralTasks[i].Status == "NO PROCEDE" || laboralTasks[i].Status == "ATENDIDO")
+                                {
                                     <a class="btn btn-sm btn-outline-primary full-width" href="#">Asunto</a>
-                                    <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("HistoryLog", "LaboralTaskHistoryLog", new { laboralTaskID = laboralTasks[i].IDLaboralTask })">Seguimiento</a>
-                                </div>
+                                } else
+                                {
+                                    <div class="btn-group full-width" role="group" aria-label="Basic example">
+                                        <a class="btn btn-sm btn-outline-primary full-width" href="#">Asunto</a>
+                                        <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("HistoryLog", "LaboralTaskHistoryLog", new { laboralTaskID = laboralTasks[i].IDLaboralTask })">Seguimiento</a>
+                                    </div>
+                                }
                             </td>
                         </tr>
                     }
