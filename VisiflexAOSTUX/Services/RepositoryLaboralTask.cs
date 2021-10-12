@@ -51,13 +51,22 @@ namespace VisiflexAOSTUX.Services
         {
             using (var db = new VisiflexContext())
             {
+                // {Year}{index}
+                // 20210001
                 if (db.LaboralTasks.Count() == 0)
-                    return 1;
+                    return Int32.Parse($"{DateTime.Now.Year}$000{1}");
                 else
                 {
                     List<LaboralTask> docs = db.LaboralTasks.OrderBy(x => x.Count).ToList();
+                    int next = Int32.Parse($"{docs.Last().Count.ToString().Remove(0, 4)}") + 1;
+                    string zerostr = "";
 
-                    return docs.Last().Count + 1;
+                    for (int i = next.ToString().Length; i < 4 ; i++)
+                    {
+                        zerostr += "0";
+                    }
+
+                    return Int32.Parse($"{DateTime.Now.Year}{zerostr}{next}");
                 }
             }
         }

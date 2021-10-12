@@ -138,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\ApplicationManager.cs" />
+    <Compile Include="Application\Security.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -154,6 +155,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Agent.cs" />
     <Compile Include="Models\AttentionArea.cs" />
     <Compile Include="Models\DocumentFile.cs" />
@@ -162,6 +164,7 @@
     <Compile Include="Models\LaboralTaskHistoryLog.cs" />
     <Compile Include="Models\RequesterArea.cs" />
     <Compile Include="Models\ResponseMessage.cs" />
+    <Compile Include="Models\Session.cs" />
     <Compile Include="Models\SystemParameters.cs" />
     <Compile Include="Models\VisiflexContext.cs" />
     <Compile Include="Models\Workplace.cs" />

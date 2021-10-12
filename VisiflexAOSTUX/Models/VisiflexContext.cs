@@ -18,6 +18,9 @@ namespace VisiflexAOSTUX.Models
             DbConfiguration.SetConfiguration(new MySql.Data.Entity.MySqlEFConfiguration());
         }
 
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<UserRol> UserRols { get; set; }
+        public DbSet<Session> Sessions { get; set; }
         public DbSet<LaboralTask> LaboralTasks { get; set; }
         public DbSet<DocumentFile> DocumentFiles { get; set; }
         public DbSet<AttentionArea> AttentionAreas { get; set; }

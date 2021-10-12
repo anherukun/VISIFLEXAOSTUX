@@ -18,6 +18,7 @@ namespace VisiflexAOSTUX.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult LaboralTask(string laboralTaskID)
         {
             ViewData["LaboralTask"] = RepositoryLaboralTask.Get(laboralTaskID);
