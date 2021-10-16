@@ -11,7 +11,7 @@ namespace VisiflexAOSTUX.Models
     {
         [Key] public string IDAccount { get; set; }
         [Required, Index(IsUnique = true, IsClustered = true), StringLength(150)] public string Email { get; set; }
-        [Required, Index(IsUnique = true, IsClustered = true)] public int Username { get; set; }
+        [Required, Index(IsUnique = true, IsClustered = true), StringLength(10)] public string Username { get; set; }
         [Required] public string Name { get; set; }
         [Required] public string LastName { get; set; }
         [Required] public string PasswordHash { get; set; }

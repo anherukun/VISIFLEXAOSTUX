@@ -146,6 +146,7 @@
     <Compile Include="Controllers\AttentionAreaController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IdentityController.cs" />
     <Compile Include="Controllers\LaboralTaskController.cs" />
     <Compile Include="Controllers\LaboralTaskHistoryLogController.cs" />
     <Compile Include="Controllers\RequesterAreaController.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="Models\VisiflexContext.cs" />
     <Compile Include="Models\Workplace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\RepositoryAccount.cs" />
     <Compile Include="Services\RepositoryAgent.cs" />
     <Compile Include="Services\RepositoryAttentionArea.cs" />
     <Compile Include="Services\RepositoryDocumentFile.cs" />
@@ -176,6 +178,7 @@
     <Compile Include="Services\RepositoryLaboralTask.cs" />
     <Compile Include="Services\RepositoryLaboralTaskHistoryLog.cs" />
     <Compile Include="Services\RepositoryRequesterArea.cs" />
+    <Compile Include="Services\RepositorySession.cs" />
     <Compile Include="Services\RepositoryWorkplace.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1725,6 +1728,8 @@
     <Content Include="Views\LaboralTask\ViewByRequesterArea.cshtml" />
     <Content Include="Views\File\ViewLaboralTaskDocumentFile.cshtml" />
     <Content Include="Views\LaboralTask\ViewByAttentionArea.cshtml" />
+    <Content Include="Views\Identity\Login.cshtml" />
+    <Content Include="Views\Identity\SubmitLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

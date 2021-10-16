@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Iniciar sesion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h1>@ViewBag.Title</h1>
+    <div class="row">
+        <div class="col-md-4">
+            @using (Html.BeginForm("SubmitLogin", "Identity", FormMethod.Post, new { @class = "form"}))
+            {
+                <h4>Captura tus credenciales.</h4>
+                <hr />
+
+                <div class="row">
+                    <div class="col-md">
+                        <label>Email o Usuario</label>
+                        <input class="form-control" name="Username" autocomplete="username" type="text" value="" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md">
+                        <label>Contraseña</label>
+                        <input class="form-control" name="Password" type="password" value="" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md">
+                        <button type="submit" class="btn btn-primary full-width">Iniciar sesion</button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="col-md col-md-offset-2">
+            <section>
+                <h4>Use another service to log in.</h4>
+                <hr />
+                <div>
+                    <p>
+                        There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+                            article
+                            about setting up this ASP.NET application to support logging in via external
+                            services
+                        </a>.
+                    </p>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

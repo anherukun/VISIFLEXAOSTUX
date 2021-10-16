@@ -56,7 +56,7 @@ namespace VisiflexAOSTUX.Migrations
                 Email = "angel.gerardo.jimenezr@pemex.com",
                 Name = "ANGEL GERARDO",
                 LastName = "JIMENEZ REYES",
-                Username = 582509,
+                Username = "582509",
                 PasswordHash = Security.SHA256Hash("Doodlebundle"),
                 IDUserRol = "6FAC81E5-C092-431E-B521-FFCEFFA6D267",
                 CreatedAt = DateTime.Now
