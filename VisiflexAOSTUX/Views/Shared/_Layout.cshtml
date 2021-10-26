@@ -35,6 +35,16 @@
         }
     </script>
 </head>
+@{
+    VisiflexAOSTUX.Models.Session session = null;
+    VisiflexAOSTUX.Models.Account account = null;
+    if (ViewData["session"] != null)
+    {
+        session = ViewData["session"] as VisiflexAOSTUX.Models.Session;
+        account = ViewData["account"] as VisiflexAOSTUX.Models.Account;
+    }
+}
+
 <body>
     <header class="d-print-none" style="margin-bottom:70px;">
         <nav class="navbar navbar-dark bg-dark navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3 fixed-top">
@@ -49,9 +59,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" href="@Url.Action("Index", "Home")">Inicio</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="@Url.Action("Settings", "System")">Configuraciones</a>
-                        </li>
+                        @if (session == null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" href="@Url.Action("Login", "Identity")">Iniciar sesion</a>
+                            </li>
+                        }
+                        @if (account != null && (account.UserRol.UserLevel == 10))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" href="@Url.Action("Settings", "System")">Configuraciones</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" href="@Url.Action("Logout", "Identity", new { sessionToken = session.SessionToken })">Cerrar sesion</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

@@ -24,6 +24,18 @@ namespace VisiflexAOSTUX.Controllers
             return View();
         }
 
+        public ActionResult Logout(string sessionToken)
+        {
+            Session session = RepositorySession.Get(x => x.SessionToken == sessionToken);
+            session.SessionToken = null;
+            RepositorySession.AddOrUpdate(session);
+
+            Response.Cookies.Remove("sessionToken");
+            Response.Cookies.Remove("idAccount");
+
+            return Redirect(Url.Action("Index", "Home"));
+        }
+
         [HttpPost]
         public ActionResult SubmitLogin(string Username, string Password)
         {

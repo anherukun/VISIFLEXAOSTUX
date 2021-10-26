@@ -74,7 +74,7 @@ namespace VisiflexAOSTUX.Services
             using (var db = new VisiflexContext())
             {
                 return db.Accounts.Where(predicate).Include(x => x.UserRol).FirstOrDefault();
-                //return db.Accounts.Where(predicate).Select(x => new Account
+                //return db.Accounts.Where(predicate).Include(x => x.UserRol).Select(x => new Account
                 //{
                 //    IDAccount = x.IDAccount,
                 //    Email = x.Email,
@@ -82,7 +82,7 @@ namespace VisiflexAOSTUX.Services
                 //    IDUserRol = x.IDUserRol,
                 //    UserRol = x.UserRol,
                 //    CreatedAt = x.CreatedAt
-                //}).Include(x => x.UserRol).FirstOrDefault();
+                //}).FirstOrDefault();
             }
         }
 
@@ -97,7 +97,10 @@ namespace VisiflexAOSTUX.Services
             using (var db = new VisiflexContext())
             {
                 var account = db.Accounts.Where(x => x.Username == username || x.Email == username).FirstOrDefault();
-                return account.PasswordHash == Security.SHA256Hash(value) ? true : false;
+                if (account != null)
+                    return account.PasswordHash == Security.SHA256Hash(value) ? true : false;
+
+                return false;
             }
         }
     }
