@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Inicio";
 
     VisiflexAOSTUX.Models.Session session = null;
     VisiflexAOSTUX.Models.Account account = null;
@@ -34,47 +34,126 @@
 </div>
 
 <div class="row">
-    <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
-        <div class="card-body">
-            <h5 class="card-title">Capturar</h5>
-            <p class="card-text">¿Quieres agregar un nuevo asunto a la agenda laboral?</p>
-        </div>
-        <div class="card-body card-button-full">
-            <div>
-                <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("NewLaboralTask", "LaboralTask")">Haz clic aqui</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
-        <div class="card-body">
-            <h5 class="card-title">Actualizaciones de asuntos</h5>
-            <p class="card-text">¿Necesitas visualizar los estados de la agenda laboral y/o capturar los progresos de los asuntos?</p>
-        </div>
-        <div class="card-body card-button-full">
-            <div>
-                <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewAll", "LaboralTask")">Haz clic aqui</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
-        <div class="card-body">
-            <h5 class="card-title">Contadores de asuntos</h5>
-            <p class="card-text">Revisa las contablizaciones de los asuntos por sus estados de atencion</p>
-        </div>
-        <div class="card-body card-button-full">
-            <div class="btn-group">
-                <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewByRequesterArea","LaboralTask")">Por areas solicitantes</a>
-                <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewByAttentionArea","LaboralTask")">Por areas de atencion</a>
-            </div>
-        </div>
-    </div>
-    
-</div>
-<br />
-<div class="row text-center">
+    @if (account != null)
+    {
+        switch (account.UserRol.UserLevel)
+        {
+            case 1:
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Capturar</h5>
+                        <p class="card-text">¿Quieres agregar un nuevo asunto a la agenda laboral?</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("NewLaboralTask", "LaboralTask")">Haz clic aqui</a>
+                        </div>
+                    </div>
+                </div>
+                break;
 
-    <div class="col-md-4 offset-4">
-        <h5>¿Te interesa saber el estado actual de un seguimiento?</h5>
-        <a class="btn btn-sm btn-outline-primary full-width">Haz clic aqui</a>
-    </div>
+            case 2:
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Actualizaciones de asuntos</h5>
+                        <p class="card-text">¿Necesitas visualizar los estados de la agenda laboral y/o capturar los progresos de los asuntos?</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewAll", "LaboralTask")">Haz clic aqui</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Contadores de asuntos</h5>
+                        <p class="card-text">Revisa las contablizaciones de los asuntos por sus estados de atencion</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div class="btn-group">
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewByRequesterArea","LaboralTask")">Por areas solicitantes</a>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewByAttentionArea","LaboralTask")">Por areas de atencion</a>
+                        </div>
+                    </div>
+                </div>
+                break;
+
+            case 5:
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Capturar</h5>
+                        <p class="card-text">¿Quieres agregar un nuevo asunto a la agenda laboral?</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("NewLaboralTask", "LaboralTask")">Haz clic aqui</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Actualizaciones de asuntos</h5>
+                        <p class="card-text">¿Necesitas visualizar los estados de la agenda laboral y/o capturar los progresos de los asuntos?</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewAll", "LaboralTask")">Haz clic aqui</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Contadores de asuntos</h5>
+                        <p class="card-text">Revisa las contablizaciones de los asuntos por sus estados de atencion</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div class="btn-group">
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewByRequesterArea","LaboralTask")">Por areas solicitantes</a>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewByAttentionArea","LaboralTask")">Por areas de atencion</a>
+                        </div>
+                    </div>
+                </div>
+                break;
+
+            case 10:
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Capturar</h5>
+                        <p class="card-text">¿Quieres agregar un nuevo asunto a la agenda laboral?</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("NewLaboralTask", "LaboralTask")">Haz clic aqui</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Actualizaciones de asuntos</h5>
+                        <p class="card-text">¿Necesitas visualizar los estados de la agenda laboral y/o capturar los progresos de los asuntos?</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewAll", "LaboralTask")">Haz clic aqui</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Contadores de asuntos</h5>
+                        <p class="card-text">Revisa las contablizaciones de los asuntos por sus estados de atencion</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div class="btn-group">
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewByRequesterArea","LaboralTask")">Por areas solicitantes</a>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewByAttentionArea","LaboralTask")">Por areas de atencion</a>
+                        </div>
+                    </div>
+                </div>
+                break;
+
+            default:
+                break;
+        }
+    }
 </div>

@@ -21,7 +21,52 @@ namespace VisiflexAOSTUX.Controllers
         {
             ViewData["Response"] = response;
 
+            if (Request.Cookies.AllKeys.Contains("idAccount") && Request.Cookies.AllKeys.Contains("idAccount"))
+            {
+                string session_idAccount = Request.Cookies.Get("idAccount").Value;
+                string session_sessionToken = Request.Cookies.Get("sessionToken").Value;
+                if (RepositorySession.OnSession(session_sessionToken, session_idAccount))
+                {
+                    ViewData["session"] = RepositorySession.Get(x => x.IDAccount == session_idAccount && x.SessionToken == session_sessionToken);
+                    Account account = RepositoryAccount.Get(x => x.IDAccount == session_idAccount);
+                    account.PasswordHash = null;
+                    ViewData["account"] = account;
+
+                    return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Sesion actualmente activa", Type = ResponseType.ERROR }));
+                }
+            }
+
             return View();
+        }
+
+        public ActionResult SignUp(ResponseMessage response)
+        {
+            ViewData["Response"] = response;
+
+            if (Request.Cookies.AllKeys.Contains("idAccount") && Request.Cookies.AllKeys.Contains("idAccount"))
+            {
+                string session_idAccount = Request.Cookies.Get("idAccount").Value;
+                string session_sessionToken = Request.Cookies.Get("sessionToken").Value;
+                if (RepositorySession.OnSession(session_sessionToken, session_idAccount))
+                {
+                    ViewData["session"] = RepositorySession.Get(x => x.IDAccount == session_idAccount && x.SessionToken == session_sessionToken);
+                    Account account = RepositoryAccount.Get(x => x.IDAccount == session_idAccount);
+                    account.PasswordHash = null;
+                    ViewData["account"] = account;
+
+                    if (account.UserRol.UserLevel == 10 || account.UserRol.UserLevel == 5)
+                    {
+                        // SI LAS CREDENCIALES SON LAS CORRECTAS
+                        return View();
+                    }
+                    else
+                    {
+                        return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Cuenta con permisos insuficientes", Type = ResponseType.ERROR }));
+                    }
+                }
+            }
+
+            return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Inicia sesion para acceder a este sitio", Type = ResponseType.ERROR }));
         }
 
         public ActionResult Logout(string sessionToken)

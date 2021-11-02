@@ -5,7 +5,7 @@
 
     List<VisiflexAOSTUX.Models.AttentionArea> attentionAreas = ViewData["AttentionAreas"] as List<VisiflexAOSTUX.Models.AttentionArea>;
     List<VisiflexAOSTUX.Models.Workplace> workplaces = ViewData["Workplaces"] as List<VisiflexAOSTUX.Models.Workplace>;
-    List<VisiflexAOSTUX.Models.Agent> agents = ViewData["Agents"] as List<VisiflexAOSTUX.Models.Agent>;
+    List<VisiflexAOSTUX.Models.Account> accounts = ViewData["Accounts"] as List<VisiflexAOSTUX.Models.Account>;
     List<VisiflexAOSTUX.Models.RequesterArea> requesterAreas = ViewData["RequesterAreas"] as List<VisiflexAOSTUX.Models.RequesterArea>;
 }
 
@@ -63,18 +63,39 @@
                             <tr>
                                 <th scope="col" style="width:135.8px;">Ficha</th>
                                 <th scope="col">Nombre</th>
+                                <th scope="col">Tipo cuenta</th>
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (agents.Count > 0)
+                            @if (accounts.Count > 0)
                             {
-                                foreach (var item in agents)
+                                foreach (var item in accounts)
                                 {
                                     <tr>
-                                        <td>@item.AgentCode</td>
-                                        <td>@item.Name</td>
-                                        <td><a class="btn btn-sm btn-outline-danger full-width" href="@Url.Action("DeleteAgent", "Agent", new { id = item.AgentID, c = "System", a = "Settings" })"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
+                                        <td>@item.Username</td>
+                                        <td>@item.Name @item.LastName</td>
+                                        @switch (item.UserRol.UserLevel)
+                                        {
+                                            case 1:
+                                                <td>ASISTENTE</td>
+                                                break;
+
+                                            case 2:
+                                                <td>OPERATIVO</td>
+                                                break;
+
+                                            case 5:
+                                                <td>SUPERVISOR</td>
+                                                break;
+
+                                            case 10:
+                                                <td>DEV USER</td>
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        <td><a class="btn btn-sm btn-outline-danger full-width" href="@Url.Action("", "")"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
                                     </tr>
                                 }
                             }
@@ -88,27 +109,7 @@
                     </table>
                 </div>
 
-                @using (Html.BeginForm("AddAgent", "Agent", FormMethod.Post, new { @class = "form needs-validation", enctype = "multipart/form-data" }))
-                {
-                    <div class="row">
-                        <div class="col-md-3">
-                            <label class="input-label">Ficha</label>
-                            <input type="number" class="form-control" id="AgentCode" name="AgentCode" autocomplete="off" required>
-                        </div>
-                        <div class="col-md">
-                            <label class="input-label">Nombre del agente</label>
-                            <input type="text" class="form-control" id="Name" name="Name" autocomplete="off" required>
-                        </div>
-                        <div class="visually-hidden">
-                            <input type="text" class="form-control" id="controller" name="controller" autocomplete="off" readonly required value="System">
-                            <input type="text" class="form-control" id="action" name="action" autocomplete="off" readonly required value="Settings">
-                        </div>
-                        <div class="col-md-3" style="display:flex; align-items:flex-end;">
-                            <button type="submit" class="btn btn-outline-success full-width"><i class="bi bi-check"></i> Agregar</button>
-                        </div>
-                    </div>
-                }
-
+                <a class="btn btn-outline-success full-width" href="#"><i class="bi bi-plus"></i> Crear cuenta</a>
             </div>
         </div>
 

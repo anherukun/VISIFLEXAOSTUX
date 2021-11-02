@@ -18,6 +18,7 @@ namespace VisiflexAOSTUX.Models
         [Required, ForeignKey("UserRol")] public string IDUserRol { get; set; }
         public UserRol UserRol { get; set; }
         [Required] public DateTime CreatedAt { get; set; }
+        public bool RequirePasswordUpdate { get; set; }
     }
 
     public class UserRol

@@ -39,6 +39,11 @@ namespace VisiflexAOSTUX.Controllers
                         ViewData["Agents"] = RepositoryAgent.Get();
                         ViewData["RequesterAreas"] = RepositoryRequesterArea.Get();
 
+                        List<Account> accounts = RepositoryAccount.Get();
+                        for (int i = 0; i < accounts.Count; i++)
+                            accounts[i].PasswordHash = null;
+                        ViewData["Accounts"] = accounts;
+
                         ViewData["Response"] = response;
 
                         return View();

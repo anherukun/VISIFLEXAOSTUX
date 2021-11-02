@@ -33,15 +33,7 @@ namespace VisiflexAOSTUX.Services
         {
             using (var db = new VisiflexContext())
             {
-                return db.Accounts.Include(x => x.UserRol).Select(x => new Account
-                {
-                    IDAccount = x.IDAccount,
-                    Email = x.Email,
-                    Username = x.Username,
-                    IDUserRol = x.IDUserRol,
-                    UserRol = x.UserRol,
-                    CreatedAt = x.CreatedAt
-                }).ToList();
+                return db.Accounts.Include(x => x.UserRol).OrderBy(x => x.Username).ToList();
             }
         }
         /// <summary>
@@ -53,15 +45,7 @@ namespace VisiflexAOSTUX.Services
         {
             using (var db = new VisiflexContext())
             {
-                return db.Accounts.Include(x => x.UserRol).Select(x => new Account
-                {
-                    IDAccount = x.IDAccount,
-                    Email = x.Email,
-                    Username = x.Username,
-                    IDUserRol = x.IDUserRol,
-                    UserRol = x.UserRol,
-                    CreatedAt = x.CreatedAt
-                }).Where(x => x.IDAccount == id).FirstOrDefault();
+                return db.Accounts.Include(x => x.UserRol).Where(x => x.IDAccount == id).FirstOrDefault();
             }
         }
         /// <summary>

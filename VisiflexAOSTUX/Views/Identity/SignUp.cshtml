@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Registrar cuenta de agente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h1>@ViewBag.Title</h1>
+    <div class="row">
+        <div class="col-md-4">
+            @using (Html.BeginForm("SubmitSignUp", "Identity", FormMethod.Post, new { @class = "form" }))
+            {
+                <hr />
+
+                <div class="row">
+                    <div class="col-md">
+                        <label>Nombres</label>
+                        <input class="form-control" name="Name" autocomplete="off" type="text" value="" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md">
+                        <label>Apellidos</label>
+                        <input class="form-control" name="LastName" autocomplete="off" type="text" value="" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md">
+                        <label>Email</label>
+                        <input class="form-control" name="Email" autocomplete="off" type="email" value="" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md">
+                        <label>Ficha</label>
+                        <input class="form-control" name="Username" autocomplete="off" type="number" value="" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="text-center">* Al crear la cuenta se colocara una contraseña generica: <b>P3mex.99</b></label>
+                    <div class="col-md" style="margin-top: 16px;">
+                        <button type="submit" class="btn btn-primary full-width">Iniciar sesion</button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="col-md-8 text-center">
+            <img style="height:400px" src="/Images/login.e6658ac3.svg" />
+        </div>
+    </div>
+</div>
