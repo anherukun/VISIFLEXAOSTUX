@@ -10,8 +10,10 @@ namespace VisiflexAOSTUX.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(ResponseMessage response)
         {
+            ViewData["Response"] = response;
+
             if (Request.Cookies.AllKeys.Contains("idAccount") && Request.Cookies.AllKeys.Contains("idAccount"))
             {
                 string session_idAccount = Request.Cookies.Get("idAccount").Value;

@@ -1,10 +1,34 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+
+    VisiflexAOSTUX.Models.Session session = null;
+    VisiflexAOSTUX.Models.Account account = null;
+    if (ViewData["session"] != null)
+    {
+        session = ViewData["session"] as VisiflexAOSTUX.Models.Session;
+        account = ViewData["account"] as VisiflexAOSTUX.Models.Account;
+    }
 }
 
 <div class="text-center">
-    <h1>Bienvenido</h1>
-    <p class="lead">Este es el menu de inicio del sistema VISIFLEX AOS Tuxpan. Para comenzar, selecciona una de las siguentes opciones.</p>
+    @if (account != null)
+    {
+        <h1>Bienvenido, @account.Name</h1>
+        <p class="lead">Este es el menu de inicio del sistema VISIFLEX AOS Tuxpan. Para comenzar, selecciona una de las siguentes opciones.</p>
+        if (account.UserRol.UserLevel == 1)
+        {
+
+        }
+    }
+    else
+    {
+        <h1>Bienvenido</h1>
+        <p class="lead">
+            Este es el sistema VISIFLEX, para rastrear el seguimiento de un asunto puedes entrar <a href="#"><b>Aqui</b></a>. 
+            <br /> O bien puedes <a href="@Url.Action("Login", "Identity")"><b>Iniciar Sesion</b></a> para acceder a todas las funciones
+        </p>
+    }
+
     <br /><br />
     <br />
 </div>

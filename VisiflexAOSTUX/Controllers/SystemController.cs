@@ -30,17 +30,23 @@ namespace VisiflexAOSTUX.Controllers
                     ViewData["account"] = account;
 
                     if (account.UserRol.UserLevel != 10)
-                        return Redirect(Url.Action("Index", "Home"));
+                        return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Cuenta con permisos insuficientes", Type = ResponseType.ERROR}));
+                    else
+                    {
+                        // SI LAS CREDENCIALES SON LAS CORRECTAS
+                        ViewData["AttentionAreas"] = RepositoryAttentionArea.Get();
+                        ViewData["Workplaces"] = RepositoryWorkplace.Get();
+                        ViewData["Agents"] = RepositoryAgent.Get();
+                        ViewData["RequesterAreas"] = RepositoryRequesterArea.Get();
+
+                        ViewData["Response"] = response;
+
+                        return View();
+                    }
                 }
             }
-            ViewData["AttentionAreas"] = RepositoryAttentionArea.Get();
-            ViewData["Workplaces"] = RepositoryWorkplace.Get();
-            ViewData["Agents"] = RepositoryAgent.Get();
-            ViewData["RequesterAreas"] = RepositoryRequesterArea.Get();
 
-            ViewData["Response"] = response;
-
-            return View();
+            return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Inicia sesion para acceder a este sitio", Type = ResponseType.ERROR }));
         }
     }
 }
