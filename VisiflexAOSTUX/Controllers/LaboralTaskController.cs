@@ -68,7 +68,7 @@ namespace VisiflexAOSTUX.Controllers
         public ActionResult NewLaboralTask(ResponseMessage response)
         {
             ViewData["Workplaces"] = RepositoryWorkplace.Get();
-            ViewData["Agents"] = RepositoryAgent.Get();
+            ViewData["Accounts"] = RepositoryAccount.Get();
             ViewData["AttentionAreas"] = RepositoryAttentionArea.Get();
             ViewData["RequesterAreas"] = RepositoryRequesterArea.Get();
             ViewData["Response"] = response;
@@ -86,7 +86,7 @@ namespace VisiflexAOSTUX.Controllers
                     IDAttentionArea = laboralTask.IDAttentionArea,
                     IDRequesterArea = laboralTask.IDRequesterArea,
                     IDWorkplace = laboralTask.IDWorkplace,
-                    IDAgent = laboralTask.IDAgent,
+                    IDAccount = laboralTask.IDAccount,
                     DocumentID = laboralTask.DocumentID.Trim().ToUpper(),
                     AttentionInstructions = laboralTask.AttentionInstructions.Trim().ToUpper(),
                     DocumentDate = laboralTask.DocumentDate,

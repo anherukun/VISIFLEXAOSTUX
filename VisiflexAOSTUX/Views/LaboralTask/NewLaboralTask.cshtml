@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "NewLaboralTask";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    List<VisiflexAOSTUX.Models.Agent> agents = ViewData["Agents"] as List<VisiflexAOSTUX.Models.Agent>;
+    List<VisiflexAOSTUX.Models.Account> accounts = ViewData["Accounts"] as List<VisiflexAOSTUX.Models.Account>;
     List<VisiflexAOSTUX.Models.AttentionArea> attentionAreas = ViewData["AttentionAreas"] as List<VisiflexAOSTUX.Models.AttentionArea>;
     List<VisiflexAOSTUX.Models.Workplace> workplaces = ViewData["Workplaces"] as List<VisiflexAOSTUX.Models.Workplace>;
     List<VisiflexAOSTUX.Models.RequesterArea> requesterAreas = ViewData["RequesterAreas"] as List<VisiflexAOSTUX.Models.RequesterArea>;
@@ -119,11 +119,14 @@
                         </div>
                         <div class="col-md">
                             <label class="input-label">Agente Responsable</label>
-                            <select class="form-select" id="IDAgent" name="IDAgent" required>
-                                @foreach (var item in agents)
+                            <select class="form-select" id="IDAccount" name="IDAccount" required>
+                                @foreach (var item in accounts)
                                 {
-                                    <option value="" hidden selected>Selecciona una opcion</option>
-                                    <option value="@item.AgentID">[@item.AgentCode] - @item.Name</option>
+                                    if (item.UserRol.UserLevel != 1 && item.UserRol.UserLevel != 10)
+                                    {
+                                        <option value="" hidden selected>Selecciona una opcion</option>
+                                        <option value="@item.IDAccount">[@item.Username] - @item.Name @item.LastName</option>
+                                    }
                                 }
                             </select>
                         </div>

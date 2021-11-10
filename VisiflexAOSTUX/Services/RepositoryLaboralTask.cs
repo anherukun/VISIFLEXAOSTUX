@@ -42,7 +42,7 @@ namespace VisiflexAOSTUX.Services
                     .Include(x => x.AttentionArea)
                     .Include(x => x.RequesterArea)
                     .Include(x => x.Workplace)
-                    .Include(x => x.Agent)
+                    .Include(x => x.Account)
                     .FirstOrDefault();
             }
         }

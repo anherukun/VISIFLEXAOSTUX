@@ -19,13 +19,13 @@ namespace VisiflexAOSTUX.Models
         [ForeignKey("IDAttentionArea")] public AttentionArea AttentionArea { get; set; }
         [ForeignKey("IDRequesterArea")] public RequesterArea RequesterArea { get; set; }
         [ForeignKey("IDWorkplace")] public Workplace Workplace { get; set; }
-        [ForeignKey("IDAgent")] public Agent Agent { get; set; }
+        [ForeignKey("IDAccount")] public Account Account { get; set; }
         public List<LaboralTaskHistoryLog> LaboralTaskHistoryLogs { get; set; }
         public string IDDocumentFile { get; set; }
         [Required] public string IDAttentionArea { get; set; }
         [Required] public string IDRequesterArea { get; set; }
         [Required] public string IDWorkplace { get; set; }
-        [Required] public string IDAgent { get; set; }
+        [Required] public string IDAccount { get; set; }
         [Required] public string Subjet { get; set; }
         [Required] public string LongDescription { get; set; }
         [Required] public string AttentionInstructions { get; set; }
