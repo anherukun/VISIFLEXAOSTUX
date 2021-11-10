@@ -72,31 +72,12 @@
                             {
                                 foreach (var item in accounts)
                                 {
-                                    <tr>
-                                        <td>@item.Username</td>
-                                        <td>@item.Name @item.LastName</td>
-                                        @switch (item.UserRol.UserLevel)
-                                        {
-                                            case 1:
-                                                <td>ASISTENTE</td>
-                                                break;
-
-                                            case 2:
-                                                <td>OPERATIVO</td>
-                                                break;
-
-                                            case 5:
-                                                <td>SUPERVISOR</td>
-                                                break;
-
-                                            case 10:
-                                                <td>DEV USER</td>
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                        <td><a class="btn btn-sm btn-outline-danger full-width" href="@Url.Action("", "")"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
-                                    </tr>
+                                <tr>
+                                    <td>@item.Username</td>
+                                    <td>@item.Name @item.LastName</td>
+                                    <td>@item.UserRol.UserRolName</td>
+                                    <td><a class="btn btn-sm btn-outline-danger full-width" href="@Url.Action("", "")"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
+                                </tr>
                                 }
                             }
                             else

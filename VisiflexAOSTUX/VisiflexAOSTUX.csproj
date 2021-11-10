@@ -179,6 +179,7 @@
     <Compile Include="Services\RepositoryLaboralTaskHistoryLog.cs" />
     <Compile Include="Services\RepositoryRequesterArea.cs" />
     <Compile Include="Services\RepositorySession.cs" />
+    <Compile Include="Services\RepositoryUserRol.cs" />
     <Compile Include="Services\RepositoryWorkplace.cs" />
   </ItemGroup>
   <ItemGroup>

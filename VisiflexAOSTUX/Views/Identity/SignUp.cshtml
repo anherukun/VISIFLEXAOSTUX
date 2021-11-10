@@ -2,6 +2,8 @@
 @{
     ViewBag.Title = "Registrar cuenta de agente";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<VisiflexAOSTUX.Models.UserRol> userRols = ViewData["userRols"] as List<VisiflexAOSTUX.Models.UserRol>;
 }
 
 <div>
@@ -34,6 +36,18 @@
                     <div class="col-md">
                         <label>Ficha</label>
                         <input class="form-control" name="Username" autocomplete="off" type="number" value="" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md">
+                        <label>Rol o tipo de usuario</label>
+                        <select class="form-control" name="IDUserRol" required>
+                            <option value="">Selecciona un rol</option>
+                            @foreach (var item in userRols)
+                            {
+                                <option value="@item.IDUserRol">@item.UserRolName</option>
+                            }
+                        </select>
                     </div>
                 </div>
                 <div class="row">

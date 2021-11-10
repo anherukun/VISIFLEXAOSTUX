@@ -57,6 +57,8 @@ namespace VisiflexAOSTUX.Controllers
                     if (account.UserRol.UserLevel == 10 || account.UserRol.UserLevel == 5)
                     {
                         // SI LAS CREDENCIALES SON LAS CORRECTAS
+                        ViewData["userRols"] = RepositoryUserRol.Get();
+
                         return View();
                     }
                     else
@@ -114,6 +116,49 @@ namespace VisiflexAOSTUX.Controllers
                 return Redirect(Url.Action("Index", "Home"));
             }
             return Redirect(Url.Action("Login", "Identity"));
+        }
+
+        [HttpPost]
+        public ActionResult SubmitSignUp (Account account)
+        {
+            if (Request.Cookies.AllKeys.Contains("idAccount") && Request.Cookies.AllKeys.Contains("idAccount"))
+            {
+                string session_idAccount = Request.Cookies.Get("idAccount").Value;
+                string session_sessionToken = Request.Cookies.Get("sessionToken").Value;
+                if (RepositorySession.OnSession(session_sessionToken, session_idAccount))
+                {
+                    ViewData["session"] = RepositorySession.Get(x => x.IDAccount == session_idAccount && x.SessionToken == session_sessionToken);
+                    Account acc = RepositoryAccount.Get(x => x.IDAccount == session_idAccount);
+                    acc.PasswordHash = null;
+                    ViewData["account"] = acc;
+
+                    if (acc.UserRol.UserLevel == 10 || acc.UserRol.UserLevel == 5)
+                    {
+                        // SI LAS CREDENCIALES SON LAS CORRECTAS
+
+                        // SI EL USERNAME O EMAIL YA EXISTEN
+                        if (RepositoryAccount.Exist(x => x.Email == account.Email || x.Username == account.Username))
+                            return Redirect(Url.Action("SignUp", "Identity", new ResponseMessage() { Message = "Correo electronico o ficha ya registradas", Type = ResponseType.ERROR }));
+                        
+                        account.Name = account.Name.ToUpper();
+                        account.LastName = account.LastName.ToUpper();
+                        account.IDAccount = ApplicationManager.GenerateGUID;
+                        account.CreatedAt = DateTime.Now;
+                        account.PasswordHash = Security.SHA256Hash("P3mex.99");
+                        account.RequirePasswordUpdate = true;
+
+                        RepositoryAccount.AddOrUpdate(account);
+
+                        return Redirect(Url.Action("Settings", "System", new ResponseMessage() { Message = "Cuenta creada satisfactoriamente", Type = ResponseType.SUCCESS }));
+                    }
+                    else
+                    {
+                        return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Cuenta con permisos insuficientes", Type = ResponseType.ERROR }));
+                    }
+                }
+            }
+
+            return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Inicia sesion para acceder a este sitio", Type = ResponseType.ERROR }));
         }
     }
 }

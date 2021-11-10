@@ -87,5 +87,13 @@ namespace VisiflexAOSTUX.Services
                 return false;
             }
         }
+
+        public static bool Exist(Expression<Func<Account, bool>> predicate)
+        {
+            using (var db = new VisiflexContext())
+            {
+                return db.Accounts.Any(predicate);
+            }
+        }
     }
 }

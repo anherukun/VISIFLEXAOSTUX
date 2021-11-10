@@ -46,7 +46,7 @@ namespace VisiflexAOSTUX.Migrations
             {
                 IDUserRol = "6FAC81E5-C092-431E-B521-FFCEFFA6D267",
                 UserLevel = 10,
-                UserRolName = "SUPERUSR",
+                UserRolName = "DVU",
                 UserRolPermisions = "+ TODOS LOS PERMISOS HABILITADOS"
             });
 
