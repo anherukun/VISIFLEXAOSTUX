@@ -52,9 +52,9 @@ namespace VisiflexAOSTUX.Services
             using (var db = new VisiflexContext())
             {
                 // {Year}{index}
-                // 20210001
+                // 20210001 EX
                 if (db.LaboralTasks.Count() == 0)
-                    return Int32.Parse($"{DateTime.Now.Year}$000{1}");
+                    return Int32.Parse($"{DateTime.Now.Year}0001");
                 else
                 {
                     List<LaboralTask> docs = db.LaboralTasks.OrderBy(x => x.Count).ToList();
@@ -139,6 +139,13 @@ namespace VisiflexAOSTUX.Services
             using (var db = new VisiflexContext())
             {
                 return db.LaboralTasks.Any(x => x.IDLaboralTask == laboralTaskID);
+            }
+        }
+        public static bool Exist(System.Linq.Expressions.Expression<Func<LaboralTask, bool>> predicate)
+        {
+            using (var db = new VisiflexContext())
+            {
+                return db.LaboralTasks.Any(predicate);
             }
         }
     }

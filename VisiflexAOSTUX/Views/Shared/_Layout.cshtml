@@ -65,11 +65,15 @@
                                 <a class="nav-link text-light" href="@Url.Action("Login", "Identity")">Iniciar sesion</a>
                             </li>
                         }
+
                         @if (account != null && (account.UserRol.UserLevel == 10))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-light" href="@Url.Action("Settings", "System")">Configuraciones</a>
                             </li>
+                        }
+                        @if (session != null)
+                        {
                             <li class="nav-item">
                                 <a class="nav-link text-light" href="@Url.Action("Logout", "Identity", new { sessionToken = session.SessionToken })">Cerrar sesion</a>
                             </li>

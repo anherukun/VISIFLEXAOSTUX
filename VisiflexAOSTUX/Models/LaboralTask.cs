@@ -10,7 +10,7 @@ namespace VisiflexAOSTUX.Models
     public class LaboralTask
     {
         [Key] public string IDLaboralTask { get; set; }
-        [Required] public string DocumentID { get; set; }
+        [Required, Index(IsUnique = true, IsClustered = true), StringLength(50)] public string DocumentID { get; set; }
         [Required] public DateTime ReceptionDate { get; set; }
         [Required] public DateTime DocumentDate { get; set; }
         [Required] public DateTime CommitmentDate { get; set; }

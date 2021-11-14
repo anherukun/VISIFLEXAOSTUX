@@ -75,10 +75,14 @@ namespace VisiflexAOSTUX.Controllers
             return View();
         }
 
+        [HttpPost]
         public ActionResult AddLaboralTask(LaboralTask laboralTask, HttpPostedFileBase File)
         {
             if (laboralTask != null)
             {
+                if (RepositoryLaboralTask.Exist(x => x.DocumentID == laboralTask.DocumentID))
+                    return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "La referencia del documento ya fue registrada con otro asunto distinto.", Type = ResponseType.ERROR}));
+
                 long submittionticks = DateTime.Now.Ticks;
                 LaboralTask l = new LaboralTask()
                 {
