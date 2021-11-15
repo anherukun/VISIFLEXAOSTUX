@@ -29,7 +29,7 @@ namespace VisiflexAOSTUX.Controllers
                     account.PasswordHash = null;
                     ViewData["account"] = account;
 
-                    if (account.UserRol.UserLevel != 10)
+                    if (account.UserRol.UserLevel != 5 && account.UserRol.UserLevel != 10)
                         return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Cuenta con permisos insuficientes", Type = ResponseType.ERROR}));
                     else
                     {

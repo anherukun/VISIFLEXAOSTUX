@@ -115,7 +115,7 @@ namespace VisiflexAOSTUX.Controllers
                 }
                 return Redirect(Url.Action("Index", "Home"));
             }
-            return Redirect(Url.Action("Login", "Identity"));
+            return Redirect(Url.Action("Login", "Identity", new ResponseMessage() { Message = "Usuario y/o contraseña incorrectas", Type = ResponseType.ERROR }));
         }
 
         [HttpPost]

@@ -20,22 +20,40 @@ namespace VisiflexAOSTUX.Controllers
 
         public ActionResult HistoryLog(string laboralTaskID, ResponseMessage response)
         {
-            if (laboralTaskID != null)
+            ViewData["LaboralTask"] = RepositoryLaboralTask.Get(laboralTaskID);
+            if (Request.Cookies.AllKeys.Contains("idAccount") && Request.Cookies.AllKeys.Contains("idAccount"))
             {
-                string laboraltaskstatus = RepositoryLaboralTask.Get(laboralTaskID).Status;
-                if (laboraltaskstatus != "ATENDIDO" && laboraltaskstatus != "NO PROCEDE")
+                string session_idAccount = Request.Cookies.Get("idAccount").Value;
+                string session_sessionToken = Request.Cookies.Get("sessionToken").Value;
+                if (RepositorySession.OnSession(session_sessionToken, session_idAccount))
                 {
-                    ViewData["laboralTask"] = RepositoryLaboralTask.Get(laboralTaskID);
-                    ViewData["laboralTaskHystoryLog"] = RepositoryLaboralTaskHistoryLog.Get(laboralTaskID);
-                    ViewData["Response"] = response;
+                    ViewData["session"] = RepositorySession.Get(x => x.IDAccount == session_idAccount && x.SessionToken == session_sessionToken);
+                    Account account = RepositoryAccount.Get(x => x.IDAccount == session_idAccount);
+                    account.PasswordHash = null;
+                    ViewData["account"] = account;
 
-                    return View();
+                    if (RepositoryLaboralTask.Get(laboralTaskID).IDAccount == account.IDAccount)
+                    {
+                        if (laboralTaskID != null)
+                        {
+                            string laboraltaskstatus = RepositoryLaboralTask.Get(laboralTaskID).Status;
+                            if (laboraltaskstatus != "ATENDIDO" && laboraltaskstatus != "NO PROCEDE")
+                            {
+                                ViewData["laboralTask"] = RepositoryLaboralTask.Get(laboralTaskID);
+                                ViewData["laboralTaskHystoryLog"] = RepositoryLaboralTaskHistoryLog.Get(laboralTaskID);
+                                ViewData["Response"] = response;
+
+                                return View();
+                            }
+
+                            return Redirect(Url.Action("ViewAll", "LaboralTask", new ResponseMessage() { Message = "Este asunto ya fue concluido", Type = ResponseType.ERROR }));
+                        }
+                        return Redirect(Url.Action("ViewAll", "LaboralTask", new ResponseMessage() { Message = "El ID del asunto no existe o esta perdido", Type = ResponseType.ERROR }));
+                    }
+                    return Redirect(Url.Action("ViewAll", "LaboralTask", new ResponseMessage() { Message = "No puedes acceder a este sitio, asunto asignado a otro agente", Type = ResponseType.ERROR }));
                 }
-
-                return Redirect(Url.Action("ViewAll", "LaboralTask", new ResponseMessage() { Message = "Este asunto ya fue concluido", Type = ResponseType.ERROR }));
             }
-
-            return Redirect(Url.Action("ViewAll", "LaboralTask", new ResponseMessage() { Message = "El ID del asunto no existe o esta perdido", Type = ResponseType.ERROR }));
+            return Redirect(Url.Action("ViewAll", "LaboralTask", new ResponseMessage() { Message = "Para entrar a este sitio debes iniciar sesion", Type = ResponseType.ERROR }));
         }
 
         [HttpPost] public ActionResult AddHistoryLog(LaboralTaskHistoryLog historyLog, HttpPostedFileBase File, string Status)

@@ -54,7 +54,7 @@ namespace VisiflexAOSTUX.Controllers
                     account.PasswordHash = null;
                     ViewData["account"] = account;
 
-                    if (account.UserRol.UserLevel == 4 || account.UserRol.UserLevel == 5 || account.UserRol.UserLevel == 10)
+                    if (account.UserRol.UserLevel == 4)
                     {
                         // SI LAS CREDENCIALES SON LAS CORRECTAS
                         if (status != null && idattentionarea != null && idworkplace != null)
@@ -77,7 +77,31 @@ namespace VisiflexAOSTUX.Controllers
                         {
                             ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status != "NO PROCEDE" && x.Status != "ATENDIDO" && x.IDAccount == account.IDAccount);
                         }
-                        ViewData["Response"] = response;
+                        return View();
+                    }
+                    else if (account.UserRol.UserLevel == 5 || account.UserRol.UserLevel == 10)
+                    {
+                        if (status != null && idattentionarea != null && idworkplace != null)
+                        {
+                            ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status == status && x.IDAttentionArea == idattentionarea && x.IDWorkplace == idworkplace);
+                        }
+                        else if (status != null && idrequesterarea != null && idworkplace != null)
+                        {
+                            ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status == status && x.IDRequesterArea == idrequesterarea && x.IDWorkplace == idworkplace);
+                        }
+                        else if (idattentionarea != null && idworkplace != null)
+                        {
+                            ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.IDAttentionArea == idattentionarea && x.IDWorkplace == idworkplace);
+                        }
+                        else if (idrequesterarea != null && idworkplace != null)
+                        {
+                            ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.IDRequesterArea == idrequesterarea && x.IDWorkplace == idworkplace);
+                        }
+                        else
+                        {
+                            ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status != "NO PROCEDE" && x.Status != "ATENDIDO");
+                        }
+
                         return View();
                     }
                     else
@@ -91,17 +115,79 @@ namespace VisiflexAOSTUX.Controllers
         }
         public ActionResult ViewByRequesterArea(ResponseMessage response)
         {
-            ViewData["LaboralTasks"] = RepositoryLaboralTask.GetByRequesterArea();
-
             ViewData["Response"] = response;
-            return View();
+
+            if (Request.Cookies.AllKeys.Contains("idAccount") && Request.Cookies.AllKeys.Contains("idAccount"))
+            {
+                string session_idAccount = Request.Cookies.Get("idAccount").Value;
+                string session_sessionToken = Request.Cookies.Get("sessionToken").Value;
+                if (RepositorySession.OnSession(session_sessionToken, session_idAccount))
+                {
+                    ViewData["session"] = RepositorySession.Get(x => x.IDAccount == session_idAccount && x.SessionToken == session_sessionToken);
+                    Account account = RepositoryAccount.Get(x => x.IDAccount == session_idAccount);
+                    account.PasswordHash = null;
+                    ViewData["account"] = account;
+
+                    switch (account.UserRol.UserLevel)
+                    {
+                        case 4:
+                            ViewData["LaboralTasks"] = RepositoryLaboralTask.GetByRequesterArea(account.IDAccount);
+                            break;
+
+                        case 5:
+                            ViewData["LaboralTasks"] = RepositoryLaboralTask.GetByRequesterArea();
+                            break;
+
+                        case 10:
+                            ViewData["LaboralTasks"] = RepositoryLaboralTask.GetByRequesterArea();
+                            break;
+
+                        default:
+                            return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Cuenta con permisos insuficientes", Type = ResponseType.ERROR }));
+                    }
+
+                    return View();
+                }
+            }
+            return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Inicia sesion para acceder a este sitio.", Type = ResponseType.ERROR }));
         }
         public ActionResult ViewByAttentionArea(ResponseMessage response)
         {
-            ViewData["LaboralTasks"] = RepositoryLaboralTask.GetByAttentionArea();
-
             ViewData["Response"] = response;
-            return View();
+
+            if (Request.Cookies.AllKeys.Contains("idAccount") && Request.Cookies.AllKeys.Contains("idAccount"))
+            {
+                string session_idAccount = Request.Cookies.Get("idAccount").Value;
+                string session_sessionToken = Request.Cookies.Get("sessionToken").Value;
+                if (RepositorySession.OnSession(session_sessionToken, session_idAccount))
+                {
+                    ViewData["session"] = RepositorySession.Get(x => x.IDAccount == session_idAccount && x.SessionToken == session_sessionToken);
+                    Account account = RepositoryAccount.Get(x => x.IDAccount == session_idAccount);
+                    account.PasswordHash = null;
+                    ViewData["account"] = account;
+
+                    switch (account.UserRol.UserLevel)
+                    {
+                        case 4:
+                            ViewData["LaboralTasks"] = RepositoryLaboralTask.GetByAttentionArea(account.IDAccount);
+                            break;
+
+                        case 5:
+                            ViewData["LaboralTasks"] = RepositoryLaboralTask.GetByAttentionArea();
+                            break;
+
+                        case 10:
+                            ViewData["LaboralTasks"] = RepositoryLaboralTask.GetByAttentionArea();
+                            break;
+
+                        default:
+                            return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Cuenta con permisos insuficientes", Type = ResponseType.ERROR }));
+                    }
+
+                    return View();
+                }
+            }
+            return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Inicia sesion para acceder a este sitio.", Type = ResponseType.ERROR }));
         }
 
         public ActionResult NewLaboralTask(ResponseMessage response)
@@ -117,7 +203,7 @@ namespace VisiflexAOSTUX.Controllers
                     account.PasswordHash = null;
                     ViewData["account"] = account;
 
-                    if (account.UserRol.UserLevel == 1 || account.UserRol.UserLevel == 4 || account.UserRol.UserLevel == 10)
+                    if (account.UserRol.UserLevel == 1 || account.UserRol.UserLevel == 5 || account.UserRol.UserLevel == 10)
                     {
                         // SI LAS CREDENCIALES SON LAS CORRECTAS
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Linq.Expressions;
@@ -24,6 +25,13 @@ namespace VisiflexAOSTUX.Services
             }
         }
 
+        public static List<Session> Get()
+        {
+            using (var db = new VisiflexContext())
+            {
+                return db.Sessions.ToList();
+            }
+        }
         /// <summary>
         /// Obtiene una entidad
         /// </summary>
@@ -75,6 +83,27 @@ namespace VisiflexAOSTUX.Services
             {
                 return db.Sessions.Any(predicate);
             }
+        }
+
+        public static int Delete(string idSession)
+        {
+            using (var db = new VisiflexContext())
+            {
+                db.Entry(Get(x => x.IDSession == idSession)).State = EntityState.Deleted;
+                return db.SaveChanges();
+            }
+        }
+
+        public static int PurgeAll()
+        {
+            var table = Get();
+            int count = 0;
+            foreach (var item in table)
+            {
+                count += Delete(item.IDSession);
+            }
+
+            return count;
         }
     }
 }

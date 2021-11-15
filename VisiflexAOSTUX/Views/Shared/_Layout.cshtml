@@ -66,7 +66,7 @@
                             </li>
                         }
 
-                        @if (account != null && (account.UserRol.UserLevel == 10))
+                        @if (account != null && (account.UserRol.UserLevel == 5 || account.UserRol.UserLevel == 10 ))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-light" href="@Url.Action("Settings", "System")">Configuraciones</a>

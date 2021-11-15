@@ -104,6 +104,32 @@ namespace VisiflexAOSTUX.Services
                 return result;
             }
         }
+        public static Dictionary<string, Dictionary<string, List<LaboralTask>>> GetByRequesterArea(string idAccount)
+        {
+            List<string> RequesterAreas = new List<string>();
+            List<string> Workplaces = new List<string>();
+
+            Dictionary<string, Dictionary<string, List<LaboralTask>>> result = new Dictionary<string, Dictionary<string, List<LaboralTask>>>();
+            using (var db = new VisiflexContext())
+            {
+                RequesterAreas = db.LaboralTasks.Select(x => x.IDRequesterArea).Distinct().ToList();
+                Workplaces = db.LaboralTasks.Select(x => x.IDWorkplace).Distinct().ToList();
+
+                for (int i = 0; i < Workplaces.Count; i++)
+                {
+                    Dictionary<string, List<LaboralTask>> node = new Dictionary<string, List<LaboralTask>>();
+                    for (int j = 0; j < RequesterAreas.Count; j++)
+                    {
+                        string wp = Workplaces[i], ra = RequesterAreas[j];
+                        List<LaboralTask> laboralTasks = db.LaboralTasks.Where(x => x.IDWorkplace == wp && x.IDAccount == idAccount).ToList();
+
+                        node.Add(RequesterAreas[j], laboralTasks.Where(x => x.IDRequesterArea == ra).ToList());
+                    }
+                    result.Add(Workplaces[i], node);
+                }
+                return result;
+            }
+        }
 
         public static Dictionary<string, Dictionary<string, List<LaboralTask>>> GetByAttentionArea()
         {
@@ -131,13 +157,30 @@ namespace VisiflexAOSTUX.Services
                 return result;
             }
         }
-
-        public static int Delete(string id)
+        public static Dictionary<string, Dictionary<string, List<LaboralTask>>> GetByAttentionArea(string idAccount)
         {
+            List<string> AttentionAreas = new List<string>();
+            List<string> Workplaces = new List<string>();
+
+            Dictionary<string, Dictionary<string, List<LaboralTask>>> result = new Dictionary<string, Dictionary<string, List<LaboralTask>>>();
             using (var db = new VisiflexContext())
             {
-                db.Entry(Get(id)).State = System.Data.Entity.EntityState.Deleted;
-                return db.SaveChanges();
+                AttentionAreas = db.LaboralTasks.Select(x => x.IDAttentionArea).Distinct().ToList();
+                Workplaces = db.LaboralTasks.Select(x => x.IDWorkplace).Distinct().ToList();
+
+                for (int i = 0; i < Workplaces.Count; i++)
+                {
+                    Dictionary<string, List<LaboralTask>> node = new Dictionary<string, List<LaboralTask>>();
+                    for (int j = 0; j < AttentionAreas.Count; j++)
+                    {
+                        string wp = Workplaces[i], aa = AttentionAreas[j];
+                        List<LaboralTask> laboralTasks = db.LaboralTasks.Where(x => x.IDWorkplace == wp && x.IDAccount == idAccount).ToList();
+
+                        node.Add(AttentionAreas[j], laboralTasks.Where(x => x.IDAttentionArea == aa).ToList());
+                    }
+                    result.Add(Workplaces[i], node);
+                }
+                return result;
             }
         }
 
@@ -154,6 +197,27 @@ namespace VisiflexAOSTUX.Services
             {
                 return db.LaboralTasks.Any(predicate);
             }
+        }
+
+        public static int Delete(string idLaboraltask)
+        {
+            using (var db = new VisiflexContext())
+            {
+                db.Entry(Get(idLaboraltask)).State = EntityState.Deleted;
+                return db.SaveChanges();
+            }
+        }
+
+        public static int PurgeAll()
+        {
+            var table = Get();
+            int count = 0;
+            foreach (var item in table)
+            {
+                count += Delete(item.IDLaboralTask);
+            }
+
+            return count;
         }
     }
 }

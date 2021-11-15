@@ -39,7 +39,7 @@
         switch (account.UserRol.UserLevel)
         {
             case 1:
-                <div class="col-md-4 card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
                     <div class="card-body">
                         <h5 class="card-title">Capturar</h5>
                         <p class="card-text">¿Quieres agregar un nuevo asunto a la agenda laboral?</p>
@@ -48,29 +48,6 @@
                         <div>
                             <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("NewLaboralTask", "LaboralTask")">Haz clic aqui</a>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-md card rounded shadow" style="padding: 8px; margin:16px;">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Rastrear</h5>
-                        <p class="card-text">Visualiza el seguimiento actual de asunto.</p>
-                    </div>
-
-
-                    <div class="card-body">
-                        @using (Html.BeginForm("DirectSearch", "LaboralTask", FormMethod.Post, new { @class = "form" }))
-                        {
-                            <div class="row" style="margin-bottom: 0px;">
-                                <div class="col-md">
-                                    <label class="input-label">No. Seguimiento, Referencia del Documento, o ID del asunto</label>
-                                    <input type="text" class="form-control" name="query" id="query" autocomplete="visiflexdsearch" value="" required>
-                                </div>
-                                <div class="col-md-3" style="align-self: end">
-                                    <button type="submit" class="btn btn-outline-primary" style="width:100%;">Buscar</button>
-                                </div>
-                            </div>
-                        }
                     </div>
                 </div>
                 break;
@@ -179,29 +156,29 @@
                 break;
         }
     }
-    else
-    {
-        <div class="col-md card rounded shadow" style="padding: 8px; margin:16px;">
-            <div class="card-body text-center">
-                <h5 class="card-title">Rastrear</h5>
-                <p class="card-text">Visualiza el seguimiento actual de asunto.</p>
-            </div>
+</div>
 
-
-            <div class="card-body">
-                @using (Html.BeginForm("DirectSearch", "LaboralTask", FormMethod.Post, new { @class = "form" }))
-                {
-                    <div class="row" style="margin-bottom: 0px;">
-                        <div class="col-md">
-                            <label class="input-label">No. Seguimiento, Referencia del Documento, o ID del asunto</label>
-                            <input type="text" class="form-control" name="query" id="query" autocomplete="visiflexdsearch" value="" required>
-                        </div>
-                        <div class="col-md-3" style="align-self: end">
-                            <button type="submit" class="btn btn-outline-primary" style="width:100%;">Buscar</button>
-                        </div>
-                    </div>
-                }
-            </div>
+<div class="row">
+    <div class="col-md card rounded shadow" style="padding: 8px; margin:16px;">
+        <div class="card-body text-center">
+            <h5 class="card-title">Rastrear</h5>
+            <p class="card-text">Visualiza el seguimiento actual de asunto.</p>
         </div>
-    }
+
+
+        <div class="card-body">
+            @using (Html.BeginForm("DirectSearch", "LaboralTask", FormMethod.Post, new { @class = "form" }))
+            {
+                <div class="row" style="margin-bottom: 0px;">
+                    <div class="col-md">
+                        <label class="input-label">No. Seguimiento, Referencia del Documento, o ID del asunto</label>
+                        <input type="text" class="form-control" name="query" id="query" autocomplete="visiflexdsearch" value="" required>
+                    </div>
+                    <div class="col-md-3" style="align-self: end">
+                        <button type="submit" class="btn btn-outline-primary" style="width:100%;">Buscar</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
