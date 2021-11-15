@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
@@ -42,14 +43,6 @@ namespace VisiflexAOSTUX.Services
             }
         }
 
-        public static int Delete(string id)
-        {
-            using (var db = new VisiflexContext())
-            {
-                db.Entry(Get(id)).State = System.Data.Entity.EntityState.Deleted;
-                return db.SaveChanges();
-            }
-        }
 
         public static bool Exist(string laboralTaskHistoryLogID)
         {
@@ -57,6 +50,27 @@ namespace VisiflexAOSTUX.Services
             {
                 return db.LaboralTaskHistoryLogs.Any(x => x.IDLaboralTaskHistoryLog == laboralTaskHistoryLogID);
             }
+        }
+
+        public static int Delete(string idLaboraltaskHistlog)
+        {
+            using (var db = new VisiflexContext())
+            {
+                db.Entry(Get(idLaboraltaskHistlog)).State = EntityState.Deleted;
+                return db.SaveChanges();
+            }
+        }
+
+        public static int PurgeAll()
+        {
+            var table = Get();
+            int count = 0;
+            foreach (var item in table)
+            {
+                count += Delete(item.IDLaboralTaskHistoryLog);
+            }
+
+            return count;
         }
     }
 }

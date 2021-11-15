@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
@@ -32,15 +33,6 @@ namespace VisiflexAOSTUX.Services
                 return db.Workplaces.Where(x => x.WorkplaceID == id).FirstOrDefault();
             }
         }
-        
-        public static int Delete(string id)
-        {
-            using (var db = new VisiflexContext())
-            {
-                db.Entry(Get(id)).State = System.Data.Entity.EntityState.Deleted;
-                return db.SaveChanges();
-            }
-        }
 
         public static bool Exist(Workplace w)
         {
@@ -55,6 +47,27 @@ namespace VisiflexAOSTUX.Services
             {
                 return db.Workplaces.Any(x => x.WorkplaceID == workplaceID);
             }
+        }
+
+        public static int Delete(string idWorkplace)
+        {
+            using (var db = new VisiflexContext())
+            {
+                db.Entry(Get(idWorkplace)).State = EntityState.Deleted;
+                return db.SaveChanges();
+            }
+        }
+
+        public static int PurgeAll()
+        {
+            var table = Get();
+            int count = 0;
+            foreach (var item in table)
+            {
+                count += Delete(item.WorkplaceID);
+            }
+
+            return count;
         }
     }
 }

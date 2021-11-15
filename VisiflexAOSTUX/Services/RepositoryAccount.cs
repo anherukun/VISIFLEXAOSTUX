@@ -95,5 +95,26 @@ namespace VisiflexAOSTUX.Services
                 return db.Accounts.Any(predicate);
             }
         }
+
+        public static int Delete(string idAccount)
+        {
+            using (var db = new VisiflexContext())
+            {
+                db.Entry(Get(idAccount)).State = EntityState.Deleted;
+                return db.SaveChanges();
+            }
+        }
+
+        public static int PurgeAll()
+        {
+            var table = Get();
+            int count = 0;
+            foreach (var item in table)
+            {
+                count += Delete(item.IDAccount);
+            }
+
+            return count;
+        }
     }
 }

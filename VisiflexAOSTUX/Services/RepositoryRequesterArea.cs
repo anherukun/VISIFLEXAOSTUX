@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
@@ -33,15 +34,6 @@ namespace VisiflexAOSTUX.Services
             }
         }
 
-        public static int Delete(string id)
-        {
-            using (var db = new VisiflexContext())
-            {
-                db.Entry(Get(id)).State = System.Data.Entity.EntityState.Deleted;
-                return db.SaveChanges();
-            }
-        }
-
         public static bool Exist(RequesterArea r)
         {
             using (var db = new VisiflexContext())
@@ -55,6 +47,27 @@ namespace VisiflexAOSTUX.Services
             {
                 return db.RequesterAreas.Any(x => x.RequesterAreaID == requesterAreaID);
             }
+        }
+
+        public static int Delete(string idRequesterarea)
+        {
+            using (var db = new VisiflexContext())
+            {
+                db.Entry(Get(idRequesterarea)).State = EntityState.Deleted;
+                return db.SaveChanges();
+            }
+        }
+
+        public static int PurgeAll()
+        {
+            var table = Get();
+            int count = 0;
+            foreach (var item in table)
+            {
+                count += Delete(item.RequesterAreaID);
+            }
+
+            return count;
         }
     }
 }

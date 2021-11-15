@@ -56,5 +56,17 @@ namespace VisiflexAOSTUX.Services
                 return db.Agents.Any(x => x.AgentID == agentID);
             }
         }
+
+        public static int PurgeAll()
+        {
+            var table = Get();
+            int count = 0;
+            foreach (var item in table)
+            {
+                count += Delete(item.AgentID);
+            }
+
+            return count;
+        }
     }
 }
