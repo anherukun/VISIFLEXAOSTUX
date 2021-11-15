@@ -33,6 +33,7 @@ namespace VisiflexAOSTUX.Services
                 return db.LaboralTasks.Where(predicate).OrderBy(x => x.Count).ToList();
             }
         }
+        
         public static LaboralTask Get(string id)
         {
             using (var db = new VisiflexContext())
@@ -46,7 +47,13 @@ namespace VisiflexAOSTUX.Services
                     .FirstOrDefault();
             }
         }
-
+        public static LaboralTask GetByPredicate(System.Linq.Expressions.Expression<Func<LaboralTask, bool>> predicate)
+        {
+            using (var db = new VisiflexContext())
+            {
+                return db.LaboralTasks.Where(predicate).FirstOrDefault();
+            }
+        }
         public static int GetNextCount()
         {
             using (var db = new VisiflexContext())

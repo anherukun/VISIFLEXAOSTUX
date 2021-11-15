@@ -22,33 +22,72 @@ namespace VisiflexAOSTUX.Controllers
         public ActionResult LaboralTask(string laboralTaskID)
         {
             ViewData["LaboralTask"] = RepositoryLaboralTask.Get(laboralTaskID);
+            if (Request.Cookies.AllKeys.Contains("idAccount") && Request.Cookies.AllKeys.Contains("idAccount"))
+            {
+                string session_idAccount = Request.Cookies.Get("idAccount").Value;
+                string session_sessionToken = Request.Cookies.Get("sessionToken").Value;
+                if (RepositorySession.OnSession(session_sessionToken, session_idAccount))
+                {
+                    ViewData["session"] = RepositorySession.Get(x => x.IDAccount == session_idAccount && x.SessionToken == session_sessionToken);
+                    Account account = RepositoryAccount.Get(x => x.IDAccount == session_idAccount);
+                    account.PasswordHash = null;
+                    ViewData["account"] = account;
+
+                    return View();
+                }
+            }
             return View();
         }
 
         public ActionResult ViewAll(string status, string idrequesterarea, string idattentionarea, string idworkplace, ResponseMessage response)
         {
-            if (status != null && idattentionarea != null && idworkplace != null)
-            {
-                ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status == status && x.IDAttentionArea == idattentionarea && x.IDWorkplace == idworkplace);
-            }
-            else if (status != null && idrequesterarea != null && idworkplace != null)
-            {
-                ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status == status && x.IDRequesterArea == idrequesterarea && x.IDWorkplace == idworkplace);
-            }
-            else if (idattentionarea != null && idworkplace != null)
-            {
-                ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.IDAttentionArea == idattentionarea && x.IDWorkplace == idworkplace);
-            }
-            else if (idrequesterarea != null && idworkplace != null)
-            {
-                ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.IDRequesterArea == idrequesterarea && x.IDWorkplace == idworkplace);
-            }
-            else
-            {
-                ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status != "NO PROCEDE" && x.Status != "ATENDIDO");
-            }
             ViewData["Response"] = response;
-            return View();
+
+            if (Request.Cookies.AllKeys.Contains("idAccount") && Request.Cookies.AllKeys.Contains("idAccount"))
+            {
+                string session_idAccount = Request.Cookies.Get("idAccount").Value;
+                string session_sessionToken = Request.Cookies.Get("sessionToken").Value;
+                if (RepositorySession.OnSession(session_sessionToken, session_idAccount))
+                {
+                    ViewData["session"] = RepositorySession.Get(x => x.IDAccount == session_idAccount && x.SessionToken == session_sessionToken);
+                    Account account = RepositoryAccount.Get(x => x.IDAccount == session_idAccount);
+                    account.PasswordHash = null;
+                    ViewData["account"] = account;
+
+                    if (account.UserRol.UserLevel == 4 || account.UserRol.UserLevel == 5 || account.UserRol.UserLevel == 10)
+                    {
+                        // SI LAS CREDENCIALES SON LAS CORRECTAS
+                        if (status != null && idattentionarea != null && idworkplace != null)
+                        {
+                            ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status == status && x.IDAttentionArea == idattentionarea && x.IDWorkplace == idworkplace && x.IDAccount == account.IDAccount);
+                        }
+                        else if (status != null && idrequesterarea != null && idworkplace != null)
+                        {
+                            ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status == status && x.IDRequesterArea == idrequesterarea && x.IDWorkplace == idworkplace && x.IDAccount == account.IDAccount);
+                        }
+                        else if (idattentionarea != null && idworkplace != null)
+                        {
+                            ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.IDAttentionArea == idattentionarea && x.IDWorkplace == idworkplace && x.IDAccount == account.IDAccount);
+                        }
+                        else if (idrequesterarea != null && idworkplace != null)
+                        {
+                            ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.IDRequesterArea == idrequesterarea && x.IDWorkplace == idworkplace && x.IDAccount == account.IDAccount);
+                        }
+                        else
+                        {
+                            ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status != "NO PROCEDE" && x.Status != "ATENDIDO" && x.IDAccount == account.IDAccount);
+                        }
+                        ViewData["Response"] = response;
+                        return View();
+                    }
+                    else
+                    {
+                        return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Cuenta con permisos insuficientes", Type = ResponseType.ERROR }));
+                    }
+                }
+            }
+
+            return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Inicia sesion para acceder a este sitio", Type = ResponseType.ERROR }));
         }
         public ActionResult ViewByRequesterArea(ResponseMessage response)
         {
@@ -67,12 +106,37 @@ namespace VisiflexAOSTUX.Controllers
 
         public ActionResult NewLaboralTask(ResponseMessage response)
         {
-            ViewData["Workplaces"] = RepositoryWorkplace.Get();
-            ViewData["Accounts"] = RepositoryAccount.Get();
-            ViewData["AttentionAreas"] = RepositoryAttentionArea.Get();
-            ViewData["RequesterAreas"] = RepositoryRequesterArea.Get();
-            ViewData["Response"] = response;
-            return View();
+            if (Request.Cookies.AllKeys.Contains("idAccount") && Request.Cookies.AllKeys.Contains("idAccount"))
+            {
+                string session_idAccount = Request.Cookies.Get("idAccount").Value;
+                string session_sessionToken = Request.Cookies.Get("sessionToken").Value;
+                if (RepositorySession.OnSession(session_sessionToken, session_idAccount))
+                {
+                    ViewData["session"] = RepositorySession.Get(x => x.IDAccount == session_idAccount && x.SessionToken == session_sessionToken);
+                    Account account = RepositoryAccount.Get(x => x.IDAccount == session_idAccount);
+                    account.PasswordHash = null;
+                    ViewData["account"] = account;
+
+                    if (account.UserRol.UserLevel == 1 || account.UserRol.UserLevel == 4 || account.UserRol.UserLevel == 10)
+                    {
+                        // SI LAS CREDENCIALES SON LAS CORRECTAS
+
+                        ViewData["Workplaces"] = RepositoryWorkplace.Get();
+                        ViewData["Accounts"] = RepositoryAccount.Get();
+                        ViewData["AttentionAreas"] = RepositoryAttentionArea.Get();
+                        ViewData["RequesterAreas"] = RepositoryRequesterArea.Get();
+                        ViewData["Response"] = response;
+
+                        return View();
+                    }
+                    else
+                    {
+                        return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Cuenta con permisos insuficientes", Type = ResponseType.ERROR }));
+                    }
+                }
+            }
+
+            return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Inicia sesion para acceder a este sitio", Type = ResponseType.ERROR }));
         }
 
         [HttpPost]
@@ -164,6 +228,24 @@ namespace VisiflexAOSTUX.Controllers
                 }
             }
             return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "No se pudo procesar solicitud, falta informacion o archivo digital", Type = ResponseType.ERROR }));
+        }
+
+        [HttpPost]
+        public ActionResult DirectSearch(string query)
+        {
+            int c = -1;
+            Int32.TryParse(query, out c);
+            if (c != -1)
+                if (RepositoryLaboralTask.Exist(x => x.DocumentID == query || x.Count == c || x.IDLaboralTask == query))
+                {
+                    return Redirect(Url.Action("LaboralTask", "LaboralTask", new { laboralTaskID = RepositoryLaboralTask.GetByPredicate(x => x.DocumentID == query || x.Count == c || x.IDLaboralTask == query).IDLaboralTask }));
+                }
+            else if (RepositoryLaboralTask.Exist(x => x.DocumentID == query || x.IDLaboralTask == query))
+                {
+                    return Redirect(Url.Action("LaboralTask", "LaboralTask", new { RepositoryLaboralTask.GetByPredicate(x => x.DocumentID == query || x.IDLaboralTask == query).IDLaboralTask }));
+                }
+
+            return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "No se contro ningun resultado con el criterio de busqueda", Type = ResponseType.ERROR }));
         }
     }
 }
