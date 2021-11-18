@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using VisiflexAOSTUX.Models;
 using VisiflexAOSTUX.Services;
@@ -16,8 +18,43 @@ namespace VisiflexAOSTUX.Controllers
             return Redirect(Url.Action("Settings", "System"));
         }
 
+        public FileResult DownloadBackup()
+        {
+            Backup backup = BackupService.CreateBackup();
+
+            if (backup != null)
+            {
+                byte[] bytes = Application.ApplicationManager.Compress(backup.ToBytes());
+                return File(bytes, "application/octet-stream", $"{DateTime.Now.Ticks}_{DateTime.Now.ToShortDateString()}_Visiflex.dat");
+            }
+
+            throw new NotImplementedException();
+        }
+
+        [HttpPost] 
+        public ActionResult UploadBackup(HttpPostedFileBase filebackup)
+        {
+            if (filebackup != null)
+            {
+                DateTime dt1 = DateTime.Now, dt2;
+                // Descomprime los bytes del archivo y lo almacena en un arreglo de bytes
+                byte[] bytes = Application.ApplicationManager.Decompress(new BinaryReader(filebackup.InputStream).ReadBytes(filebackup.ContentLength));
+                // Lee los bytes del archivo .bak y los deserializa a un objeto Backup
+                Backup backup = Models.Backup.FromBytes(bytes);
+                // Llama al servicio de Backup y empieza la recuperacion de datos
+                //BackupService.RecoverData(backup);
+
+                dt2 = DateTime.Now;
+                TimeSpan span = dt2.Subtract(dt1);
+                return Redirect(Url.Action("Settings", "System", new ResponseMessage() { Message = $"Los datos fueron restaurados correctamente \nT: { span.ToString()}", Type = ResponseType.SUCCESS }));
+            }
+            return Redirect(Url.Action("Settings", "System", new ResponseMessage() { Message = "No se puede recuperar de un objeto nulo", Type = ResponseType.ERROR }));
+        }
+
         public ActionResult Settings(ResponseMessage response)
         {
+            ViewData["Response"] = response;
+
             if (Request.Cookies.AllKeys.Contains("idAccount") && Request.Cookies.AllKeys.Contains("idAccount"))
             {
                 string session_idAccount = Request.Cookies.Get("idAccount").Value;
@@ -43,8 +80,6 @@ namespace VisiflexAOSTUX.Controllers
                         for (int i = 0; i < accounts.Count; i++)
                             accounts[i].PasswordHash = null;
                         ViewData["Accounts"] = accounts;
-
-                        ViewData["Response"] = response;
 
                         return View();
                     }

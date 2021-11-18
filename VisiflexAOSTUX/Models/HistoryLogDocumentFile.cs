@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace VisiflexAOSTUX.Models
 {
+    [Serializable()]
     public class HistoryLogDocumentFile
     {
         [Key] public string IDHistoryLogDocumentFile { get; set; }

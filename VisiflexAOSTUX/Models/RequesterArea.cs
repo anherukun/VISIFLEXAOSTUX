@@ -6,6 +6,7 @@ using System.Web;
 
 namespace VisiflexAOSTUX.Models
 {
+    [Serializable()]
     public class RequesterArea
     {
         [Key] public string RequesterAreaID { get; set; }

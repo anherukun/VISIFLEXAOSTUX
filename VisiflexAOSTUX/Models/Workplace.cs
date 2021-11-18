@@ -6,6 +6,7 @@ using System.Web;
 
 namespace VisiflexAOSTUX.Models
 {
+    [Serializable()]
     public class Workplace
     {
         [Key] public string WorkplaceID { get; set; }

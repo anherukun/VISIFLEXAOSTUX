@@ -7,6 +7,7 @@ using System.Web;
 
 namespace VisiflexAOSTUX.Models
 {
+    [Serializable()]
     public class Account
     {
         [Key] public string IDAccount { get; set; }
@@ -21,6 +22,7 @@ namespace VisiflexAOSTUX.Models
         public bool RequirePasswordUpdate { get; set; }
     }
 
+    [Serializable()]
     public class UserRol
     {
         [Key] public string IDUserRol { get; set; }

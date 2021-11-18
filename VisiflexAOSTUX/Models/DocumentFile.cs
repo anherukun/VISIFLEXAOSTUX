@@ -6,6 +6,7 @@ using System.Web;
 
 namespace VisiflexAOSTUX.Models
 {
+    [Serializable()]
     public class DocumentFile
     {
         [Key] public string DocumentFileID { get; set; }

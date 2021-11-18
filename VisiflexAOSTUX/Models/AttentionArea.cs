@@ -6,6 +6,7 @@ using System.Web;
 
 namespace VisiflexAOSTUX.Models
 {
+    [Serializable()]
     public class AttentionArea
     {
         [Key] public string AttentionAreaID { get; set; }

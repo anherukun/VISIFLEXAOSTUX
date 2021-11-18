@@ -7,6 +7,7 @@ using System.Web;
 
 namespace VisiflexAOSTUX.Models
 {
+    [Serializable()]
     public class Session
     {
         [Key] public string IDSession { get; set; }

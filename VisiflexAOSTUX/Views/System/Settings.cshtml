@@ -28,15 +28,15 @@
                 <h5 class="card-title"><i class="bi bi-shield-fill-check"></i> Copia de seguridad</h5>
                 <p class="card-text">Realiza una copia segura de los datos e informacion almacenada en la base de datos</p>
 
-                <a class="btn btn-outline-primary full-width" style="margin-bottom: 20px;" href="#"><i class="bi bi-download"></i> Descargar respaldo</a>
+                <a class="btn btn-outline-primary full-width" style="margin-bottom: 20px;" href="@Url.Action("DownloadBackup", "System")"><i class="bi bi-download"></i> Descargar respaldo</a>
 
 
-                @using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form needs-validation", enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("UploadBackup", "System", FormMethod.Post, new { @class = "form needs-validation", enctype = "multipart/form-data" }))
                 {
                     <div class="row">
                         <div class="col-md">
                             <label class="input-label">Subir archivo de respaldo</label>
-                            <input type="file" class="form-control" id="" name="" required>
+                            <input type="file" class="form-control" id="filebackup" name="filebackup" accept=".dat" required>
                         </div>
                     </div>
                     <div>
