@@ -10,11 +10,19 @@ namespace VisiflexAOSTUX.Services
 {
     public class RepositoryDocumentFile
     {
-        public static int Add(DocumentFile d)
+        public static int AddOrUpdate(DocumentFile d)
         {
             using (var db = new VisiflexContext())
             {
                 db.DocumentFiles.AddOrUpdate(d);
+                return db.SaveChanges();
+            }
+        }
+        internal static int AddRange(List<DocumentFile> documentFiles)
+        {
+            using (var db = new VisiflexContext())
+            {
+                db.DocumentFiles.AddRange(documentFiles);
                 return db.SaveChanges();
             }
         }

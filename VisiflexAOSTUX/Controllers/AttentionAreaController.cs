@@ -30,7 +30,7 @@ namespace VisiflexAOSTUX.Controllers
                         Name = attentionArea.Name.Trim().ToUpper()
                     };
 
-                    if (RepositoryAttentionArea.Add(a) > 0)
+                    if (RepositoryAttentionArea.AddOrUpdate(a) > 0)
                         return Redirect(Url.Action(action, controller, new ResponseMessage() { Message = "Area de atencion agregada correctamente.", Type = ResponseType.SUCCESS }));
                     else
                         return Redirect(Url.Action(action, controller, new ResponseMessage() { Message = "No se pudo completar la operacion, verifica los datos.", Type = ResponseType.ERROR }));

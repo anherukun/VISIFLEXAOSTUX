@@ -39,6 +39,18 @@ namespace VisiflexAOSTUX.Controllers
             return View();
         }
 
+        public ActionResult ChangePassword(string idAccount)
+        {
+            Account account = RepositoryAccount.Get(idAccount);
+            if (account.RequirePasswordUpdate == true)
+            {
+                ViewData["account"] = RepositoryAccount.Get(idAccount);
+                return View();
+            }
+
+            return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "No puedes acceder a este sitio", Type = ResponseType.ERROR }));
+        }
+
         public ActionResult SignUp(ResponseMessage response)
         {
             ViewData["Response"] = response;
@@ -83,12 +95,51 @@ namespace VisiflexAOSTUX.Controllers
             return Redirect(Url.Action("Index", "Home"));
         }
 
+        public ActionResult ResetPassword(string IdAccount)
+        {
+            if (Request.Cookies.AllKeys.Contains("idAccount") && Request.Cookies.AllKeys.Contains("idAccount"))
+            {
+                string session_idAccount = Request.Cookies.Get("idAccount").Value;
+                string session_sessionToken = Request.Cookies.Get("sessionToken").Value;
+                if (RepositorySession.OnSession(session_sessionToken, session_idAccount))
+                {
+                    ViewData["session"] = RepositorySession.Get(x => x.IDAccount == session_idAccount && x.SessionToken == session_sessionToken);
+                    Account acc = RepositoryAccount.Get(x => x.IDAccount == session_idAccount);
+                    acc.PasswordHash = null;
+                    ViewData["account"] = acc;
+
+                    if (acc.UserRol.UserLevel == 10 || acc.UserRol.UserLevel == 5)
+                    {
+                        // SI LAS CREDENCIALES SON LAS CORRECTAS
+                        Account account = RepositoryAccount.Get(IdAccount);
+
+                        account.RequirePasswordUpdate = true;
+                        account.PasswordHash = Security.SHA256Hash("P3mex.99");
+
+                        RepositoryAccount.AddOrUpdate(account);
+
+                        return Redirect(Url.Action("Settings", "System", new ResponseMessage() { Message = "Contraseña temporal: P3mex.99", Type = ResponseType.SUCCESS }));
+                    }
+                    else
+                    {
+                        return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Cuenta con permisos insuficientes", Type = ResponseType.ERROR }));
+                    }
+                }
+            }
+
+            return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Inicia sesion para acceder a este sitio", Type = ResponseType.ERROR }));
+        }
+
         [HttpPost]
         public ActionResult SubmitLogin(string Username, string Password)
         {
             if (RepositoryAccount.IsPasswordCorrect(Username, Password))
             {
                 Account account = RepositoryAccount.Get(x => x.Username == Username || x.Email == Username);
+                
+                if (account.RequirePasswordUpdate == true)
+                    return Redirect(Url.Action("ChangePassword", "Identity", new { idAccount = account.IDAccount }));
+
                 if (RepositorySession.Exist(account.IDAccount))
                 {
                     Session session = RepositorySession.Get(x => x.IDAccount == account.IDAccount);
@@ -159,6 +210,32 @@ namespace VisiflexAOSTUX.Controllers
             }
 
             return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Inicia sesion para acceder a este sitio", Type = ResponseType.ERROR }));
+        }
+
+        [HttpPost]
+        public ActionResult SubmitUpdatePassword (string OldPassword, string NewPassword, string PasswordConfirm, string IdAccount)
+        {
+            Account account = RepositoryAccount.Get(IdAccount);
+
+            if (account.RequirePasswordUpdate == true)
+            {
+                if (account.PasswordHash == Security.SHA256Hash(OldPassword))
+                {
+                    if (NewPassword == PasswordConfirm)
+                    {
+                        account.PasswordHash = Security.SHA256Hash(NewPassword);
+                        account.RequirePasswordUpdate = false;
+
+                        RepositoryAccount.AddOrUpdate(account);
+                        return Redirect(Url.Action("Login", "Identity", new { IdAccount = account.IDAccount, Message = "Contraseña cambiada correctamente", Type = ResponseType.SUCCESS }));
+                    }
+                    else
+                        return Redirect(Url.Action("ChangePassword", "Identity", new { IdAccount = account.IDAccount, Message = "Contraseña nueva no coincide", Type = ResponseType.ERROR }));
+                }
+                else
+                    return Redirect(Url.Action("ChangePassword", "Identity", new { IdAccount = account.IDAccount, Message = "Contraseña actual incorrecta", Type = ResponseType.ERROR }));
+            }
+            return Redirect(Url.Action("Index", "Home", new { IdAccount = account.IDAccount, Message = "No puedes acceder a este sitio", Type = ResponseType.ERROR }));
         }
     }
 }

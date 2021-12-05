@@ -92,19 +92,19 @@ namespace VisiflexAOSTUX.Controllers
                         Data = ApplicationManager.Compress(new BinaryReader(File.InputStream).ReadBytes(File.ContentLength))
                     };
 
-                    if (RepositoryHistoryLogDocumentFile.Add(logfile) > 0)
+                    if (RepositoryHistoryLogDocumentFile.AddOrUpdate(logfile) > 0)
                     {
                         log.IDHistoryLogDocumentFile = logfile.IDHistoryLogDocumentFile;
 
-                        if (RepositoryLaboralTaskHistoryLog.Add(log) > 0)
+                        if (RepositoryLaboralTaskHistoryLog.AddOrUpdate(log) > 0)
                         {
                             LaboralTask laboralTask = RepositoryLaboralTask.Get(log.IDLaboralTask);
                             if (laboralTask.Status != Status)
-                                RepositoryLaboralTaskHistoryLog.Add(statuslog);
+                                RepositoryLaboralTaskHistoryLog.AddOrUpdate(statuslog);
 
                             laboralTask.Status = Status;
 
-                            RepositoryLaboralTask.Add(laboralTask);
+                            RepositoryLaboralTask.AddOrUpdate(laboralTask);
 
                             // ResponseMessage r = new ResponseMessage() { Message = "Actualizacion guardada correctamente", Type = ResponseType.SUCCESS };
                             return Redirect(Url.Action("HistoryLog", "LaboralTaskHistoryLog", new { laboralTaskID = log.IDLaboralTask, 
@@ -128,15 +128,15 @@ namespace VisiflexAOSTUX.Controllers
                 }
                 else
                 {
-                    if (RepositoryLaboralTaskHistoryLog.Add(log) > 0)
+                    if (RepositoryLaboralTaskHistoryLog.AddOrUpdate(log) > 0)
                     {
                         LaboralTask laboralTask = RepositoryLaboralTask.Get(log.IDLaboralTask);
                         if (laboralTask.Status != Status)
-                            RepositoryLaboralTaskHistoryLog.Add(statuslog);
+                            RepositoryLaboralTaskHistoryLog.AddOrUpdate(statuslog);
 
                         laboralTask.Status = Status;
 
-                        RepositoryLaboralTask.Add(laboralTask);
+                        RepositoryLaboralTask.AddOrUpdate(laboralTask);
 
                         // ResponseMessage r = new ResponseMessage() { Message = "Actualizacion guardada correctamente", Type = ResponseType.SUCCESS };
                         return Redirect(Url.Action("HistoryLog", "LaboralTaskHistoryLog", new { laboralTaskID = log.IDLaboralTask,

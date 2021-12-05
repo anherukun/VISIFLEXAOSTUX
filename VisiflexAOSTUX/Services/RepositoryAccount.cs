@@ -25,6 +25,14 @@ namespace VisiflexAOSTUX.Services
                 return db.SaveChanges();
             }
         }
+        public static int AddRange(List<Account> accounts)
+        {
+            using (var db = new VisiflexContext())
+            {
+                db.Accounts.AddRange(accounts);
+                return db.SaveChanges();
+            }
+        }
         /// <summary>
         /// Obtiene una lista de entidades
         /// </summary>
@@ -36,6 +44,7 @@ namespace VisiflexAOSTUX.Services
                 return db.Accounts.Include(x => x.UserRol).OrderBy(x => x.Username).ToList();
             }
         }
+
         /// <summary>
         /// Obtiene una entidad
         /// </summary>

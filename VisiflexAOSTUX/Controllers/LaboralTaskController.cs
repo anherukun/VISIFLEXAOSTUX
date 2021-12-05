@@ -268,11 +268,11 @@ namespace VisiflexAOSTUX.Controllers
                         Data = ApplicationManager.Compress(new BinaryReader(File.InputStream).ReadBytes(File.ContentLength))
                     };
 
-                    if (RepositoryDocumentFile.Add(d) > 0)
+                    if (RepositoryDocumentFile.AddOrUpdate(d) > 0)
                     {
                         l.IDDocumentFile = d.DocumentFileID;
 
-                        if (RepositoryLaboralTask.Add(l) > 0)
+                        if (RepositoryLaboralTask.AddOrUpdate(l) > 0)
                         {
                             LaboralTaskHistoryLog log = new LaboralTaskHistoryLog()
                             {
@@ -282,7 +282,7 @@ namespace VisiflexAOSTUX.Controllers
                                 Date = DateTime.Now,
                                 UploadTicks = submittionticks
                             };
-                            if (RepositoryLaboralTaskHistoryLog.Add(log) > 0)
+                            if (RepositoryLaboralTaskHistoryLog.AddOrUpdate(log) > 0)
                                 return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente: Actualizacion de asunto registrada", Type = ResponseType.SUCCESS }));
                             else
                                 return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente", Type = ResponseType.SUCCESS }));
@@ -296,7 +296,7 @@ namespace VisiflexAOSTUX.Controllers
                         }
                     }
                 }
-                else if (RepositoryLaboralTask.Add(l) > 0)
+                else if (RepositoryLaboralTask.AddOrUpdate(l) > 0)
                 {
                     LaboralTaskHistoryLog log = new LaboralTaskHistoryLog()
                     {
@@ -307,7 +307,7 @@ namespace VisiflexAOSTUX.Controllers
                         UploadTicks = submittionticks
                     };
 
-                    if (RepositoryLaboralTaskHistoryLog.Add(log) > 0)
+                    if (RepositoryLaboralTaskHistoryLog.AddOrUpdate(log) > 0)
                         return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente: Actualizacion de asunto registrada", Type = ResponseType.SUCCESS }));
                     else
                         return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente", Type = ResponseType.SUCCESS }));

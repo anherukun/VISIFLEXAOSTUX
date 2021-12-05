@@ -30,7 +30,7 @@ namespace VisiflexAOSTUX.Controllers
                         Name = workplace.Name.Trim().ToUpper()
                     };
 
-                    if (RepositoryWorkplace.Add(w) > 0)
+                    if (RepositoryWorkplace.AddOrUpdate(w) > 0)
                         return Redirect(Url.Action(action, controller, new ResponseMessage() { Message = "Centro de trabajo agregada correctamente.", Type = ResponseType.SUCCESS }));
                     else
                         return Redirect(Url.Action(action, controller, new ResponseMessage() { Message = "No se pudo completar la operacion, verifica los datos.", Type = ResponseType.ERROR }));

@@ -10,11 +10,19 @@ namespace VisiflexAOSTUX.Services
 {
     public class RepositoryWorkplace
     {
-        public static int Add(Workplace w)
+        public static int AddOrUpdate(Workplace w)
         {
             using (var db = new VisiflexContext())
             {
                 db.Workplaces.AddOrUpdate(w);
+                return db.SaveChanges();
+            }
+        }
+        internal static int AddRange(List<Workplace> workplaces)
+        {
+            using (var db = new VisiflexContext())
+            {
+                db.Workplaces.AddRange(workplaces);
                 return db.SaveChanges();
             }
         }

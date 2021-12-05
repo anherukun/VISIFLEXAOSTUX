@@ -76,7 +76,18 @@
                                     <td>@item.Username</td>
                                     <td>@item.Name @item.LastName</td>
                                     <td>@item.UserRol.UserRolName</td>
-                                    <td><a class="btn btn-sm btn-outline-danger full-width" href="@Url.Action("", "")"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            @if (item.RequirePasswordUpdate == true)
+                                            {
+                                                <a class="btn btn-sm btn-outline-primary full-width disabled" href="#"><i class="bi bi-key-fill"></i></a>
+                                            } else
+                                            {
+                                                <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("ResetPassword", "Identity", new { IdAccount = item.IDAccount })"><i class="bi bi-key-fill"></i></a>
+                                            }
+                                            <a class="btn btn-sm btn-outline-danger full-width" href="@Url.Action("", "")" hidden><i class="bi bi-trash-fill"></i></a>
+                                        </div>
+                                    </td>
                                 </tr>
                                 }
                             }
@@ -274,7 +285,7 @@
                 <h5 class="card-title"><i class="bi bi-x-octagon-fill"></i> Purgar datos</h5>
                 <p class="card-text">Elimina TODOS los datos almacenados en la base de datos</p>
 
-                <a class="btn btn-outline-danger full-width" href="#">Purgar datos</a>
+                <a class="btn btn-outline-danger full-width" href="@Url.Action("PurgeTables", "System")">Purgar datos</a>
             </div>
         </div>
 

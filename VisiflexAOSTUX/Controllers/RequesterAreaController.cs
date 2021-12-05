@@ -28,7 +28,7 @@ namespace VisiflexAOSTUX.Controllers
                     Name = requesterArea.Name.Trim().ToUpper()
                 };
 
-                if (RepositoryRequesterArea.Add(r) > 0)
+                if (RepositoryRequesterArea.AddOrUpdate(r) > 0)
                     return Redirect(Url.Action(action, controller, new ResponseMessage() { Message = "Area solicitante agregada correctamente.", Type = ResponseType.SUCCESS }));
                 else
                     return Redirect(Url.Action(action, controller, new ResponseMessage() { Message = "No se pudo completar la operacion, verifica los datos.", Type = ResponseType.ERROR }));

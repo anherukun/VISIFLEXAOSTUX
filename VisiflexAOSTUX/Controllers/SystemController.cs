@@ -31,24 +31,42 @@ namespace VisiflexAOSTUX.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPost] 
-        public ActionResult UploadBackup(HttpPostedFileBase filebackup)
+        public ActionResult PurgeTables()
         {
-            if (filebackup != null)
+            if (Request.Cookies.AllKeys.Contains("idAccount") && Request.Cookies.AllKeys.Contains("idAccount"))
             {
-                DateTime dt1 = DateTime.Now, dt2;
-                // Descomprime los bytes del archivo y lo almacena en un arreglo de bytes
-                byte[] bytes = Application.ApplicationManager.Decompress(new BinaryReader(filebackup.InputStream).ReadBytes(filebackup.ContentLength));
-                // Lee los bytes del archivo .bak y los deserializa a un objeto Backup
-                Backup backup = Models.Backup.FromBytes(bytes);
-                // Llama al servicio de Backup y empieza la recuperacion de datos
-                //BackupService.RecoverData(backup);
+                string session_idAccount = Request.Cookies.Get("idAccount").Value;
+                string session_sessionToken = Request.Cookies.Get("sessionToken").Value;
+                if (RepositorySession.OnSession(session_sessionToken, session_idAccount))
+                {
+                    ViewData["session"] = RepositorySession.Get(x => x.IDAccount == session_idAccount && x.SessionToken == session_sessionToken);
+                    Account account = RepositoryAccount.Get(x => x.IDAccount == session_idAccount);
+                    account.PasswordHash = null;
+                    ViewData["account"] = account;
 
-                dt2 = DateTime.Now;
-                TimeSpan span = dt2.Subtract(dt1);
-                return Redirect(Url.Action("Settings", "System", new ResponseMessage() { Message = $"Los datos fueron restaurados correctamente \nT: { span.ToString()}", Type = ResponseType.SUCCESS }));
+                    if (account.UserRol.UserLevel != 5 && account.UserRol.UserLevel != 10)
+                        return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Cuenta con permisos insuficientes", Type = ResponseType.ERROR }));
+                    else
+                    {
+                        int deletedEntities = 0;
+
+                        deletedEntities += RepositoryLaboralTask.PurgeAll();
+                        deletedEntities += RepositoryHistoryLogDocumentFile.PurgeAll();
+                        deletedEntities += RepositoryDocumentFile.PurgeAll();
+                        deletedEntities += RepositoryLaboralTaskHistoryLog.PurgeAll();
+
+                        deletedEntities += RepositorySession.PurgeAll();
+                        deletedEntities += RepositoryWorkplace.PurgeAll();
+                        deletedEntities += RepositoryRequesterArea.PurgeAll();
+                        deletedEntities += RepositoryAttentionArea.PurgeAll();
+
+
+                        return Redirect(Url.Action("Settings", "System", new ResponseMessage() { Message = $"{deletedEntities} Eliminados correctamente", Type = ResponseType.ERROR }));
+                    }
+                }
             }
-            return Redirect(Url.Action("Settings", "System", new ResponseMessage() { Message = "No se puede recuperar de un objeto nulo", Type = ResponseType.ERROR }));
+
+            return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Inicia sesion para acceder a este sitio", Type = ResponseType.ERROR }));
         }
 
         public ActionResult Settings(ResponseMessage response)
@@ -87,6 +105,26 @@ namespace VisiflexAOSTUX.Controllers
             }
 
             return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "Inicia sesion para acceder a este sitio", Type = ResponseType.ERROR }));
+        }
+
+        [HttpPost] 
+        public ActionResult UploadBackup(HttpPostedFileBase filebackup)
+        {
+            if (filebackup != null)
+            {
+                DateTime dt1 = DateTime.Now, dt2;
+                // Descomprime los bytes del archivo y lo almacena en un arreglo de bytes
+                byte[] bytes = Application.ApplicationManager.Decompress(new BinaryReader(filebackup.InputStream).ReadBytes(filebackup.ContentLength));
+                // Lee los bytes del archivo .bak y los deserializa a un objeto Backup
+                Backup backup = Models.Backup.FromBytes(bytes);
+                // Llama al servicio de Backup y empieza la recuperacion de datos
+                int entitiesRecovered = BackupService.RecoverData(backup);
+
+                dt2 = DateTime.Now;
+                TimeSpan span = dt2.Subtract(dt1);
+                return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = $"{entitiesRecovered} datos fueron restaurados correctamente \nT: { span.ToString()}", Type = ResponseType.SUCCESS }));
+            }
+            return Redirect(Url.Action("Settings", "System", new ResponseMessage() { Message = "No se puede recuperar de un objeto nulo", Type = ResponseType.ERROR }));
         }
     }
 }

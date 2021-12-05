@@ -24,6 +24,14 @@ namespace VisiflexAOSTUX.Services
                 return db.SaveChanges();
             }
         }
+        public static int AddRange(List<Session> sessions)
+        {
+            using (var db = new VisiflexContext())
+            {
+                db.Sessions.AddRange(sessions);
+                return db.SaveChanges();
+            }
+        }
 
         public static List<Session> Get()
         {

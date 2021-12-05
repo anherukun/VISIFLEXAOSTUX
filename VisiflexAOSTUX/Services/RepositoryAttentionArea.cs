@@ -10,11 +10,19 @@ namespace VisiflexAOSTUX.Services
 {
     public class RepositoryAttentionArea
     {
-        public static int Add(AttentionArea a)
+        public static int AddOrUpdate(AttentionArea a)
         {
             using (var db = new VisiflexContext())
             {
                 db.AttentionAreas.AddOrUpdate(a);
+                return db.SaveChanges();
+            }
+        }
+        internal static int AddRange(List<AttentionArea> attentionAreas)
+        {
+            using (var db = new VisiflexContext())
+            {
+                db.AttentionAreas.AddRange(attentionAreas);
                 return db.SaveChanges();
             }
         }
@@ -41,6 +49,7 @@ namespace VisiflexAOSTUX.Services
                 return db.AttentionAreas.Any(x => x.AreaCode == a.AreaCode );
             }
         }
+
         public static bool Exist(string attentionAreaID)
         {
             using (var db = new VisiflexContext())

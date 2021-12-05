@@ -10,11 +10,19 @@ namespace VisiflexAOSTUX.Services
 {
     public class RepositoryHistoryLogDocumentFile
     {
-        public static int Add(HistoryLogDocumentFile h)
+        public static int AddOrUpdate(HistoryLogDocumentFile h)
         {
             using (var db = new VisiflexContext())
             {
                 db.HistoryLogDocumentFiles.AddOrUpdate(h);
+                return db.SaveChanges();
+            }
+        }
+        internal static int AddRange(List<HistoryLogDocumentFile> historyLogDocumentFiles)
+        {
+            using (var db = new VisiflexContext())
+            {
+                db.HistoryLogDocumentFiles.AddRange(historyLogDocumentFiles);
                 return db.SaveChanges();
             }
         }

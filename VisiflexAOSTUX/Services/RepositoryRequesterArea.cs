@@ -10,11 +10,19 @@ namespace VisiflexAOSTUX.Services
 {
     public class RepositoryRequesterArea
     {
-        public static int Add(RequesterArea r)
+        public static int AddOrUpdate(RequesterArea r)
         {
             using (var db = new VisiflexContext())
             {
                 db.RequesterAreas.AddOrUpdate(r);
+                return db.SaveChanges();
+            }
+        }
+        public static int AddRange(List<RequesterArea> requesterAreas)
+        {
+            using (var db = new VisiflexContext())
+            {
+                db.RequesterAreas.AddRange(requesterAreas);
                 return db.SaveChanges();
             }
         }

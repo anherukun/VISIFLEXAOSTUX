@@ -10,11 +10,19 @@ namespace VisiflexAOSTUX.Services
 {
     public class RepositoryLaboralTask
     {
-        public static int Add(LaboralTask l)
+        public static int AddOrUpdate(LaboralTask l)
         {
             using (var db = new VisiflexContext())
             {
                 db.LaboralTasks.AddOrUpdate(l);
+                return db.SaveChanges();
+            }
+        }
+        internal static int AddRange(List<LaboralTask> laboralTasks)
+        {
+            using (var db = new VisiflexContext())
+            {
+                db.LaboralTasks.AddRange(laboralTasks);
                 return db.SaveChanges();
             }
         }
@@ -54,6 +62,7 @@ namespace VisiflexAOSTUX.Services
                 return db.LaboralTasks.Where(predicate).FirstOrDefault();
             }
         }
+
         public static int GetNextCount()
         {
             using (var db = new VisiflexContext())

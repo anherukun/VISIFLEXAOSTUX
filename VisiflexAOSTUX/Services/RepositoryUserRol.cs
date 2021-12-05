@@ -19,6 +19,14 @@ namespace VisiflexAOSTUX.Services
                 return db.SaveChanges();
             }
         }
+        public static int AddRange(List<UserRol> userRols)
+        {
+            using (var db = new VisiflexContext())
+            {
+                db.UserRols.AddRange(userRols);
+                return db.SaveChanges();
+            }
+        }
 
         public static List<UserRol> Get()
         {
