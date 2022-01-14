@@ -4,11 +4,42 @@
 
     ViewBag.Title = $"Informe detallado del asunto laboral";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    VisiflexAOSTUX.Models.Session session = null;
+    VisiflexAOSTUX.Models.Account account = null;
+    if (ViewData["session"] != null)
+    {
+        session = ViewData["session"] as VisiflexAOSTUX.Models.Session;
+        account = ViewData["account"] as VisiflexAOSTUX.Models.Account;
+    }
 }
 
 <div class="row">
-    <div class="col-md">
+    <div class="offset-md-3">
         <h2 style="margin-bottom:32px;">@ViewBag.Title</h2>
+    </div>
+</div>
+
+<div class="row" >
+    <div class="col-md-3 d-print-none">
+        <div class="list-group shadow">
+            <a href="#" class="list-group-item list-group-item-action active disabled">Accesos rapidos</a>
+            <a href="@Url.Action("", "")" class="list-group-item list-group-item-action "><i class="bi bi-house"></i> Inicio</a>
+
+            @if (account != null)
+            {
+                if (account.UserRol.UserLevel == 5 || account.UserRol.UserLevel == 10)
+                {
+                    <a href="@Url.Action("NewLaboralTask", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-card-checklist"></i> Capturar</a>
+                }
+                <a href="@Url.Action("ViewAll", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-search"></i> Ver asuntos laborales</a>
+                <a href="@Url.Action("ViewByRequesterArea", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-search"></i> Ver asuntos por areas solicitantes</a>
+                <a href="@Url.Action("ViewByAttentionArea", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-search"></i> Ver asuntos por areas de atencion</a>
+            }
+        </div>
+    </div>
+
+    <div class="col-md">
 
         <div class="card rounded shadow" style="padding:8px; margin-bottom:32px;">
             <div class="card-body">

@@ -14,19 +14,37 @@
 }
 
 <div class="row">
-    <div class="col-md">
-        <h2 style="margin-bottom:32px;">Actualizaciones de asuntos</h2>
+    <div class="offset-md-3">
+        <h2 style="margin-bottom:32px;">@ViewBag.Title</h2>
+    </div>
+</div>
 
+<div class="row">
+    <div class="col-md-3">
+        <div class="list-group shadow">
+            <a href="#" class="list-group-item list-group-item-action active disabled">Accesos rapidos</a>
+            <a href="@Url.Action("", "")" class="list-group-item list-group-item-action "><i class="bi bi-house"></i> Inicio</a>
+
+            @if (account.UserRol.UserLevel == 5 || account.UserRol.UserLevel == 10)
+            {
+                <a href="@Url.Action("NewLaboralTask", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-card-checklist"></i> Capturar</a>
+            }
+            <a href="@Url.Action("ViewByRequesterArea", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-search"></i> Ver por areas solicitantes</a>
+            <a href="@Url.Action("ViewByAttentionArea", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-search"></i> Ver por areas de atencion</a>
+        </div>
+    </div>
+
+    <div class="col-md">
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Area de atencion</th>
+                    <th scope="col">A. de Atencion</th>
                     <th scope="col">Asunto</th>
                     <th scope="col">Estatus</th>
-                    <th scope="col">Avance</th>
-                    <th scope="col" style="width: 180px;">Fecha de seguimiento</th>
-                    <th scope="col" style="width: 180px;">Fecha compromiso</th>
+                    <th scope="col" hidden>Avance</th>
+                    <th scope="col" style="width: 150px;">F. Seguimiento</th>
+                    <th scope="col" style="width: 150px;">F. Compromiso</th>
                     <th scope="col">Ir a</th>
                 </tr>
             </thead>
@@ -40,31 +58,34 @@
                             <td>@VisiflexAOSTUX.Services.RepositoryAttentionArea.Get(laboralTasks[i].IDAttentionArea).Name</td>
                             <td>@laboralTasks[i].Subjet</td>
                             <td>@laboralTasks[i].Status</td>
-                            <td>@laboralTasks[i].Progress %</td>
+                            <td hidden>@laboralTasks[i].Progress %</td>
                             <td>@VisiflexAOSTUX.Services.RepositoryLaboralTaskHistoryLog.GetLast(laboralTasks[i].IDLaboralTask).Date.ToShortDateString()</td>
                             <td>@laboralTasks[i].CommitmentDate.ToShortDateString()</td>
                             <td>
                                 @if (laboralTasks[i].Status == "NO PROCEDE" || laboralTasks[i].Status == "ATENDIDO")
                                 {
                                     <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("LaboralTask", "LaboralTask", new { laboralTaskID = laboralTasks[i].IDLaboralTask })">Asunto</a>
-                                } else
+                                }
+                                else
                                 {
-                                <div class="btn-group full-width" role="group" aria-label="Basic example">
-                                    <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("LaboralTask", "LaboralTask", new { laboralTaskID = laboralTasks[i].IDLaboralTask })">Asunto</a>
-                                    @if (account != null)
-                                    {
-                                        if (laboralTasks[i].IDAccount == account.IDAccount)
+                                    <div class="btn-group full-width" role="group" aria-label="Basic example">
+                                        <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("LaboralTask", "LaboralTask", new { laboralTaskID = laboralTasks[i].IDLaboralTask })">Asunto</a>
+                                        @if (account != null)
                                         {
-                                            <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("HistoryLog", "LaboralTaskHistoryLog", new { laboralTaskID = laboralTasks[i].IDLaboralTask })">Seguimiento</a>
-                                        } else  
+                                            if (laboralTasks[i].IDAccount == account.IDAccount)
+                                            {
+                                                <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("HistoryLog", "LaboralTaskHistoryLog", new { laboralTaskID = laboralTasks[i].IDLaboralTask })">Seguimiento</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="btn btn-sm btn-outline-dark full-width disabled" href="#">Seguimiento</a>
+                                            }
+                                        }
+                                        else
                                         {
                                             <a class="btn btn-sm btn-outline-dark full-width disabled" href="#">Seguimiento</a>
                                         }
-                                    } else
-                                    {
-                                            <a class="btn btn-sm btn-outline-dark full-width disabled" href="#">Seguimiento</a>
-                                    }
-                                </div>
+                                    </div>
                                 }
                             </td>
                         </tr>

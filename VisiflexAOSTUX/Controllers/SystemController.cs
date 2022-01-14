@@ -61,7 +61,7 @@ namespace VisiflexAOSTUX.Controllers
                         deletedEntities += RepositoryAttentionArea.PurgeAll();
 
 
-                        return Redirect(Url.Action("Settings", "System", new ResponseMessage() { Message = $"{deletedEntities} Eliminados correctamente", Type = ResponseType.ERROR }));
+                        return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = $"{deletedEntities} Eliminados correctamente", Type = ResponseType.SUCCESS }));
                     }
                 }
             }
