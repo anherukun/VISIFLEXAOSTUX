@@ -19,8 +19,10 @@ namespace VisiflexAOSTUX.Controllers
         }
 
         [HttpGet]
-        public ActionResult LaboralTask(string laboralTaskID)
+        public ActionResult LaboralTask(string laboralTaskID, ResponseMessage response)
         {
+            ViewData["Response"] = response;
+
             ViewData["LaboralTask"] = RepositoryLaboralTask.Get(laboralTaskID);
             if (Request.Cookies.AllKeys.Contains("idAccount") && Request.Cookies.AllKeys.Contains("idAccount"))
             {
@@ -283,9 +285,11 @@ namespace VisiflexAOSTUX.Controllers
                                 UploadTicks = submittionticks
                             };
                             if (RepositoryLaboralTaskHistoryLog.AddOrUpdate(log) > 0)
-                                return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente: Actualizacion de asunto registrada", Type = ResponseType.SUCCESS }));
+                                return Redirect(Url.Action("LaboralTask", "LaboralTask", new { laboralTaskID = l.IDLaboralTask, Message = "Asunto laboral registrado correctamente: Actualizacion de asunto registrada", Type = ResponseType.SUCCESS }));
+                            //return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente: Actualizacion de asunto registrada", Type = ResponseType.SUCCESS }));
                             else
-                                return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente", Type = ResponseType.SUCCESS }));
+                                return Redirect(Url.Action("LaboralTask", "LaboralTask", new { laboralTaskID = l.IDLaboralTask, Message = "Asunto laboral registrado correctamente", Type = ResponseType.SUCCESS }));
+                            //return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente", Type = ResponseType.SUCCESS }));
                         }
                         else
                         {
@@ -308,9 +312,11 @@ namespace VisiflexAOSTUX.Controllers
                     };
 
                     if (RepositoryLaboralTaskHistoryLog.AddOrUpdate(log) > 0)
-                        return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente: Actualizacion de asunto registrada", Type = ResponseType.SUCCESS }));
+                        return Redirect(Url.Action("LaboralTask", "LaboralTask", new { laboralTaskID = l.IDLaboralTask, Message = "Asunto laboral registrado correctamente: Actualizacion de asunto registrada", Type = ResponseType.SUCCESS }));
+                    //return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente: Actualizacion de asunto registrada", Type = ResponseType.SUCCESS }));
                     else
-                        return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente", Type = ResponseType.SUCCESS }));
+                        return Redirect(Url.Action("LaboralTask", "LaboralTask", new { laboralTaskID = l.IDLaboralTask, Message = "Asunto laboral registrado correctamente", Type = ResponseType.SUCCESS }));
+                    //return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "Asunto laboral registrado correctamente", Type = ResponseType.SUCCESS }));
                 }
             }
             return Redirect(Url.Action("NewLaboralTask", "LaboralTask", new ResponseMessage() { Message = "No se pudo procesar solicitud, falta informacion o archivo digital", Type = ResponseType.ERROR }));
