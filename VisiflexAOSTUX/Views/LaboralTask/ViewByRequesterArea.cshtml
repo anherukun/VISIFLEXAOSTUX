@@ -16,7 +16,7 @@
 
 <div class="row">
     <div class="offset-md-3">
-        <h2 style="margin-bottom:32px;">@ViewBag.Title</h2>
+        <h2 style="margin-bottom:32px;"><a href="#" onclick="window.history.back()"><i class="bi bi-arrow-left-circle"></i></a> @ViewBag.Title</h2>
     </div>
 </div>
 
@@ -98,12 +98,12 @@
                                 <tr>
                                     <td></td>
                                     <td style="vertical-align:middle;">@VisiflexAOSTUX.Services.RepositoryRequesterArea.Get(AREA_SOLICITANTE).Name</td>
-                                    <td><a class="btn btn-outline-dark btn-sm" target="_blank" href="@Url.Action("ViewAll", "LaboralTask", new { status = "INICIADO", idrequesterarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@INICIADO</a></td>
-                                    <td><a class="btn btn-outline-dark btn-sm" target="_blank" href="@Url.Action("ViewAll", "LaboralTask", new { status = "PENDIENTE", idrequesterarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@PENDIENTE</a></td>
-                                    <td><a class="btn btn-outline-dark btn-sm" target="_blank" href="@Url.Action("ViewAll", "LaboralTask", new { status = "EN PROCESO", idrequesterarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@EN_PROCESO</a></td>
-                                    <td><a class="btn btn-outline-dark btn-sm" target="_blank" href="@Url.Action("ViewAll", "LaboralTask", new { status = "ATENDIDO", idrequesterarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@ATENDIDO</a></td>
-                                    <td><a class="btn btn-outline-dark btn-sm" target="_blank" href="@Url.Action("ViewAll", "LaboralTask", new { status = "NO PROCEDE", idrequesterarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@NO_PROCEDE</a></td>
-                                    <td><a class="btn btn-outline-dark btn-sm" target="_blank" href="@Url.Action("ViewAll", "LaboralTask", new { idrequesterarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@TOTAL</a></td>
+                                    <td><a class="btn btn-outline-dark btn-sm" href="@Url.Action("ViewAll", "LaboralTask", new { status = "INICIADO", idrequesterarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@INICIADO</a></td>
+                                    <td><a class="btn btn-outline-dark btn-sm" href="@Url.Action("ViewAll", "LaboralTask", new { status = "PENDIENTE", idrequesterarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@PENDIENTE</a></td>
+                                    <td><a class="btn btn-outline-dark btn-sm" href="@Url.Action("ViewAll", "LaboralTask", new { status = "EN PROCESO", idrequesterarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@EN_PROCESO</a></td>
+                                    <td><a class="btn btn-outline-dark btn-sm" href="@Url.Action("ViewAll", "LaboralTask", new { status = "ATENDIDO", idrequesterarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@ATENDIDO</a></td>
+                                    <td><a class="btn btn-outline-dark btn-sm" href="@Url.Action("ViewAll", "LaboralTask", new { status = "NO PROCEDE", idrequesterarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@NO_PROCEDE</a></td>
+                                    <td><a class="btn btn-outline-dark btn-sm" href="@Url.Action("ViewAll", "LaboralTask", new { idrequesterarea = AREA_SOLICITANTE, idworkplace = workplace.Key })">@TOTAL</a></td>
                                 </tr>
 
                                 INICIADO = 0; PENDIENTE = 0; EN_PROCESO = 0; ATENDIDO = 0; NO_PROCEDE = 0; TOTAL = 0;
