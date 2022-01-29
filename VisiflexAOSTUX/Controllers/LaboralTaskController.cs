@@ -339,5 +339,11 @@ namespace VisiflexAOSTUX.Controllers
 
             return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "No se contro ningun resultado con el criterio de busqueda", Type = ResponseType.ERROR }));
         }
+
+        public ActionResult DownloadReport()
+        {
+            ExportService.GetLaboralTaskMatrix(this);
+            return Redirect(Url.Action("ViewAll", "LaboralTask"));
+        }
     }
 }

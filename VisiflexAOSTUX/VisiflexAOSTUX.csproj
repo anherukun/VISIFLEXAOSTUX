@@ -172,6 +172,7 @@
     <Compile Include="Models\Workplace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BackupService.cs" />
+    <Compile Include="Services\ExportService.cs" />
     <Compile Include="Services\RepositoryAccount.cs" />
     <Compile Include="Services\RepositoryAgent.cs" />
     <Compile Include="Services\RepositoryAttentionArea.cs" />
