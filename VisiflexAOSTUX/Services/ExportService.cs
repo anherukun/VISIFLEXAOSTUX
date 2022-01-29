@@ -8,6 +8,31 @@ namespace VisiflexAOSTUX.Services
 {
     public class ExportService
     {
+        public static string GetCSVStringData(List<Dictionary<string, string>> dataset, char separator)
+        {
+            string result = "";
+
+            // NOMBRES DE COLUMNAS
+            foreach (var item in dataset[0])
+            {
+                result += $"{item.Key}{separator}";
+            }
+            result = result.Remove(result.Length - 1);
+            result += "\n";
+
+            foreach (var entry in dataset)
+            {
+                foreach (var item in entry)
+                {
+                    result += $"{item.Value}{separator}";
+                }
+                result = result.Remove(result.Length - 1);
+                result += "\n";
+            }
+
+            return result;
+        }
+
         public static List<Dictionary<string, string>> GetLaboralTaskMatrix(Controllers.LaboralTaskController laboralTaskController)
         {
             List<LaboralTask> laboralTasks = RepositoryLaboralTask.Get();
@@ -26,18 +51,18 @@ namespace VisiflexAOSTUX.Services
                 entry.Add("N_SEGUIMIENTO", $"{item.Count}");
                 entry.Add("ID_ASUNTO", $"{item.IDLaboralTask}");
                 entry.Add("ID_DOCUMENTO", $"{item.DocumentID}");
-                entry.Add("FECHA_RECEPCION", $"{item.ReceptionDate}");
-                entry.Add("FECHA_COMPROMISO", $"{item.CommitmentDate}");
+                entry.Add("FECHA_RECEPCION", $"{item.ReceptionDate.ToShortDateString()}");
+                entry.Add("FECHA_COMPROMISO", $"{item.CommitmentDate.ToShortDateString()}");
                 entry.Add("ESTADO", $"{item.Status}");
                 entry.Add("AREA_ATENCION", $"{attentionArea.AreaCode} - {attentionArea.Name}");
                 entry.Add("AREA_SOLICITANTE", $"{requesterArea.Name}");
                 entry.Add("CENTRO_TRABAJO", $"{workplace.WorkplaceCode} - {workplace.Name}");
                 entry.Add("FICHA_AGENTE", $"{account.Username}");
                 entry.Add("NOMBRE_AGENTE", $"{account.Name} {account.LastName}");
-                entry.Add("ASUNTO", $"{item.Subjet}");
-                entry.Add("DESCRIPCION_LARGA", $"{item.LongDescription}");
-                entry.Add("FECHA_ULTIMO_SEGUIMIENTO", $"{lastHistoryLog.Date}");
-                entry.Add("ULTIMO_SEGUIMIENTO", $"{lastHistoryLog.Description}");
+                entry.Add("ASUNTO", $"{item.Subjet.Replace(',' , '.')}");
+                entry.Add("DESCRIPCION_LARGA", $"{item.LongDescription.Replace(',', '.')}");
+                entry.Add("FECHA_ULTIMO_SEGUIMIENTO", $"{lastHistoryLog.Date.ToShortDateString()}");
+                entry.Add("ULTIMO_SEGUIMIENTO", $"{lastHistoryLog.Description.Replace(',', '.')}");
 
                 if (item.IDDocumentFile == null)
                     entry.Add("LINK_ARCHIVO", $"No disponible");

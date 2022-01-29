@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using VisiflexAOSTUX.Application;
@@ -340,10 +341,13 @@ namespace VisiflexAOSTUX.Controllers
             return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "No se contro ningun resultado con el criterio de busqueda", Type = ResponseType.ERROR }));
         }
 
-        public ActionResult DownloadReport()
+        public FileResult DownloadReport()
         {
-            ExportService.GetLaboralTaskMatrix(this);
-            return Redirect(Url.Action("ViewAll", "LaboralTask"));
+            string stringdata = ExportService.GetCSVStringData(ExportService.GetLaboralTaskMatrix(this), ',');
+
+            return File(Encoding.UTF8.GetBytes(stringdata), "txt/csv", $"Visiflex_Reporte_{DateTime.Now.Ticks}.csv");
+
+            //return Redirect(Url.Action("ViewAll", "LaboralTask"));
         }
     }
 }
