@@ -87,18 +87,28 @@ namespace VisiflexAOSTUX.Controllers
                         if (status != null && idattentionarea != null && idworkplace != null)
                         {
                             ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status == status && x.IDAttentionArea == idattentionarea && x.IDWorkplace == idworkplace);
+                            ViewData["queryStatus"] = status;
+                            ViewData["queryIdattentionArea"] = idattentionarea;
+                            ViewData["queryIdworkplace"] = idworkplace;
                         }
                         else if (status != null && idrequesterarea != null && idworkplace != null)
                         {
                             ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.Status == status && x.IDRequesterArea == idrequesterarea && x.IDWorkplace == idworkplace);
+                            ViewData["queryStatus"] = status;
+                            ViewData["queryIdrequesterArea"] = idrequesterarea;
+                            ViewData["queryIdworkplace"] = idworkplace;
                         }
                         else if (idattentionarea != null && idworkplace != null)
                         {
                             ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.IDAttentionArea == idattentionarea && x.IDWorkplace == idworkplace);
+                            ViewData["queryIdattentionArea"] = idattentionarea;
+                            ViewData["queryIdworkplace"] = idworkplace;
                         }
                         else if (idrequesterarea != null && idworkplace != null)
                         {
                             ViewData["LaboralTasks"] = RepositoryLaboralTask.Get(x => x.IDRequesterArea == idrequesterarea && x.IDWorkplace == idworkplace);
+                            ViewData["queryIdrequesterArea"] = idrequesterarea;
+                            ViewData["queryIdworkplace"] = idworkplace;
                         }
                         else
                         {
@@ -341,9 +351,27 @@ namespace VisiflexAOSTUX.Controllers
             return Redirect(Url.Action("Index", "Home", new ResponseMessage() { Message = "No se contro ningun resultado con el criterio de busqueda", Type = ResponseType.ERROR }));
         }
 
-        public FileResult DownloadReport()
+        public FileResult DownloadReport(string qstatus, string qidrequesterarea, string qidworkplace, string qidattentionarea)
         {
-            string stringdata = ExportService.GetCSVStringData(ExportService.GetLaboralTaskMatrix(this), ',');
+            string stringdata = "";
+            if (qstatus != null && qidworkplace != null && qidattentionarea != null)
+            {
+                stringdata = ExportService.GetCSVStringData(ExportService.GetLaboralTaskMatrix(this, x => x.Status == qstatus && x.IDWorkplace == qidworkplace && x.IDAttentionArea == qidattentionarea), ',');
+            }
+            else if (qstatus != null && qidworkplace != null && qidrequesterarea != null)
+            {
+                stringdata = ExportService.GetCSVStringData(ExportService.GetLaboralTaskMatrix(this, x => x.Status == qstatus && x.IDWorkplace == qidworkplace && x.IDRequesterArea == qidrequesterarea), ',');
+            }
+            else if (qidworkplace != null && qidattentionarea != null)
+            {
+                stringdata = ExportService.GetCSVStringData(ExportService.GetLaboralTaskMatrix(this, x => x.IDWorkplace == qidworkplace && x.IDAttentionArea == qidattentionarea), ',');
+            }
+            else if (qidworkplace != null && qidrequesterarea != null)
+            {
+                stringdata = ExportService.GetCSVStringData(ExportService.GetLaboralTaskMatrix(this, x => x.IDWorkplace == qidworkplace && x.IDRequesterArea == qidrequesterarea), ',');
+            }
+            else 
+                stringdata = ExportService.GetCSVStringData(ExportService.GetLaboralTaskMatrix(this), ',');
 
             return File(Encoding.UTF8.GetBytes(stringdata), "txt/csv", $"Visiflex_Reporte_{DateTime.Now.Ticks}.csv");
 

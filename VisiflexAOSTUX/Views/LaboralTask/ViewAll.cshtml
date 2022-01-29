@@ -11,6 +11,28 @@
         session = ViewData["session"] as VisiflexAOSTUX.Models.Session;
         account = ViewData["account"] as VisiflexAOSTUX.Models.Account;
     }
+
+    string qStatus = null;
+    string qIDAttentionArea = null;
+    string qIDworkplace = null;
+    string qIDRequesterArea = null;
+
+    if (ViewData["queryStatus"] != null)
+    {
+        qStatus = ViewData["queryStatus"] as string;
+    }
+    if (ViewData["queryIdattentionArea"] != null)
+    {
+        qIDAttentionArea = ViewData["queryIdattentionArea"] as string;
+    }
+    if (ViewData["queryIdworkplace"] != null)
+    {
+        qIDworkplace = ViewData["queryIdworkplace"] as string;
+    }
+    if (ViewData["queryIdrequesterArea"] != null)
+    {
+        qIDRequesterArea = ViewData["queryIdrequesterArea"]  as string;
+    }
 }
 
 <div class="row">
@@ -31,7 +53,27 @@
             }
             <a href="@Url.Action("ViewByRequesterArea", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-search"></i> Ver por areas solicitantes</a>
             <a href="@Url.Action("ViewByAttentionArea", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-search"></i> Ver por areas de atencion</a>
-            <a href="@Url.Action("DownloadReport", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-cloud-download"></i> Descargar informe</a>
+
+            @if (qStatus != null && qIDworkplace != null && qIDAttentionArea != null)
+            {
+                <a href="@Url.Action("DownloadReport", "LaboralTask", new { qstatus = qStatus, qidattentionarea = qIDAttentionArea, qidworkplace = qIDworkplace})" class="list-group-item list-group-item-action "><i class="bi bi-cloud-download"></i> Descargar informe</a>
+            }
+            else if (qStatus != null && qIDworkplace != null && qIDRequesterArea != null)
+            {
+                <a href="@Url.Action("DownloadReport", "LaboralTask", new { qstatus = qStatus, qidrequesterarea = qIDRequesterArea, qidworkplace = qIDworkplace})" class="list-group-item list-group-item-action "><i class="bi bi-cloud-download"></i> Descargar informe</a>
+            }
+            else if (qIDworkplace != null && qIDAttentionArea != null)
+            {
+                <a href="@Url.Action("DownloadReport", "LaboralTask", new { qidattentionarea = qIDAttentionArea, qidworkplace = qIDworkplace})" class="list-group-item list-group-item-action "><i class="bi bi-cloud-download"></i> Descargar informe</a>
+            }
+            else if (qIDworkplace != null && qIDRequesterArea != null)
+            {
+                <a href="@Url.Action("DownloadReport", "LaboralTask", new { qidrequesterarea = qIDRequesterArea, qidworkplace = qIDworkplace})" class="list-group-item list-group-item-action "><i class="bi bi-cloud-download"></i> Descargar informe</a>
+            }
+            else
+            {
+                <a href="@Url.Action("DownloadReport", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-cloud-download"></i> Descargar informe</a>
+            }
         </div>
     </div>
 
