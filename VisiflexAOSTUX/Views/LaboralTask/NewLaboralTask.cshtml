@@ -17,13 +17,7 @@
 }
 
 <div class="row">
-    <div class="offset-md-3">
-        <h2 style="margin-bottom:32px;"><a href="#" onclick="window.history.back()"><i class="bi bi-arrow-left-circle"></i></a> @ViewBag.Title</h2>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-3">
+    <div class="col-md-3 d-none d-lg-block">
         <div class="list-group shadow">
             <a href="#" class="list-group-item list-group-item-action active disabled">Accesos rapidos</a>
             <a href="@Url.Action("", "")" class="list-group-item list-group-item-action "><i class="bi bi-house"></i> Inicio</a>
@@ -38,6 +32,8 @@
     </div>
 
     <div class="col-md">
+        <h2 style="margin-bottom:32px;"><a href="#" onclick="window.history.back()"><i class="bi bi-arrow-left-circle"></i></a> @ViewBag.Title</h2>
+
         <div class="card rounded shadow" style="padding:8px;">
             <div class="card-body">
                 <h5 class="card-title">Informacion del asunto</h5>
@@ -155,6 +151,14 @@
             </div>
 
         </div>
+    </div>
+</div>
+
+<div class="row">
+    
+
+    <div class="col-md">
+        
 
     </div>
 
