@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "Contabilizacion por areas de atencion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Dictionary<string, Dictionary<string, List<VisiflexAOSTUX.Models.LaboralTask>>> laboralTasks = ViewData["LaboralTasks"] as Dictionary<string, Dictionary<string, List<VisiflexAOSTUX.Models.LaboralTask>>>;
+
+    VisiflexAOSTUX.Models.Session session = null;
+    VisiflexAOSTUX.Models.Account account = null;
+    if (ViewData["session"] != null)
+    {
+        session = ViewData["session"] as VisiflexAOSTUX.Models.Session;
+        account = ViewData["account"] as VisiflexAOSTUX.Models.Account;
+    }
+}
+
+<div class="row">
+    <div class="col-md-3 d-none d-lg-block">
+        <div class="list-group shadow">
+            <a href="#" class="list-group-item list-group-item-action active disabled">Accesos rapidos</a>
+            <a href="@Url.Action("", "")" class="list-group-item list-group-item-action "><i class="bi bi-house"></i> Inicio</a>
+
+            @if (account.UserRol.UserLevel == 5 || account.UserRol.UserLevel == 10)
+            {
+                <a href="@Url.Action("NewLaboralTask", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-card-checklist"></i> Capturar</a>
+            }
+            <a href="@Url.Action("ViewAll", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-search"></i> Ver asuntos laborales</a>
+            <a href="@Url.Action("ViewByRequesterArea", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-search"></i> Ver por areas solicitantes</a>
+        </div>
+    </div>
+
+    <div class="col-md">
+        <h2 style="margin-bottom:32px;"><a href="#" onclick="window.history.back()"><i class="bi bi-arrow-left-circle"></i></a> @ViewBag.Title</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Area de atencion</th>
+                    <th scope="col">Iniciado</th>
+                    <th scope="col">Pendiente</th>
+                    <th scope="col">En proceso</th>
+                    <th scope="col">Atendido</th>
+                    <th scope="col">No procede</th>
+                    <th scope="col">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (laboralTasks.Count > 0)
+                {
+                    foreach (var workplace in laboralTasks)
+                    {
+                        <tr>
+                            <th colspan="8">CT: @VisiflexAOSTUX.Services.RepositoryWorkplace.Get(workplace.Key).Name</th>
+                        </tr>
+                        foreach (var attentionarea in workplace.Value)
+                        {
+                            string AREA_ATENCION = "";
+                            string CENTRO_TRABAJO = "";
+                            string STATUS = "";
+                            int INICIADO = 0; int PENDIENTE = 0; int EN_PROCESO = 0; int ATENDIDO = 0; int NO_PROCEDE = 0; int TOTAL = 0;
+
+                            if (attentionarea.Value.Count > 0)
+                            {
+                                AREA_ATENCION = attentionarea.Key;
+                                CENTRO_TRABAJO = workplace.Key;
+
+                                foreach (var value in attentionarea.Value)
+                                {
+                                    if (value.Status == "INICIADO")
+                                    {
+                                        INICIADO++;
+                                    }
+                                    if (value.Status == "PENDIENTE")
+                                    {
+                                        PENDIENTE++;
+                                    }
+                                    if (value.Status == "EN PROCESO")
+                                    {
+                                        EN_PROCESO++;
+                                    }
+                                    if (value.Status == "ATENDIDO")
+                                    {
+                                        ATENDIDO++;
+                                    }
+                                    if (value.Status == "NO PROCEDE")
+                                    {
+                                        NO_PROCEDE++;
+                                    }
+
+                                    TOTAL++;
+                                }
+
+                                <tr>
+                                    <td></td>
+                                    <td style="vertical-align:middle;">@VisiflexAOSTUX.Services.RepositoryAttentionArea.Get(AREA_ATENCION).Name</td>
+                                    <td><a class="btn btn-outline-dark btn-sm" href="@Url.Action("ViewAll", "LaboralTask", new { status = "INICIADO", idattentionarea = AREA_ATENCION, idworkplace = workplace.Key })">@INICIADO</a></td>
+                                    <td><a class="btn btn-outline-dark btn-sm" href="@Url.Action("ViewAll", "LaboralTask", new { status = "PENDIENTE", idattentionarea = AREA_ATENCION, idworkplace = workplace.Key })">@PENDIENTE</a></td>
+                                    <td><a class="btn btn-outline-dark btn-sm" href="@Url.Action("ViewAll", "LaboralTask", new { status = "EN PROCESO", idattentionarea = AREA_ATENCION, idworkplace = workplace.Key })">@EN_PROCESO</a></td>
+                                    <td><a class="btn btn-outline-dark btn-sm" href="@Url.Action("ViewAll", "LaboralTask", new { status = "ATENDIDO", idattentionarea = AREA_ATENCION, idworkplace = workplace.Key })">@ATENDIDO</a></td>
+                                    <td><a class="btn btn-outline-dark btn-sm" href="@Url.Action("ViewAll", "LaboralTask", new { status = "NO PROCEDE", idattentionarea = AREA_ATENCION, idworkplace = workplace.Key })">@NO_PROCEDE</a></td>
+                                    <td><a class="btn btn-outline-dark btn-sm" href="@Url.Action("ViewAll", "LaboralTask", new { idattentionarea = AREA_ATENCION, idworkplace = workplace.Key })">@TOTAL</a></td>
+                                </tr>
+
+                                INICIADO = 0; PENDIENTE = 0; EN_PROCESO = 0; ATENDIDO = 0; NO_PROCEDE = 0; TOTAL = 0;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3">No Items detected...</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    
+
+    <div class="col-md">
+        
+    </div>
+</div>

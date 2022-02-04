@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewBag.Title = "Actualizacion de seguimiento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    VisiflexAOSTUX.Models.LaboralTask laboralTask = ViewData["laboralTask"] as VisiflexAOSTUX.Models.LaboralTask;
+    List<VisiflexAOSTUX.Models.LaboralTaskHistoryLog> historyLogs = ViewData["laboralTaskHystoryLog"] as List<VisiflexAOSTUX.Models.LaboralTaskHistoryLog>;
+}
+
+<div class="row">
+    <div class="col-md">
+        <h2 style="margin-bottom:32px;"><a href="#" onclick="window.history.back()"><i class="bi bi-arrow-left-circle"></i></a> @ViewBag.Title</h2>
+
+        <div class="card rounded shadow" style="padding:8px; margin-bottom:32px;">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-archive-fill"></i> Detalle del asunto</h5>
+                <p class="card-text">Actualiza con un nuevo evento el historial del @laboralTask.Subjet.ToLowerInvariant()</p>
+
+                <form class="form">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="input-label">Numero de Seguimiento</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.Count">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="input-label">Estado</label>
+                            <input type="text" class="form-control" readonly value="@laboralTask.Status">
+                        </div>
+                        <div class="col-md" style="display:flex;">
+                            @if (laboralTask.IDDocumentFile != null)
+                            {
+                                <a class="btn btn-outline-primary full-width" style="align-self:flex-end;" target="_blank" href="@Url.Action("ViewLaboralTaskDocumentFile", "File", new { DocumentFileID = laboralTask.IDDocumentFile })">Ver documento</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-outline-primary disabled full-width" style="align-self:flex-end;" href="#">Ver documento</a>
+                            }
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Descripcion de Asunto</label>
+                            <textarea class="form-control" rows="3" readonly>@laboralTask.LongDescription</textarea>
+                        </div>
+                        <div class="col-md">
+                            <label class="input-label">Instrucciones para el Asunto</label>
+                            <textarea class="form-control" rows="3" readonly>@laboralTask.AttentionInstructions</textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card rounded shadow" style="padding:8px; margin-bottom:32px;">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-plus-circle-fill"></i> Agregar nueva actualizacion</h5>
+
+                @using (Html.BeginForm("AddHistoryLog", "LaboralTaskHistoryLog", FormMethod.Post, new { @class = "form needs-validation", enctype = "multipart/form-data" }))
+                {
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="input-label">Fecha del Seguimiento</label>
+                            <input type="date" class="form-control" id="Date" name="Date" required value="@(DateTime.Today.ToString("yyyy-MM-dd"))" readonly>
+                        </div>
+                        <div class="col-md">
+                            <label class="input-label">Archivo Digital</label>
+                            <input type="file" class="form-control" id="File" name="File" accept=".xls,.xlsx,.doc,.docx,.pdf,.jpeg,.png">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="input-label">Estado</label>
+                            <select class="form-control form-select" id="Status" name="Status" required>
+                                <option value="" hidden>Selecciona una opcion</option>
+                                <option value="ATENDIDO">ATENDIDO</option>
+                                <option value="EN PROCESO">EN PROCESO</option>
+                                <option value="NO PROCEDE">NO PROCEDE</option>
+                                <option value="PENDIENTE">PENDIENTE</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Descripcion del Progreso</label>
+                            <textarea class="form-control" id="Description" name="Description" required></textarea>
+                        </div>
+                    </div>
+                    <div class="row visually-hidden">
+                        <div class="col-md">
+                            <input class="form-control" id="IDLaboralTask" name="IDLaboralTask" required value="@laboralTask.IDLaboralTask">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-success full-width"><i class="bi bi-upload"></i> Cargar y Guardar</button>
+                }
+
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Fecha de seguimiento</th>
+                    <th scope="col">Detalle del seguimiento</th>
+                    <th scope="col">Archivo</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (historyLogs.Count > 0)
+                {
+                    foreach (var item in historyLogs)
+                    {
+                        <tr>
+                            <td>@item.Date.ToString("yyyy/MM/dd")</td>
+                            <td>@item.Description</td>
+                            @if (item.IDHistoryLogDocumentFile != null)
+                            {
+                                <td>
+                                    <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("", "", new { id = "", c = "System", a = "Settings" })">Ver documento</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <a class="btn btn-sm btn-outline-primary full-width disabled" href="#">Ver documento</a>
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3">No Items detected...</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

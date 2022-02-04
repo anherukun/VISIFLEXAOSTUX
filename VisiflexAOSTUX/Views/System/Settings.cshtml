@@ -1,0 +1,320 @@
+﻿
+@{
+    ViewBag.Title = "Parametros del sistema y configuracion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<VisiflexAOSTUX.Models.AttentionArea> attentionAreas = ViewData["AttentionAreas"] as List<VisiflexAOSTUX.Models.AttentionArea>;
+    List<VisiflexAOSTUX.Models.Workplace> workplaces = ViewData["Workplaces"] as List<VisiflexAOSTUX.Models.Workplace>;
+    List<VisiflexAOSTUX.Models.Account> accounts = ViewData["Accounts"] as List<VisiflexAOSTUX.Models.Account>;
+    List<VisiflexAOSTUX.Models.RequesterArea> requesterAreas = ViewData["RequesterAreas"] as List<VisiflexAOSTUX.Models.RequesterArea>;
+
+    VisiflexAOSTUX.Models.Session session = null;
+    VisiflexAOSTUX.Models.Account account = null;
+    if (ViewData["session"] != null)
+    {
+        session = ViewData["session"] as VisiflexAOSTUX.Models.Session;
+        account = ViewData["account"] as VisiflexAOSTUX.Models.Account;
+    }
+}
+
+<div class="row">
+    <div class="col-md-3 d-none d-lg-block">
+        <div class="list-group shadow">
+            <a href="#" class="list-group-item list-group-item-action active disabled">Accesos rapidos</a>
+            <a href="@Url.Action("", "")" class="list-group-item list-group-item-action "><i class="bi bi-house"></i> Inicio</a>
+        </div>
+    </div>
+
+    <div class="col-md">
+        <h2 style="margin-bottom:32px;">@ViewBag.Title</h2>
+
+
+        <div class="card rounded shadow" style="padding:8px; margin-bottom:32px;">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-shield-fill-check"></i> Copia de seguridad</h5>
+                <p class="card-text">Realiza una copia segura de los datos e informacion almacenada en la base de datos</p>
+
+                <a class="btn btn-outline-primary full-width" style="margin-bottom: 20px;" href="@Url.Action("DownloadBackup", "System")"><i class="bi bi-download"></i> Descargar respaldo</a>
+
+
+                @using (Html.BeginForm("UploadBackup", "System", FormMethod.Post, new { @class = "form needs-validation", enctype = "multipart/form-data" }))
+                {
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Subir archivo de respaldo</label>
+                            <input type="file" class="form-control" id="filebackup" name="filebackup" accept=".dat" required>
+                        </div>
+                    </div>
+                    <div>
+                        <p>
+                            Restaura la informacion desde una copia de seguridad, este proceso eliminara los datos ya existentes y
+                            seran remplazados por los datos del respaldo
+                        </p>
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-success full-width"><i class="bi bi-upload"></i> Cargar y Guardar</button>
+                }
+
+            </div>
+        </div>
+
+        <div class="card rounded shadow" style="padding:8px; margin-bottom:32px;">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-people-fill"></i> Agentes de atencion</h5>
+                <p class="card-text">Agrega y elimina las cuentas de los agentes</p>
+
+                <div>
+                    <div style="margin-bottom: 20px;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width:135.8px;">Ficha</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Tipo cuenta</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (accounts.Count > 0)
+                                {
+                                    foreach (var item in accounts)
+                                    {
+                                        <tr>
+                                            <td>@item.Username</td>
+                                            <td>@item.Name @item.LastName</td>
+                                            <td>@item.UserRol.UserRolName</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    @if (item.RequirePasswordUpdate == true)
+                                                    {
+                                                        <a class="btn btn-sm btn-outline-primary full-width disabled" href="#"><i class="bi bi-key-fill"></i></a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="btn btn-sm btn-outline-primary full-width" href="@Url.Action("ResetPassword", "Identity", new { IdAccount = item.IDAccount })"><i class="bi bi-key-fill"></i></a>
+                                                    }
+                                                    <a class="btn btn-sm btn-outline-danger full-width" href="@Url.Action("", "")" hidden><i class="bi bi-trash-fill"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="3">No Items detected...</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="bg-primary p-2 text-dark bg-opacity-25 rounded">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <h6><i class="bi bi-info-circle-fill"></i> Informacion</h6>
+                                </div>
+                                <div class="col-md">
+                                    <p style="margin:0px;"><a class="btn btn-sm btn-outline-dark disabled"><i class="bi bi-key-fill"></i></a> Realiza el reseteo de contraseña a la predeterminada: <b>P3mex.99</b></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <a class="btn btn-outline-success full-width" href="@Url.Action("SignUp","Identity")"><i class="bi bi-plus"></i> Crear cuenta</a>
+            </div>
+        </div>
+
+
+        <div class="card rounded shadow" style="padding:8px; margin-bottom:32px;">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-safe2-fill"></i> Areas de atencion</h5>
+                <p class="card-text">Agrega y elimina los areas de atencion</p>
+
+                <div style="margin-bottom: 20px;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width:135.8px;">Clave</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col" style="width:192.75px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (attentionAreas.Count > 0)
+                            {
+                                foreach (var item in attentionAreas)
+                                {
+                                    <tr>
+                                        <td>@item.AreaCode</td>
+                                        <td>@item.Name</td>
+                                        <td><a class="btn btn-sm btn-outline-danger full-width" href="@Url.Action("DeleteAttentionArea", "AttentionArea", new { id = item.AttentionAreaID, c = "System", a = "Settings" })"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3">No Items detected...</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                @using (Html.BeginForm("AddAttentionArea", "AttentionArea", FormMethod.Post, new { @class = "form needs-validation" }))
+                {
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="input-label">Clave</label>
+                            <input type="number" class="form-control" id="AreaCode" name="AreaCode" autocomplete="off" required>
+                        </div>
+                        <div class="col-md">
+                            <label class="input-label">Nombre del area de atencion</label>
+                            <input type="text" class="form-control" id="Name" name="Name" autocomplete="off" required>
+                        </div>
+                        <div class="visually-hidden">
+                            <input type="text" class="form-control" id="controller" name="controller" autocomplete="off" readonly required value="System">
+                            <input type="text" class="form-control" id="action" name="action" autocomplete="off" readonly required value="Settings">
+                        </div>
+
+                        <div class="col-md-3" style="display:flex; align-items:flex-end;">
+                            <button type="submit" class="btn btn-outline-success full-width"><i class="bi bi-check"></i> Agregar</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card rounded shadow" style="padding:8px; margin-bottom:32px;">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-safe2-fill"></i> Areas solicitantes</h5>
+                <p class="card-text">Agrega y elimina los areas solicitantes</p>
+
+                <div style="margin-bottom: 20px;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col" style="width:192.75px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (requesterAreas.Count > 0)
+                            {
+                                foreach (var item in requesterAreas)
+                                {
+                                    <tr>
+                                        <td>@item.Name</td>
+                                        <td><a class="btn btn-sm btn-outline-danger full-width" href="@Url.Action("DeleteRequesterArea", "RequesterArea", new { id = item.RequesterAreaID, c = "System", a = "Settings" })"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="2">No Items detected...</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                @using (Html.BeginForm("AddRequesterArea", "RequesterArea", FormMethod.Post, new { @class = "form needs-validation" }))
+                {
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Nombre del area solicitante</label>
+                            <input type="text" class="form-control" id="Name" name="Name" autocomplete="off" required>
+                        </div>
+                        <div class="visually-hidden">
+                            <input type="text" class="form-control" id="controller" name="controller" autocomplete="off" readonly required value="System">
+                            <input type="text" class="form-control" id="action" name="action" autocomplete="off" readonly required value="Settings">
+                        </div>
+
+                        <div class="col-md-3" style="display:flex; align-items:flex-end;">
+                            <button type="submit" class="btn btn-outline-success full-width"><i class="bi bi-check"></i> Agregar</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card rounded shadow" style="padding:8px; margin-bottom:32px;">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-pin-map-fill"></i> Centros de trabajo</h5>
+                <p class="card-text">Agrega y elimina los centros de trabajo</p>
+
+                <div style="margin-bottom: 20px;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width:135.8px;">Clave del CT</th>
+                                <th scope="col">Centro de trabajo</th>
+                                <th scope="col" style="width:192.75px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (workplaces.Count > 0)
+                            {
+                                foreach (var item in workplaces)
+                                {
+                                    <tr>
+                                        <td>@item.WorkplaceCode</td>
+                                        <td>@item.Name</td>
+                                        <td><a class="btn btn-sm btn-outline-danger full-width" href="@Url.Action("DeleteWorkplace", "Workplace", new { id = item.WorkplaceID, c = "System", a = "Settings" })"><i class="bi bi-trash-fill"></i> Eliminar</a></td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3">No Items detected...</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                @using (Html.BeginForm("AddWorkplace", "Workplace", FormMethod.Post, new { @class = "form needs-validation", enctype = "multipart/form-data" }))
+                {
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="input-label">Clave del CT</label>
+                            <input type="number" class="form-control" id="WorkplaceCode" name="WorkplaceCode" autocomplete="off" required>
+                        </div>
+                        <div class="col-md">
+                            <label class="input-label">Nombre del centro de trabajo</label>
+                            <input type="text" class="form-control" id="Name" name="Name" autocomplete="off" required>
+                        </div>
+                        <div class="visually-hidden">
+                            <input type="text" class="form-control" id="controller" name="controller" autocomplete="off" readonly required value="System">
+                            <input type="text" class="form-control" id="action" name="action" autocomplete="off" readonly required value="Settings">
+                        </div>
+                        <div class="col-md-3" style="display:flex; align-items:flex-end;">
+                            <button type="submit" class="btn btn-outline-success full-width"><i class="bi bi-check"></i> Agregar</button>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <div class="card rounded shadow" style="padding:8px; margin-bottom:32px;">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-x-octagon-fill"></i> Purgar datos</h5>
+                <p class="card-text">Elimina TODOS los datos almacenados en la base de datos</p>
+
+                <a class="btn btn-outline-danger full-width" href="@Url.Action("PurgeTables", "System")">Purgar datos</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    
+
+    <div class="col-md">
+
+    </div>
+</div>

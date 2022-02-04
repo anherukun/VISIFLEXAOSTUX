@@ -1,0 +1,165 @@
+﻿
+@{
+    ViewBag.Title = "Capturar asunto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<VisiflexAOSTUX.Models.Account> accounts = ViewData["Accounts"] as List<VisiflexAOSTUX.Models.Account>;
+    List<VisiflexAOSTUX.Models.AttentionArea> attentionAreas = ViewData["AttentionAreas"] as List<VisiflexAOSTUX.Models.AttentionArea>;
+    List<VisiflexAOSTUX.Models.Workplace> workplaces = ViewData["Workplaces"] as List<VisiflexAOSTUX.Models.Workplace>;
+    List<VisiflexAOSTUX.Models.RequesterArea> requesterAreas = ViewData["RequesterAreas"] as List<VisiflexAOSTUX.Models.RequesterArea>;
+
+    VisiflexAOSTUX.Models.Session session = null;
+    VisiflexAOSTUX.Models.Account account = null;
+    if (ViewData["session"] != null)
+    {
+        session = ViewData["session"] as VisiflexAOSTUX.Models.Session;
+        account = ViewData["account"] as VisiflexAOSTUX.Models.Account;
+    }
+}
+
+<div class="row">
+    <div class="col-md-3 d-none d-lg-block">
+        <div class="list-group shadow">
+            <a href="#" class="list-group-item list-group-item-action active disabled">Accesos rapidos</a>
+            <a href="@Url.Action("", "")" class="list-group-item list-group-item-action "><i class="bi bi-house"></i> Inicio</a>
+
+            @if (account.UserRol.UserLevel == 5 || account.UserRol.UserLevel == 10)
+            {
+                <a href="@Url.Action("ViewAll", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-search"></i> Ver asuntos laborales</a>
+                <a href="@Url.Action("ViewByRequesterArea", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-search"></i> Ver asuntos por areas solicitantes</a>
+                <a href="@Url.Action("ViewByAttentionArea", "LaboralTask")" class="list-group-item list-group-item-action "><i class="bi bi-search"></i> Ver asuntos por areas de atencion</a>
+            }
+        </div>
+    </div>
+
+    <div class="col-md">
+        <h2 style="margin-bottom:32px;"><a href="#" onclick="window.history.back()"><i class="bi bi-arrow-left-circle"></i></a> @ViewBag.Title</h2>
+
+        <div class="card rounded shadow" style="padding:8px;">
+            <div class="card-body">
+                <h5 class="card-title">Informacion del asunto</h5>
+                <p class="card-text">¿Necesitas visualizar los estados de la agenda laboral y/o capturar los progresos de los asuntos?</p>
+
+                @using (Html.BeginForm("AddLaboralTask", "LaboralTask", FormMethod.Post, new { @class = "form needs-validation", enctype = "multipart/form-data" }))
+                {
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Fecha de Recepcion</label>
+                            <input type="date" class="form-control" id="ReceptionDate" name="ReceptionDate" placeholder="01/01/2021" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Documento No.</label>
+                            <input type="text" class="form-control" id="DocumentID" name="DocumentID" placeholder="Numero del documento" required>
+                        </div>
+                        <div class="col-md">
+                            <label class="input-label">Fecha del Documento</label>
+                            <input type="date" class="form-control" id="DocumentDate" name="DocumentDate" placeholder="Fecha del documento" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Archivo Digital</label>
+                            <input type="file" class="form-control" id="File" name="File" accept=".doc,.docx,.pdf,.jpeg,.png">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Area de Atencion</label>
+                            <select class="form-select" id="IDAttentionArea" name="IDAttentionArea" required>
+                                @foreach (var item in attentionAreas)
+                                {
+                                    <option value="" hidden selected>Selecciona una opcion</option>
+                                    <option value="@item.AttentionAreaID">[@item.AreaCode] - @item.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md">
+                            <label class="input-label">Area de Solicitante</label>
+                            <select class="form-select" id="IDRequesterArea" name="IDRequesterArea" required>
+                                @foreach (var item in requesterAreas)
+                                {
+                                    <option value="" hidden selected>Selecciona una opcion</option>
+                                    <option value="@item.RequesterAreaID">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Centro de Trabajo</label>
+                            <select class="form-select" id="IDWorkplace" name="IDWorkplace" required>
+                                @foreach (var item in workplaces)
+                                {
+                                    <option value="" hidden selected>Selecciona una opcion</option>
+                                    <option value="@item.WorkplaceID">[@item.WorkplaceCode] - @item.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Asunto</label>
+                            <input type="text" class="form-control" id="Subjet" name="Subjet" placeholder="Asunto" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Descripcion Larga</label>
+                            <textarea class="form-control" rows="4" id="LongDescription" name="LongDescription" placeholder="Anota la descripcion aqui" required></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Instrucciones para la Atencion</label>
+                            <textarea class="form-control" rows="4" id="AttentionInstructions" name="AttentionInstructions" placeholder="Anota las instrucciones aqui" required></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Observaciones a Considerar para la Gestion del Asunto</label>
+                            <textarea class="form-control" rows="4" id="Observations" name="Observations" placeholder="Anota las observaciones aqui" required></textarea>
+                        </div>
+                    </div>
+
+                    <h5 class="card-title">Responsable de atender el asunto</h5>
+
+                    <div class="row">
+                        <div class="col-md">
+                            <label class="input-label">Fecha de Compromiso</label>
+                            <input type="date" class="form-control" id="CommitmentDate" name="CommitmentDate" placeholder="01/01/2021" required>
+                        </div>
+                        <div class="col-md">
+                            <label class="input-label">Agente Responsable</label>
+                            <select class="form-select" id="IDAccount" name="IDAccount" required>
+                                @foreach (var item in accounts)
+                                {
+                                    if (item.UserRol.UserLevel != 1 && item.UserRol.UserLevel != 10)
+                                    {
+                                        <option value="" hidden selected>Selecciona una opcion</option>
+                                        <option value="@item.IDAccount">[@item.Username] - @item.Name @item.LastName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-success full-width">Cargar y Guardar</button>
+                }
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    
+
+    <div class="col-md">
+        
+
+    </div>
+
+</div>

@@ -1,31 +1,184 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Inicio";
+
+    VisiflexAOSTUX.Models.Session session = null;
+    VisiflexAOSTUX.Models.Account account = null;
+    if (ViewData["session"] != null)
+    {
+        session = ViewData["session"] as VisiflexAOSTUX.Models.Session;
+        account = ViewData["account"] as VisiflexAOSTUX.Models.Account;
+    }
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<div class="text-center">
+    @if (account != null)
+    {
+        <h1>Bienvenido, @account.Name</h1>
+        <p class="lead">Este es el menu de inicio del sistema VISIFLEX AOS Tuxpan. Para comenzar, selecciona una de las siguentes opciones.</p>
+        if (account.UserRol.UserLevel == 1)
+        {
+
+        }
+    }
+    else
+    {
+        <h1>Bienvenido</h1>
+        <p class="lead">
+            Este es el sistema VISIFLEX, puedes rastrear el seguimiento de un asunto. 
+            <br /> O bien puedes <a href="@Url.Action("Login", "Identity")"><b>Iniciar Sesion</b></a> para acceder a todas las funciones
+        </p>
+    }
+
+    <br /><br />
+    <br />
 </div>
 
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    @if (account != null)
+    {
+        switch (account.UserRol.UserLevel)
+        {
+            case 1:
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Capturar</h5>
+                        <p class="card-text">¿Quieres agregar un nuevo asunto a la agenda laboral?</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("NewLaboralTask", "LaboralTask")">Haz clic aqui</a>
+                        </div>
+                    </div>
+                </div>
+                break;
+
+            case 4:
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Actualizaciones de asuntos</h5>
+                        <p class="card-text">¿Necesitas visualizar los estados de la agenda laboral y/o capturar los progresos de tus asuntos asignados?</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewAll", "LaboralTask")">Haz clic aqui</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Contadores de asuntos</h5>
+                        <p class="card-text">Revisa las contablizaciones de los asuntos por sus estados de atencion</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div class="btn-group">
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewByRequesterArea","LaboralTask")">Por areas solicitantes</a>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewByAttentionArea","LaboralTask")">Por areas de atencion</a>
+                        </div>
+                    </div>
+                </div>
+                break;
+
+            case 5:
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Capturar</h5>
+                        <p class="card-text">¿Quieres agregar un nuevo asunto a la agenda laboral?</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("NewLaboralTask", "LaboralTask")">Haz clic aqui</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Actualizaciones de asuntos</h5>
+                        <p class="card-text">¿Necesitas visualizar los estados de la agenda laboral y/o capturar los progresos de los asuntos?</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewAll", "LaboralTask")">Haz clic aqui</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Contadores de asuntos</h5>
+                        <p class="card-text">Revisa las contablizaciones de los asuntos por sus estados de atencion</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div class="btn-group">
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewByRequesterArea","LaboralTask")">Por areas solicitantes</a>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewByAttentionArea","LaboralTask")">Por areas de atencion</a>
+                        </div>
+                    </div>
+                </div>
+                break;
+
+            case 10:
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Capturar</h5>
+                        <p class="card-text">¿Quieres agregar un nuevo asunto a la agenda laboral?</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("NewLaboralTask", "LaboralTask")">Haz clic aqui</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Actualizaciones de asuntos</h5>
+                        <p class="card-text">¿Necesitas visualizar los estados de la agenda laboral y/o capturar los progresos de los asuntos?</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewAll", "LaboralTask")">Haz clic aqui</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md card rounded shadow text-center" style="padding: 8px; margin:16px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Contadores de asuntos</h5>
+                        <p class="card-text">Revisa las contablizaciones de los asuntos por sus estados de atencion</p>
+                    </div>
+                    <div class="card-body card-button-full">
+                        <div class="btn-group">
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewByRequesterArea","LaboralTask")">Por areas solicitantes</a>
+                            <a class="btn btn-outline-primary" style="width:100%;" href="@Url.Action("ViewByAttentionArea","LaboralTask")">Por areas de atencion</a>
+                        </div>
+                    </div>
+                </div>
+                break;
+
+            default:
+                break;
+        }
+    }
+</div>
+
+<div class="row">
+    <div class="col-md card rounded shadow" style="padding: 8px; margin:16px;">
+        <div class="card-body text-center">
+            <h5 class="card-title">Rastrear</h5>
+            <p class="card-text">Visualiza el seguimiento actual de un asunto laboral.</p>
+        </div>
+
+
+        <div class="card-body">
+            @using (Html.BeginForm("DirectSearch", "LaboralTask", FormMethod.Post, new { @class = "form" }))
+            {
+                <div class="row" style="margin-bottom: 0px;">
+                    <div class="col-md">
+                        <label class="input-label">No. Seguimiento, Referencia del Documento, o ID del asunto</label>
+                        <input type="text" class="form-control" name="query" id="query" autocomplete="query" value="" required>
+                    </div>
+                    <div class="col-md-3" style="align-self: end">
+                        <button type="submit" class="btn btn-outline-primary" style="width:100%;">Buscar</button>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </div>

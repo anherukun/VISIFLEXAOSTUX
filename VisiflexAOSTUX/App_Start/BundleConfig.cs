@@ -24,7 +24,12 @@ namespace VisiflexAOSTUX
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/bootstrap-icons-1.5.0/bootstrap-icons.css"));
+
+            bundles.Add(new Bundle("~/bundles/bootstrap").Include(
+                      "~/Scripts/umd/popper.js",
+                      "~/Scripts/bootstrap.js"));
         }
     }
 }
